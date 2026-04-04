@@ -476,6 +476,14 @@ export default function SettingsPage() {
           عرض الملف الشخصي
         </Link>
 
+        <Link
+          href="/pricing"
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary/20 transition-colors mb-4 border border-primary/20"
+        >
+          <MaterialIcon icon="workspace_premium" className="text-lg" />
+          إدارة الاشتراك
+        </Link>
+
         {/* Sign Out */}
         <button
           onClick={() => logout()}

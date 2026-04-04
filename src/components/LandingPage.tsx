@@ -52,7 +52,7 @@ const features = [
 const userPlans = [
   {
     name: "مجاني",
-    price: "$0",
+    price: "0 SAR",
     period: "للأبد",
     desc: "كل ما تحتاجه لتبدأ تحضيراً أفضل",
     features: [
@@ -69,7 +69,7 @@ const userPlans = [
   },
   {
     name: "احترافي",
-    price: "$4.99",
+    price: "19.99 SAR",
     period: "/شهرياً",
     desc: "للمحضّرين الجادين الذين يريدون التجربة الكاملة",
     features: [
@@ -83,7 +83,7 @@ const userPlans = [
       "المجموعات والمجموعات والرسائل",
     ],
     cta: "ابدأ الفترة التجريبية",
-    href: "/signup?plan=pro",
+    href: "/pricing",
     highlighted: true,
   },
 ];
@@ -103,7 +103,7 @@ const roasterPlans = [
       "صفحة مجموعة مجتمعية",
     ],
     cta: "ابدأ الفترة التجريبية",
-    href: "/signup?plan=roaster",
+    href: "/pricing",
     highlighted: false,
   },
   {
@@ -122,7 +122,7 @@ const roasterPlans = [
       "أولوية الظهور في البحث",
     ],
     cta: "ابدأ الفترة التجريبية",
-    href: "/signup?plan=roaster-pro",
+    href: "/pricing",
     highlighted: true,
   },
   {
@@ -141,7 +141,7 @@ const roasterPlans = [
       "أدلة تحضير بعلامتك التجارية",
     ],
     cta: "تواصل مع المبيعات",
-    href: "/signup?plan=enterprise",
+    href: "/pricing",
     highlighted: false,
   },
 ];
