@@ -6,13 +6,16 @@ import Link from "next/link";
 import MaterialIcon from "@/components/MaterialIcon";
 import BottomNav from "@/components/BottomNav";
 
+type Interval = "monthly" | "yearly";
+
 const USER_PLANS = [
   {
     slug: "free",
     name: "مجاني",
-    price: "0",
+    monthly: "0",
+    yearly: "0",
     currency: "SAR",
-    period: "للأبد",
+    period: { monthly: "للأبد", yearly: "للأبد" },
     features: [
       "تصفح جميع الوصفات",
       "مؤقت تحضير أساسي",
@@ -23,13 +26,15 @@ const USER_PLANS = [
     ],
   },
   {
-    slug: "pro",
+    slug: { monthly: "pro", yearly: "pro-yearly" },
     name: "احترافي",
-    price: "4.99",
+    monthly: "4.99",
+    yearly: "49.99",
     currency: "SAR",
-    period: "/شهرياً",
+    period: { monthly: "/شهرياً", yearly: "/سنوياً" },
     highlighted: true,
     badge: "الأكثر شعبية",
+    yearlyBadge: "وفّر ١٧%",
     features: [
       "كل مميزات المجاني",
       "وصفات غير محدودة",
@@ -45,11 +50,13 @@ const USER_PLANS = [
 
 const ROASTER_PLANS = [
   {
-    slug: "roaster-basic",
+    slug: { monthly: "roaster-basic", yearly: "roaster-basic-yearly" },
     name: "المحمصة - أساسي",
-    price: "39",
+    monthly: "39",
+    yearly: "390",
     currency: "SAR",
-    period: "/شهرياً",
+    period: { monthly: "/شهرياً", yearly: "/سنوياً" },
+    yearlyBadge: "وفّر ١٧%",
     features: [
       "صفحة علامة تجارية مخصصة",
       "نشر حتى ١٠ منتجات",
@@ -60,13 +67,15 @@ const ROASTER_PLANS = [
     ],
   },
   {
-    slug: "roaster-pro",
+    slug: { monthly: "roaster-pro", yearly: "roaster-pro-yearly" },
     name: "المحمصة - احترافي",
-    price: "79",
+    monthly: "79",
+    yearly: "790",
     currency: "SAR",
-    period: "/شهرياً",
+    period: { monthly: "/شهرياً", yearly: "/سنوياً" },
     highlighted: true,
     badge: "أفضل قيمة",
+    yearlyBadge: "وفّر ١٧%",
     features: [
       "كل مميزات الأساسي",
       "منتجات غير محدودة",
@@ -79,11 +88,12 @@ const ROASTER_PLANS = [
     ],
   },
   {
-    slug: "enterprise",
+    slug: { monthly: "enterprise", yearly: "enterprise" },
     name: "الشركات",
-    price: "مخصص",
+    monthly: "مخصص",
+    yearly: "مخصص",
     currency: "",
-    period: "",
+    period: { monthly: "", yearly: "" },
     features: [
       "كل مميزات الاحترافي",
       "أعضاء فريق غير محدودين",
@@ -101,6 +111,7 @@ export default function PricingPage() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
   const [tab, setTab] = useState<"users" | "roasters">("users");
+  const [interval, setInterval] = useState<Interval>("monthly");
   const [loading, setLoading] = useState<string | null>(null);
   const [userTier, setUserTier] = useState<string>("free");
 
@@ -167,8 +178,8 @@ export default function PricingPage() {
           </div>
         )}
 
-        {/* Tab switch */}
-        <div className="flex bg-espresso/5 rounded-xl p-1 mb-6">
+        {/* Tab switch - users/roasters */}
+        <div className="flex bg-espresso/5 rounded-xl p-1 mb-4">
           <button
             onClick={() => setTab("users")}
             className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${
@@ -187,15 +198,45 @@ export default function PricingPage() {
           </button>
         </div>
 
+        {/* Interval toggle - monthly/yearly */}
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <span className={`text-sm font-bold ${interval === "monthly" ? "text-espresso" : "text-espresso/40"}`}>
+            شهري
+          </span>
+          <button
+            onClick={() => setInterval(interval === "monthly" ? "yearly" : "monthly")}
+            className={`relative w-14 h-7 rounded-full transition-colors ${
+              interval === "yearly" ? "bg-primary" : "bg-espresso/20"
+            }`}
+          >
+            <div
+              className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform ${
+                interval === "yearly" ? "translate-x-0.5" : "translate-x-7.5"
+              }`}
+            />
+          </button>
+          <span className={`text-sm font-bold ${interval === "yearly" ? "text-espresso" : "text-espresso/40"}`}>
+            سنوي
+          </span>
+          {interval === "yearly" && (
+            <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+              وفّر ١٧%
+            </span>
+          )}
+        </div>
+
         {/* Plans */}
         <div className="space-y-4">
           {(tab === "users" ? USER_PLANS : ROASTER_PLANS).map((plan) => {
-            const isCurrent =
-              tab === "users" && plan.slug === userTier;
+            const slug = typeof plan.slug === "string" ? plan.slug : plan.slug[interval];
+            const price = plan[interval];
+            const period = plan.period[interval];
+            const isCurrent = tab === "users" && (slug === userTier || (slug === "free" && userTier === "free"));
+            const showYearlySaving = interval === "yearly" && plan.yearlyBadge && slug !== "free";
 
             return (
               <div
-                key={plan.slug}
+                key={slug}
                 className={`rounded-2xl border-2 p-5 transition-all ${
                   plan.highlighted
                     ? "border-primary bg-primary/5 shadow-lg"
@@ -204,24 +245,38 @@ export default function PricingPage() {
               >
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-lg font-bold">{plan.name}</h3>
-                  {plan.badge && (
-                    <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full">
-                      {plan.badge}
-                    </span>
-                  )}
+                  <div className="flex gap-2">
+                    {showYearlySaving && (
+                      <span className="bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-full">
+                        {plan.yearlyBadge}
+                      </span>
+                    )}
+                    {plan.badge && !showYearlySaving && (
+                      <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full">
+                        {plan.badge}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex items-baseline gap-1 mb-4">
-                  <span className="text-3xl font-extrabold">{plan.price}</span>
+                  <span className="text-3xl font-extrabold">{price}</span>
                   {plan.currency && (
                     <span className="text-sm text-espresso/50 font-medium">
                       {plan.currency}
                     </span>
                   )}
-                  {plan.period && (
-                    <span className="text-sm text-espresso/40">{plan.period}</span>
+                  {period && (
+                    <span className="text-sm text-espresso/40">{period}</span>
                   )}
                 </div>
+
+                {/* Show monthly equivalent for yearly */}
+                {interval === "yearly" && slug !== "free" && slug !== "enterprise" && plan.currency && (
+                  <p className="text-xs text-espresso/40 -mt-3 mb-4">
+                    ≈ {(parseFloat(price) / 12).toFixed(2)} {plan.currency} /شهرياً
+                  </p>
+                )}
 
                 <ul className="space-y-2 mb-5">
                   {plan.features.map((f, i) => (
@@ -237,11 +292,11 @@ export default function PricingPage() {
                   ))}
                 </ul>
 
-                {isCurrent ? (
+                {isCurrent && slug === userTier ? (
                   <div className="w-full py-3 text-center rounded-xl bg-espresso/5 text-espresso/50 font-bold text-sm">
                     خطتك الحالية
                   </div>
-                ) : plan.slug === "free" ? (
+                ) : slug === "free" ? (
                   <Link
                     href="/signup"
                     className="block w-full py-3 text-center rounded-xl bg-espresso/10 text-espresso font-bold text-sm hover:bg-espresso/15 transition-colors"
@@ -250,17 +305,17 @@ export default function PricingPage() {
                   </Link>
                 ) : (
                   <button
-                    onClick={() => handleSubscribe(plan.slug)}
-                    disabled={loading === plan.slug}
+                    onClick={() => handleSubscribe(slug)}
+                    disabled={loading === slug}
                     className={`w-full py-3 text-center rounded-xl font-bold text-sm transition-colors ${
                       plan.highlighted
                         ? "bg-primary text-white hover:bg-primary/90"
                         : "bg-espresso text-white hover:bg-espresso/90"
                     } disabled:opacity-50`}
                   >
-                    {loading === plan.slug
+                    {loading === slug
                       ? "جارٍ التحويل..."
-                      : plan.slug === "enterprise"
+                      : slug === "enterprise"
                       ? "تواصل مع المبيعات"
                       : "اشترك الآن"}
                   </button>

@@ -6,9 +6,14 @@ import { createPaymentLink, createConsumer } from "@/lib/streampay";
 // Maps our plan slugs to StreamPay product IDs (set in env)
 function getProductId(planSlug: string): string | null {
   const map: Record<string, string | undefined> = {
+    // Monthly
     pro: process.env.STREAM_PRODUCT_USER_PRO,
     "roaster-basic": process.env.STREAM_PRODUCT_ROASTER_BASIC,
     "roaster-pro": process.env.STREAM_PRODUCT_ROASTER_PRO,
+    // Yearly
+    "pro-yearly": process.env.STREAM_PRODUCT_USER_PRO_YEARLY,
+    "roaster-basic-yearly": process.env.STREAM_PRODUCT_ROASTER_BASIC_YEARLY,
+    "roaster-pro-yearly": process.env.STREAM_PRODUCT_ROASTER_PRO_YEARLY,
   };
   return map[planSlug] || null;
 }

@@ -71,17 +71,18 @@ async function handlePaymentSuccess(data: any) {
 
   if (!userId || !planSlug) return;
 
+  const isYearly = planSlug.endsWith("-yearly");
   const now = new Date();
   const expiresAt = new Date(now);
-  expiresAt.setMonth(expiresAt.getMonth() + 1);
+  expiresAt.setMonth(expiresAt.getMonth() + (isYearly ? 12 : 1));
 
-  if (planSlug === "pro") {
+  if (planSlug === "pro" || planSlug === "pro-yearly") {
     await prisma.user.update({
       where: { id: userId },
       data: { subscriptionTier: "pro" },
     });
   } else if (planSlug.startsWith("roaster") && companyId) {
-    const tier = planSlug === "roaster-pro" ? "pro" : "basic";
+    const tier = planSlug.includes("roaster-pro") ? "pro" : "basic";
     await prisma.company.update({
       where: { id: companyId },
       data: {
@@ -135,7 +136,7 @@ async function handleSubscriptionEnded(data: any) {
 
   if (!userId) return;
 
-  if (planSlug === "pro") {
+  if (planSlug === "pro" || planSlug === "pro-yearly") {
     await prisma.user.update({
       where: { id: userId },
       data: { subscriptionTier: "free" },
@@ -242,7 +243,7 @@ async function handleRefund(data: any) {
   if (!userId) return;
 
   // Downgrade on refund
-  if (planSlug === "pro") {
+  if (planSlug === "pro" || planSlug === "pro-yearly") {
     await prisma.user.update({
       where: { id: userId },
       data: { subscriptionTier: "free" },
