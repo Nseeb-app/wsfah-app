@@ -15,7 +15,7 @@ export async function getAuthUser(req: Request): Promise<{ id: string; role: str
   // Fall back to NextAuth session (web app)
   const session = await auth();
   if (session?.user?.id) {
-    return { id: session.user.id, role: (session.user as Record<string, unknown>).role as string || "USER" };
+    return { id: session.user.id, role: (session.user as any).role as string || "USER" };
   }
   return null;
 }

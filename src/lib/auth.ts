@@ -138,7 +138,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               data: {
                 email: profile.email,
                 name: profile.name || null,
-                image: (profile as Record<string, unknown>).picture as string || null,
+                image: (profile as any).picture as string || null,
               },
             });
           }

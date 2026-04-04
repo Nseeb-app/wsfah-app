@@ -6,7 +6,7 @@ import { AuthError } from "next-auth";
 function isRedirect(error: unknown): boolean {
   if (error instanceof Error) {
     const msg = error.message || "";
-    const digest = (error as Record<string, unknown>).digest;
+    const digest = (error as any).digest;
     if (msg.includes("NEXT_REDIRECT") || msg.includes("redirect")) return true;
     if (typeof digest === "string" && digest.includes("NEXT_REDIRECT")) return true;
   }
