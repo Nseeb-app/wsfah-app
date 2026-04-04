@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: #25f459;
+  --color-background-light: #f5f8f6;
+  --color-background-dark: #102214;
+  --color-espresso: #2D1B14;
+  --color-oat-milk: #F2E8DF;
+  --color-brand-gold: #D4AF37;
+  --color-community-teal: #2D7D7D;
+  --font-display: "Epilogue", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-display);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── Dark Mode ─── */
+html.dark {
+  --color-background-light: #0f1714;
+  --color-espresso: #e8e0d8;
+  --color-oat-milk: #1a1410;
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #0f1714;
+  color: #e2e8f0;
+}
+
+/* Backgrounds */
+html.dark .bg-white,
+html.dark .bg-white\/95,
+html.dark .bg-white\/90 {
+  background-color: #1a2420 !important;
+}
+
+html.dark .bg-background-light {
+  background-color: #0f1714 !important;
+}
+
+html.dark .bg-background-light\/80 {
+  background-color: rgba(15, 23, 20, 0.8) !important;
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: #1a2420 !important;
+}
+
+html.dark .bg-oat-milk {
+  background-color: #1a2420 !important;
+}
+
+/* Slate text */
+html.dark .text-slate-900 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-400 {
+  color: #64748b !important;
+}
+
+/* Espresso text (all opacities) */
+html.dark .text-espresso {
+  color: #e8e0d8 !important;
+}
+
+html.dark [class*="text-espresso/"] {
+  color: rgba(232, 224, 216, var(--tw-text-opacity, 0.6)) !important;
+}
+
+html.dark .text-espresso\/20 {
+  color: rgba(232, 224, 216, 0.2) !important;
+}
+
+html.dark .text-espresso\/30 {
+  color: rgba(232, 224, 216, 0.3) !important;
+}
+
+html.dark .text-espresso\/40 {
+  color: rgba(232, 224, 216, 0.4) !important;
+}
+
+html.dark .text-espresso\/50 {
+  color: rgba(232, 224, 216, 0.5) !important;
+}
+
+html.dark .text-espresso\/60 {
+  color: rgba(232, 224, 216, 0.6) !important;
+}
+
+/* Borders */
+html.dark .border-slate-200,
+html.dark .border-slate-100 {
+  border-color: #2a3a34 !important;
+}
+
+html.dark [class*="border-espresso/"] {
+  border-color: rgba(232, 224, 216, 0.1) !important;
+}
+
+/* Shadows */
+html.dark .shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .shadow-xl {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Inputs */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #1a2420 !important;
+  color: #e2e8f0 !important;
+  border-color: #2a3a34 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Specialty backgrounds */
+html.dark .bg-purple-50 { background-color: #1a1625 !important; }
+html.dark .bg-purple-100 { background-color: #211d30 !important; }
+html.dark .bg-amber-50 { background-color: #1a1610 !important; }
+html.dark .bg-amber-100 { background-color: #221d10 !important; }
+html.dark .bg-green-50 { background-color: #0f1a14 !important; }
+html.dark .bg-green-100 { background-color: #142218 !important; }
+html.dark .bg-red-50 { background-color: #1a0f0f !important; }
+html.dark .bg-orange-100 { background-color: #1a1610 !important; }
+html.dark .bg-slate-300 { background-color: #374151 !important; }
+
+/* Bottom nav */
+html.dark nav.fixed {
+  background-color: rgba(26, 36, 32, 0.95) !important;
+  border-color: #2a3a34 !important;
+}
+
+/* Espresso bg opacity */
+html.dark [class*="bg-espresso/"] {
+  background-color: rgba(232, 224, 216, 0.05) !important;
 }

@@ -1,0 +1,1039 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ──── Auth Models (NextAuth) ────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  phone         String?   @unique
+  password      String?
+  image         String?
+  bio           String?
+  role          String    @default("USER") // USER, CREATOR, BRAND_ADMIN, SUPERADMIN
+  status        String    @default("ACTIVE") // ACTIVE, INACTIVE, SUSPENDED
+  points        Int       @default(0)
+  followers     Int       @default(0)
+  following     Int       @default(0)
+  avgRating     Float     @default(0)
+  subscriptionTier String  @default("free") // free, pro
+  dailyStreak   Int       @default(0)
+  lastStreakDate DateTime?
+  // Privacy settings
+  privacyFollowers String @default("everyone") // everyone, followers, none
+  privacyLikes     String @default("public")   // public, private
+  privacySaved     String @default("private")  // public, private
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  recipes        Recipe[]
+  companies      Company[]
+  badges         UserBadge[]
+  challenges     UserChallenge[]
+  likes          RecipeLike[]
+  saves          RecipeSave[]
+  notifications  Notification[]
+  redemptions    Redemption[]
+  galleryPosts   GalleryPost[]
+  followersList  Follow[] @relation("UserFollowing")
+  followingList  Follow[] @relation("UserFollowers")
+  galleryLikes   GalleryPostLike[]
+  recipeRatings  RecipeRating[]
+  comments       Comment[]
+  collections    Collection[]
+  activities     ActivityEvent[]
+  // Batch 2
+  storyViews     StoryView[]
+  pushSubscriptions PushSubscription[]
+  // Batch 4
+  conversationParticipants ConversationParticipant[]
+  messages       Message[]
+  groups         Group[]
+  groupMemberships GroupMember[]
+  groupPosts     GroupPost[]
+  hostedEvents   Event[]
+  eventRsvps     EventRsvp[]
+  productReviews ProductReview[]
+  // Batch 5
+  brewLogs       BrewLog[]
+  equipment      Equipment[]
+  // Batch 6
+  reports        Report[]
+  brandApplications BrandApplication[]
+  promotionRequests PromotionRequest[]
+  mobilePushTokens  MobilePushToken[]
+  // Loyalty system
+  userStampCards     UserStampCard[]
+  brandRedemptions   BrandRewardRedemption[]
+  couponClaims       BrandCouponClaim[]
+  // Company team
+  companyMemberships CompanyMember[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ──── Business Models ────
+
+model Company {
+  id           String   @id @default(cuid())
+  name         String
+  logo         String?
+  type         String   // roaster, cafe, equipment, tea_brand
+  status       String   @default("PENDING") // APPROVED, PENDING, REJECTED
+  description  String?
+  contactEmail String?
+  isVerified   Boolean  @default(false)
+  ownerId      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Batch 3
+  isPromoted         Boolean   @default(false)
+  promotionTier      String?
+  promotionExpiresAt DateTime?
+  subscriptionTier      String    @default("basic") // basic, pro, enterprise
+  subscriptionExpiresAt DateTime?
+
+  owner        User          @relation(fields: [ownerId], references: [id])
+  products     Product[]
+  recipes      Recipe[]
+  galleryPosts GalleryPost[]
+  stories      Story[]
+  brandViews   BrandView[]
+  events       Event[]
+  applications BrandApplication[]
+  promotionRequests PromotionRequest[]
+  // Loyalty system
+  stampCards    StampCard[]
+  brandRewards BrandReward[]
+  brandCoupons BrandCoupon[]
+  // Team
+  members      CompanyMember[]
+}
+
+model CompanyMember {
+  id        String   @id @default(cuid())
+  companyId String
+  userId    String
+  role      String   @default("admin") // owner, admin, staff
+  invitedBy String?
+  status    String   @default("active") // active, invited, removed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([companyId, userId])
+}
+
+model Recipe {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  description     String?
+  category        String
+  difficulty      String   @default("Beginner")
+  brewTime        String?
+  brewTimeSeconds Int      @default(180)
+  imageUrl        String?
+  source          String   @default("COMMUNITY")
+  rating          Float    @default(0)
+  likes           Int      @default(0)
+  isVerified      Boolean  @default(false)
+  isFeatured      Boolean  @default(false)
+  accessTier      String   @default("FREE")
+  authorId        String
+  brandId         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  author      User               @relation(fields: [authorId], references: [id])
+  brand       Company?           @relation(fields: [brandId], references: [id])
+  ingredients RecipeIngredient[]
+  steps       RecipeStep[]
+  brewParams  BrewingParameter?
+  recipeLikes   RecipeLike[]
+  recipeSaves   RecipeSave[]
+  recipeRatings RecipeRating[]
+  comments      Comment[]
+  collectionRecipes CollectionRecipe[]
+  brewLogs      BrewLog[]
+}
+
+model RecipeIngredient {
+  id         String  @id @default(cuid())
+  recipeId   String
+  name       String
+  baseAmount Float
+  unit       String
+  imageUrl   String?
+  sortOrder  Int     @default(0)
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model RecipeStep {
+  id          String  @id @default(cuid())
+  recipeId    String
+  stepNumber  Int
+  title       String
+  description String
+  imageUrl    String?
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model BrewingParameter {
+  id          String @id @default(cuid())
+  recipeId    String @unique
+  temperature String
+  ratio       String
+  grindSize   String
+  brewTimeSec Int    @default(180)
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  price       Float
+  imageUrl    String?
+  externalUrl String?
+  brandId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  avgRating   Float    @default(0)
+  reviewCount Int      @default(0)
+
+  brand   Company         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  reviews ProductReview[]
+}
+
+model Category {
+  id   String @id @default(cuid())
+  name String @unique
+  slug String @unique
+  icon String
+}
+
+model Badge {
+  id    String @id @default(cuid())
+  name  String @unique
+  icon  String
+  color String
+
+  users UserBadge[]
+}
+
+model UserBadge {
+  id         String   @id @default(cuid())
+  userId     String
+  badgeId    String
+  earnedDate DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+}
+
+model Reward {
+  id         String   @id @default(cuid())
+  title      String
+  category   String
+  pointsCost Int
+  imageUrl   String?
+  isEnabled  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  redemptions Redemption[]
+}
+
+model Redemption {
+  id        String   @id @default(cuid())
+  userId    String
+  rewardId  String
+  points    Int
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reward Reward @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+}
+
+model Challenge {
+  id           String @id @default(cuid())
+  title        String
+  description  String
+  icon         String
+  rewardPoints Int
+  maxProgress  Int
+  rank         String @default("Bronze") // Bronze, Silver, Gold
+  category     String @default("General") // General, Brewing, Social, Streak
+  requiredTier String @default("free") // free = all users, pro = pro only
+  isActive     Boolean @default(true)
+  createdAt    DateTime @default(now())
+
+  users UserChallenge[]
+}
+
+model UserChallenge {
+  id              String @id @default(cuid())
+  userId          String
+  challengeId     String
+  currentProgress Int    @default(0)
+  status          String @default("ACTIVE")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, challengeId])
+}
+
+// ──── Engagement Models ────
+
+model RecipeLike {
+  id        String   @id @default(cuid())
+  userId    String
+  recipeId  String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+}
+
+model RecipeSave {
+  id        String   @id @default(cuid())
+  userId    String
+  recipeId  String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // LIKE, SAVE, FOLLOW, BADGE, CHALLENGE, SYSTEM
+  title     String
+  body      String
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ──── Follow ────
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+}
+
+// ──── Gallery ────
+
+model GalleryPost {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  mediaType String   @default("image") // image, video
+  caption   String?
+  authorId  String
+  companyId String?
+  createdAt DateTime @default(now())
+
+  author  User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  company Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  galleryLikes GalleryPostLike[]
+  comments     Comment[]
+}
+
+// ──── Gallery Likes ────
+
+model GalleryPostLike {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post GalleryPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+}
+
+// ──── Recipe Rating ────
+
+model RecipeRating {
+  id        String   @id @default(cuid())
+  userId    String
+  recipeId  String
+  rating    Float
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+}
+
+// ──── OTP Tokens ────
+
+model OtpToken {
+  id        String   @id @default(cuid())
+  phone     String
+  code      String   // hashed
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([phone])
+}
+
+// ──── Audit Logging ────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  metadata  String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// ──── Comments ────
+
+model Comment {
+  id        String   @id @default(cuid())
+  body      String
+  authorId  String
+  recipeId  String?
+  postId    String?
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author  User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  recipe  Recipe?      @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  post    GalleryPost? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent  Comment?     @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies Comment[]    @relation("CommentReplies")
+}
+
+// ──── Collections ────
+
+model Collection {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  isPublic    Boolean  @default(false)
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipes CollectionRecipe[]
+}
+
+model CollectionRecipe {
+  id           String   @id @default(cuid())
+  collectionId String
+  recipeId     String
+  addedAt      DateTime @default(now())
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  recipe     Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, recipeId])
+}
+
+// ──── Activity Feed ────
+
+model ActivityEvent {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String
+  entityId   String?
+  entityType String?
+  metadata   String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// ──── Stories ────
+
+model Story {
+  id        String   @id @default(cuid())
+  mediaUrl  String
+  mediaType String   @default("image")
+  caption   String?
+  companyId String
+  expiresAt DateTime
+  viewCount Int      @default(0)
+  createdAt DateTime @default(now())
+
+  company Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  views   StoryView[]
+}
+
+model StoryView {
+  id        String   @id @default(cuid())
+  storyId   String
+  userId    String
+  createdAt DateTime @default(now())
+
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([storyId, userId])
+}
+
+// ──── Mobile Push Tokens (Expo) ────
+
+model MobilePushToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  platform  String   // android, ios
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ──── Push Subscriptions ────
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ──── Brand Analytics ────
+
+model BrandView {
+  id        String   @id @default(cuid())
+  companyId String
+  userId    String?
+  page      String
+  entityId  String?
+  createdAt DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([createdAt])
+}
+
+// ──── Direct Messaging ────
+
+model Conversation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participants ConversationParticipant[]
+  messages     Message[]
+}
+
+model ConversationParticipant {
+  id             String   @id @default(cuid())
+  conversationId String
+  userId         String
+  lastReadAt     DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  senderId       String
+  body           String
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+// ──── Community Groups ────
+
+model Group {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  imageUrl    String?
+  isPublic    Boolean  @default(true)
+  creatorId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  creator User         @relation(fields: [creatorId], references: [id])
+  members GroupMember[]
+  posts   GroupPost[]
+}
+
+model GroupMember {
+  id       String   @id @default(cuid())
+  groupId  String
+  userId   String
+  role     String   @default("MEMBER")
+  joinedAt DateTime @default(now())
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+}
+
+model GroupPost {
+  id        String   @id @default(cuid())
+  groupId   String
+  authorId  String
+  body      String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+
+  group  Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  author User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+// ──── Events ────
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  imageUrl    String?
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  hostId      String
+  companyId   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  host    User        @relation(fields: [hostId], references: [id])
+  company Company?    @relation(fields: [companyId], references: [id])
+  rsvps   EventRsvp[]
+}
+
+model EventRsvp {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  status    String   @default("GOING")
+  createdAt DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+}
+
+// ──── Product Reviews ────
+
+model ProductReview {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String
+  rating    Float
+  body      String?
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, userId])
+}
+
+// ──── Brew Journal ────
+
+model BrewLog {
+  id          String   @id @default(cuid())
+  userId      String
+  recipeId    String?
+  title       String
+  notes       String?
+  rating      Float?
+  grindSize   String?
+  waterTemp   Float?
+  brewTime    Int?
+  coffeeGrams Float?
+  waterMl     Float?
+  imageUrl    String?
+  // Tasting notes
+  acidity     Float?   // 0-5 scale
+  body        Float?   // 0-5 scale
+  sweetness   Float?   // 0-5 scale
+  flavorNotes String?  // JSON array of flavor tags
+  brewDate    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe? @relation(fields: [recipeId], references: [id])
+}
+
+// ──── Equipment Tracker ────
+
+model Equipment {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  category    String   // grinder, kettle, dripper, scale, other
+  brand       String?
+  model       String?
+  imageUrl    String?
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ──── Brewing Method Templates ────
+
+model BrewingTemplate {
+  id          String  @id @default(cuid())
+  name        String  @unique // V60, AeroPress, French Press, etc.
+  icon        String
+  temperature String
+  ratio       String
+  grindSize   String
+  brewTimeSec Int
+  description String?
+  steps       String? // JSON array of step descriptions
+  isActive    Boolean @default(true)
+}
+
+// ──── Content Reports ────
+
+model Report {
+  id         String   @id @default(cuid())
+  reporterId String
+  reason     String
+  details    String?
+  entityType String
+  entityId   String
+  status     String   @default("PENDING")
+  reviewedBy String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  reporter User @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
+
+// ──── Brand Verification ────
+
+model BrandApplication {
+  id          String   @id @default(cuid())
+  companyId   String
+  applicantId String
+  documents   String?
+  status      String   @default("PENDING")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  applicant User    @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+}
+
+// ──── Sponsored Promotions ────
+
+model PromotionRequest {
+  id          String   @id @default(cuid())
+  companyId   String
+  requesterId String
+  placement   String   // HOME_TOP, EXPLORE_TOP, BOTH
+  message     String?  // roaster's message/note
+  imageUrl    String?  // optional promo banner image
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED, EXPIRED
+  priority    Int      @default(0) // admin sets order (higher = shown first)
+  startDate   DateTime?
+  endDate     DateTime?
+  adminNotes  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  requester User    @relation(fields: [requesterId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([placement, status])
+}
+
+// ──── Subscription Plans (managed by admin) ────
+
+model SubscriptionPlan {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "Basic", "Premium", "Pro"
+  slug        String   @unique // e.g. "basic", "premium", "pro"
+  price       Float    // monthly price
+  currency    String   @default("USD")
+  interval    String   @default("monthly") // monthly, yearly
+  description String?
+  features    String?  // JSON array of feature strings
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ──── Promotion Pricing (managed by admin) ────
+
+model PromotionPricing {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "Home Page - 1 Week"
+  placement   String   // HOME_TOP, EXPLORE_TOP, BOTH
+  duration    Int      // days
+  price       Float
+  currency    String   @default("USD")
+  discount    Float    @default(0) // percentage discount (0-100)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ──── Brand Loyalty & Promotions ────
+
+model StampCard {
+  id                   String    @id @default(cuid())
+  companyId            String
+  title                String    // "Buy 5 Lattes, Get 1 Free"
+  description          String?
+  imageUrl             String?
+  stampsRequired       Int       // e.g. 5
+  rewardDescription    String    // "1 Free Latte"
+  stampCooldownMinutes Int       @default(60) // prevents double-stamping
+  maxCompletions       Int       @default(0)  // 0 = unlimited reuse
+  isActive             Boolean   @default(true)
+  startDate            DateTime?
+  endDate              DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  company        Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  userStampCards UserStampCard[]
+  stampCodes     StampCode[]
+
+  @@index([companyId])
+  @@index([isActive])
+}
+
+model UserStampCard {
+  id            String    @id @default(cuid())
+  userId        String
+  stampCardId   String
+  currentStamps Int       @default(0)
+  completions   Int       @default(0) // times fully completed
+  status        String    @default("ACTIVE") // ACTIVE, COMPLETED, REDEEMED
+  lastStampAt   DateTime?
+  completedAt   DateTime?
+  redeemedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stampCard StampCard @relation(fields: [stampCardId], references: [id], onDelete: Cascade)
+  stamps    Stamp[]
+
+  @@unique([userId, stampCardId, status])
+  @@index([userId])
+  @@index([stampCardId])
+}
+
+model Stamp {
+  id              String   @id @default(cuid())
+  userStampCardId String
+  stampCodeId     String?  // references StampCode
+  stampCode       String   // the scanned code value (for audit)
+  stampedById     String?  // brand staff userId who authorized
+  createdAt       DateTime @default(now())
+
+  userStampCard UserStampCard @relation(fields: [userStampCardId], references: [id], onDelete: Cascade)
+  code          StampCode?    @relation(fields: [stampCodeId], references: [id])
+
+  @@index([userStampCardId])
+}
+
+model StampCode {
+  id          String    @id @default(cuid())
+  code        String    @unique // short unique code for QR
+  stampCardId String
+  companyId   String
+  issuedById  String    // brand staff who generated
+  isUsed      Boolean   @default(false)
+  usedById    String?   // user who scanned it
+  usedAt      DateTime?
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  stampCard StampCard @relation(fields: [stampCardId], references: [id], onDelete: Cascade)
+  stamps    Stamp[]
+
+  @@index([code])
+  @@index([stampCardId])
+  @@index([isUsed, expiresAt])
+}
+
+model BrandReward {
+  id            String    @id @default(cuid())
+  companyId     String
+  title         String    // "Free Latte"
+  description   String?
+  imageUrl      String?
+  pointsCost    Int       // global app points required
+  stock         Int?      // null = unlimited
+  publishToMain Boolean   @default(false) // appears in main rewards tab
+  isActive      Boolean   @default(true)
+  startDate     DateTime?
+  endDate       DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  company     Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  redemptions BrandRewardRedemption[]
+
+  @@index([companyId])
+  @@index([isActive])
+  @@index([publishToMain, isActive])
+}
+
+model BrandRewardRedemption {
+  id             String    @id @default(cuid())
+  userId         String
+  brandRewardId  String
+  pointsSpent    Int
+  redemptionCode String    @unique @default(cuid()) // show to barista as QR
+  status         String    @default("PENDING") // PENDING, USED, EXPIRED
+  expiresAt      DateTime  // e.g. 7 days from redemption
+  usedAt         DateTime?
+  createdAt      DateTime  @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brandReward BrandReward @relation(fields: [brandRewardId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([brandRewardId])
+  @@index([redemptionCode])
+}
+
+model BrandCoupon {
+  id            String   @id @default(cuid())
+  companyId     String
+  title         String   // "20% Off All Beans This Weekend"
+  description   String?
+  imageUrl      String?
+  couponCode    String?  // optional promo code
+  discountType  String   // PERCENTAGE, FIXED, FREEBIE
+  discountValue Float?   // 20 for 20%, or 5.00 for $5 off
+  minPurchase   Float?
+  maxUses       Int?     // null = unlimited
+  usedCount     Int      @default(0)
+  isActive      Boolean  @default(true)
+  startDate     DateTime
+  endDate       DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  company Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  claims  BrandCouponClaim[]
+
+  @@index([companyId])
+  @@index([isActive, startDate, endDate])
+}
+
+model BrandCouponClaim {
+  id        String    @id @default(cuid())
+  userId    String
+  couponId  String
+  status    String    @default("CLAIMED") // CLAIMED, USED
+  claimedAt DateTime  @default(now())
+  usedAt    DateTime?
+
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coupon BrandCoupon @relation(fields: [couponId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, couponId])
+}

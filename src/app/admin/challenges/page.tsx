@@ -1,0 +1,252 @@
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
+
+interface Challenge {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  rewardPoints: number;
+  maxProgress: number;
+  rank: string;
+  category: string;
+  isActive: boolean;
+  _count: { users: number };
+}
+
+const RANKS = ["Bronze", "Silver", "Gold"];
+const CATEGORIES = ["General", "Brewing", "Social", "Streak"];
+
+export default function AdminChallengesPage() {
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    icon: "emoji_events",
+    rewardPoints: "100",
+    maxProgress: "5",
+    rank: "Bronze",
+    category: "General",
+  });
+
+  const fetchChallenges = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/challenges");
+      const data = await res.json();
+      setChallenges(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchChallenges();
+  }, [fetchChallenges]);
+
+  function resetForm() {
+    setForm({ title: "", description: "", icon: "emoji_events", rewardPoints: "100", maxProgress: "5", rank: "Bronze", category: "General" });
+    setEditId(null);
+    setShowForm(false);
+  }
+
+  function startEdit(c: Challenge) {
+    setForm({
+      title: c.title,
+      description: c.description,
+      icon: c.icon,
+      rewardPoints: String(c.rewardPoints),
+      maxProgress: String(c.maxProgress),
+      rank: c.rank,
+      category: c.category,
+    });
+    setEditId(c.id);
+    setShowForm(true);
+  }
+
+  async function handleSubmit() {
+    const method = editId ? "PATCH" : "POST";
+    const body = editId ? { id: editId, ...form } : form;
+    const res = await fetch("/api/admin/challenges", {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (res.ok) {
+      resetForm();
+      fetchChallenges();
+    }
+  }
+
+  async function toggleActive(id: string, isActive: boolean) {
+    await fetch("/api/admin/challenges", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, isActive: !isActive }),
+    });
+    setChallenges((prev) => prev.map((c) => (c.id === id ? { ...c, isActive: !isActive } : c)));
+  }
+
+  async function deleteChallenge(id: string) {
+    if (!confirm("Delete this challenge?")) return;
+    const res = await fetch(`/api/admin/challenges?id=${id}`, { method: "DELETE" });
+    if (res.ok) setChallenges((prev) => prev.filter((c) => c.id !== id));
+  }
+
+  const rankColor: Record<string, string> = {
+    Bronze: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+    Silver: "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300",
+    Gold: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Challenges</h2>
+        <button
+          onClick={() => { resetForm(); setShowForm(true); }}
+          className="px-4 py-2 bg-[#25f459] text-black rounded-lg text-sm font-bold hover:bg-[#20d64e] transition-colors flex items-center gap-2"
+        >
+          <span className="material-symbols-outlined text-lg">add</span>
+          New Challenge
+        </button>
+      </div>
+
+      {/* Form Modal */}
+      {showForm && (
+        <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                {editId ? "Edit Challenge" : "New Challenge"}
+              </h3>
+              <button onClick={resetForm} className="size-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center">
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div className="p-5 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
+                <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white resize-none" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Icon (Material)</label>
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-2xl text-[#25f459]">{form.icon}</span>
+                    <input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} className="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Reward Points</label>
+                  <input type="number" value={form.rewardPoints} onChange={(e) => setForm({ ...form, rewardPoints: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Max Progress</label>
+                  <input type="number" value={form.maxProgress} onChange={(e) => setForm({ ...form, maxProgress: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rank</label>
+                  <select value={form.rank} onChange={(e) => setForm({ ...form, rank: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white">
+                    {RANKS.map((r) => <option key={r} value={r}>{r}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
+                  <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white">
+                    {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+              </div>
+              <button onClick={handleSubmit} className="w-full py-3 bg-[#25f459] text-black rounded-xl font-bold text-sm hover:bg-[#20d64e] transition-colors">
+                {editId ? "Update Challenge" : "Create Challenge"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Table */}
+      {loading ? (
+        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      ) : challenges.length === 0 ? (
+        <p className="text-gray-500 dark:text-gray-400">No challenges yet.</p>
+      ) : (
+        <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-200 dark:border-gray-800">
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Challenge</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Rank</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Category</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Points</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Progress</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Joined</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Status</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {challenges.map((c) => (
+                <tr key={c.id} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
+                  <td className="p-4">
+                    <div className="flex items-center gap-3">
+                      <span className="material-symbols-outlined text-xl text-[#25f459]">{c.icon}</span>
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-white">{c.title}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 max-w-[200px] truncate">{c.description}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${rankColor[c.rank] || rankColor.Bronze}`}>
+                      {c.rank}
+                    </span>
+                  </td>
+                  <td className="p-4 text-gray-600 dark:text-gray-400">{c.category}</td>
+                  <td className="p-4 text-gray-900 dark:text-white font-medium">{c.rewardPoints}</td>
+                  <td className="p-4 text-gray-600 dark:text-gray-400">{c.maxProgress} steps</td>
+                  <td className="p-4 text-gray-600 dark:text-gray-400">{c._count.users}</td>
+                  <td className="p-4">
+                    <button
+                      onClick={() => toggleActive(c.id, c.isActive)}
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        c.isActive
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                      }`}
+                    >
+                      {c.isActive ? "Active" : "Inactive"}
+                    </button>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <button onClick={() => startEdit(c)} className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium">
+                        Edit
+                      </button>
+                      <button onClick={() => deleteChallenge(c.id)} className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium">
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
