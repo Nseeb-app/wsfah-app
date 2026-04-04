@@ -1,37 +1,45 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { writeFile } from "fs/promises";
-import { join } from "path";
 import { randomUUID } from "crypto";
 import { logAudit, AUDIT } from "@/lib/audit";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+
+const s3 = new S3Client({
+  region: "auto",
+  endpoint: process.env.S3_ENDPOINT,
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+  },
+  forcePathStyle: true,
+});
+
+const BUCKET = process.env.S3_BUCKET_NAME || "wsfa-media";
+const CDN_URL = process.env.S3_CDN_URL || "https://storage-wsfa-media.cranl.net";
 
 // Magic number signatures for file type verification
 const MAGIC_NUMBERS: Record<string, number[][]> = {
   "image/jpeg": [[0xff, 0xd8, 0xff]],
   "image/png": [[0x89, 0x50, 0x4e, 0x47]],
-  "image/webp": [[0x52, 0x49, 0x46, 0x46]], // RIFF header (check WEBP at offset 8)
+  "image/webp": [[0x52, 0x49, 0x46, 0x46]],
   "image/gif": [
-    [0x47, 0x49, 0x46, 0x38, 0x37], // GIF87a
-    [0x47, 0x49, 0x46, 0x38, 0x39], // GIF89a
+    [0x47, 0x49, 0x46, 0x38, 0x37],
+    [0x47, 0x49, 0x46, 0x38, 0x39],
   ],
-  "video/mp4": [
-    [0x00, 0x00, 0x00], // ftyp box (variable offset)
-  ],
-  "video/webm": [[0x1a, 0x45, 0xdf, 0xa3]], // EBML header
-  "video/quicktime": [[0x00, 0x00, 0x00]], // moov/ftyp
+  "video/mp4": [[0x00, 0x00, 0x00]],
+  "video/webm": [[0x1a, 0x45, 0xdf, 0xa3]],
+  "video/quicktime": [[0x00, 0x00, 0x00]],
 };
 
 function verifyMagicNumber(buffer: Buffer, mimeType: string): boolean {
   const signatures = MAGIC_NUMBERS[mimeType];
   if (!signatures) return false;
 
-  // Special handling for MP4/QuickTime — look for 'ftyp' string within first 12 bytes
   if (mimeType === "video/mp4" || mimeType === "video/quicktime") {
     const header = buffer.subarray(0, 12).toString("ascii");
     return header.includes("ftyp");
   }
 
-  // Special handling for WebP — check RIFF header + WEBP at offset 8
   if (mimeType === "image/webp") {
     if (buffer.length < 12) return false;
     const riff = buffer[0] === 0x52 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x46;
@@ -52,7 +60,7 @@ function verifyMagicNumber(buffer: Buffer, mimeType: string): boolean {
   return false;
 }
 
-// Strip EXIF data from JPEG (zero out APP1 segments)
+// Strip EXIF data from JPEG
 function stripJpegExif(buffer: Buffer<ArrayBuffer>): Buffer<ArrayBuffer> {
   if (buffer[0] !== 0xff || buffer[1] !== 0xd8) return buffer;
 
@@ -64,7 +72,6 @@ function stripJpegExif(buffer: Buffer<ArrayBuffer>): Buffer<ArrayBuffer> {
 
     const marker = buffer[offset + 1];
     if (marker === 0xda) {
-      // Start of scan — copy rest as-is
       result.push(buffer.subarray(offset));
       break;
     }
@@ -73,12 +80,10 @@ function stripJpegExif(buffer: Buffer<ArrayBuffer>): Buffer<ArrayBuffer> {
     const segmentLength = buffer.readUInt16BE(offset + 2);
 
     if (marker === 0xe1) {
-      // APP1 (EXIF) — skip it
       offset += 2 + segmentLength;
       continue;
     }
 
-    // Keep all other segments
     result.push(buffer.subarray(offset, offset + 2 + segmentLength));
     offset += 2 + segmentLength;
   }
@@ -141,20 +146,32 @@ export async function POST(req: Request) {
     buffer = stripJpegExif(buffer);
   }
 
-  // Use cryptographically secure random filename with correct extension
+  // Upload to S3-compatible storage
   const ext = MIME_TO_EXT[file.type] || "bin";
-  const filename = `${randomUUID()}.${ext}`;
-  const uploadDir = join(process.cwd(), "public", "uploads");
-  const filepath = join(uploadDir, filename);
+  const key = `uploads/${randomUUID()}.${ext}`;
 
-  await writeFile(filepath, buffer);
+  try {
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: BUCKET,
+        Key: key,
+        Body: buffer,
+        ContentType: file.type,
+      })
+    );
+  } catch (error) {
+    console.error("S3 upload error:", error);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+  }
+
+  const url = `${CDN_URL}/${key}`;
 
   // Audit log
-  logAudit(session.user.id, AUDIT.FILE_UPLOAD, "file", filename, {
+  logAudit(session.user.id, AUDIT.FILE_UPLOAD, "file", key, {
     originalName: file.name,
     mimeType: file.type,
     size: file.size,
   });
 
-  return NextResponse.json({ url: `/uploads/${filename}` });
+  return NextResponse.json({ url });
 }
