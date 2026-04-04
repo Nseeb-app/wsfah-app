@@ -220,8 +220,8 @@ function PricingPage() {
             }`}
           >
             <div
-              className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform ${
-                interval === "yearly" ? "translate-x-0.5" : "translate-x-7.5"
+              className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-all ${
+                interval === "yearly" ? "left-0.5" : "left-[calc(100%-26px)]"
               }`}
             />
           </button>

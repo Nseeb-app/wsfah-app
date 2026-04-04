@@ -155,7 +155,7 @@ function PricingSection({ plans, variant }: { plans: Plan[]; variant: "user" | "
         >
           <div
             className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-all ${
-              interval === "yearly" ? "right-[calc(100%-26px)]" : "right-0.5"
+              interval === "yearly" ? "left-0.5" : "left-[calc(100%-26px)]"
             }`}
           />
         </button>

@@ -27,6 +27,7 @@ async function streamFetch<T = any>(
   const data = await res.json();
 
   if (!res.ok) {
+    console.error(`StreamPay ${res.status} on ${path}:`, JSON.stringify(data));
     throw new Error(
       data.message || data.detail || `StreamPay API error: ${res.status}`
     );
