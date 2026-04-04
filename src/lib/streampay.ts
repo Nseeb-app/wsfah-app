@@ -1,20 +1,25 @@
 const STREAMPAY_BASE = "https://stream-app-service.streampay.sa";
 
-function getApiKey() {
-  const key = process.env.STREAM_API_KEY;
-  if (!key) throw new Error("STREAM_API_KEY is not set");
-  return key;
+function getKeys() {
+  const apiKey = process.env.STREAM_API_KEY;
+  const apiSecret = process.env.STREAM_API_SECRET;
+  const xApiKey = process.env.STREAM_X_API_KEY;
+  if (!xApiKey) throw new Error("STREAM_X_API_KEY is not set");
+  return { apiKey, apiSecret, xApiKey };
 }
 
 async function streamFetch<T = any>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
+  const { apiKey, apiSecret, xApiKey } = getKeys();
   const res = await fetch(`${STREAMPAY_BASE}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": getApiKey(),
+      "x-api-key": xApiKey,
+      ...(apiKey ? { "api-key": apiKey } : {}),
+      ...(apiSecret ? { "api-secret": apiSecret } : {}),
       ...options.headers,
     },
   });
