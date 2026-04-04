@@ -66,13 +66,19 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Create StreamPay consumer
-    const consumer = await createConsumer({
-      name: user.name || "مستخدم وصفة",
-      email: user.email || undefined,
-      phone: user.phone || undefined,
-      language: "ar",
-    });
+    // Try to create StreamPay consumer (may fail in sandbox mode)
+    let consumerId: string | undefined;
+    try {
+      const consumer = await createConsumer({
+        name: user.name || "مستخدم وصفة",
+        email: user.email || undefined,
+        phone: user.phone || undefined,
+        language: "ar",
+      });
+      consumerId = consumer.id;
+    } catch {
+      // Sandbox mode restricts consumer creation - proceed without
+    }
 
     const origin = req.nextUrl.origin;
 
@@ -81,7 +87,7 @@ export async function POST(req: NextRequest) {
       name: `اشتراك ${planSlug}`,
       description: `اشتراك في خطة ${planSlug}`,
       items: [{ product_id: productId, quantity: 1 }],
-      consumer_id: consumer.id,
+      ...(consumerId ? { consumer_id: consumerId } : {}),
       success_url: `${origin}/pricing?status=success&plan=${planSlug}`,
       cancel_url: `${origin}/pricing?status=cancelled`,
       metadata: {
