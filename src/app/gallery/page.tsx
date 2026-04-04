@@ -21,7 +21,7 @@ export default async function GalleryPage() {
         <Link href="/" className="flex size-10 items-center justify-center rounded-full hover:bg-primary/10">
           <MaterialIcon icon="arrow_back" />
         </Link>
-        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">Gallery</h2>
+        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">المعرض</h2>
         <div className="size-10" />
       </header>
 
@@ -29,14 +29,14 @@ export default async function GalleryPage() {
         {posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-espresso/40">
             <MaterialIcon icon="photo_library" className="text-5xl mb-3" />
-            <p className="text-sm font-medium">No gallery posts yet</p>
-            <p className="text-xs mt-1">Creators and brands can share photos here</p>
+            <p className="text-sm font-medium">لا توجد منشورات بعد</p>
+            <p className="text-xs mt-1">يمكن للمبدعين والعلامات التجارية مشاركة صورهم هنا</p>
           </div>
         ) : (
           <div className="columns-2 gap-3 space-y-3">
             {posts.map((post) => (
               <div key={post.id} className="break-inside-avoid rounded-2xl overflow-hidden bg-white shadow-sm border border-espresso/5">
-                <img src={post.imageUrl} alt={post.caption || "Gallery post"} className="w-full object-cover" />
+                <img src={post.imageUrl} alt={post.caption || "منشور المعرض"} className="w-full object-cover" />
                 <div className="p-3">
                   {post.caption && <p className="text-sm font-medium mb-2" dir="auto">{post.caption}</p>}
                   <div className="flex items-center gap-2">

@@ -81,20 +81,20 @@ export default function BrewMode({ steps, brewTimeSec, recipeName, onClose, onCo
           <div className="size-24 rounded-full bg-primary/20 flex items-center justify-center mx-auto">
             <MaterialIcon icon="check_circle" className="text-6xl text-primary" filled />
           </div>
-          <h2 className="text-3xl font-extrabold">Brew Complete!</h2>
+          <h2 className="text-3xl font-extrabold">اكتمل التحضير!</h2>
           <p className="text-white/60 text-lg">{recipeName}</p>
           <div className="flex gap-4 mt-8">
             <button
               onClick={onComplete}
               className="flex-1 bg-primary text-background-dark font-bold py-4 rounded-2xl text-lg hover:opacity-90 transition-opacity"
             >
-              Log This Brew
+              سجّل هذا التحضير
             </button>
             <button
               onClick={onClose}
               className="px-6 py-4 rounded-2xl border border-white/20 text-white font-bold hover:bg-white/10 transition-colors"
             >
-              Close
+              إغلاق
             </button>
           </div>
         </div>
@@ -110,7 +110,7 @@ export default function BrewMode({ steps, brewTimeSec, recipeName, onClose, onCo
           <MaterialIcon icon="close" className="text-white" />
         </button>
         <div className="text-center">
-          <p className="text-xs text-white/50 uppercase tracking-wider font-bold">Brew Mode</p>
+          <p className="text-xs text-white/50 uppercase tracking-wider font-bold">وضع التحضير</p>
           <p className="text-sm font-medium text-white/80">{recipeName}</p>
         </div>
         <div className="w-10" />
@@ -129,7 +129,7 @@ export default function BrewMode({ steps, brewTimeSec, recipeName, onClose, onCo
           ))}
         </div>
         <p className="text-xs text-white/40 mt-2 text-center">
-          Step {currentStep + 1} of {totalSteps}
+          الخطوة {currentStep + 1} من {totalSteps}
         </p>
       </div>
 
@@ -192,13 +192,13 @@ export default function BrewMode({ steps, brewTimeSec, recipeName, onClose, onCo
           disabled={currentStep === 0}
           className="flex-1 py-4 rounded-2xl border border-white/20 font-bold text-white disabled:opacity-30 hover:bg-white/10 transition-colors"
         >
-          Previous
+          السابق
         </button>
         <button
           onClick={nextStep}
           className="flex-1 py-4 rounded-2xl bg-primary text-background-dark font-bold hover:opacity-90 transition-opacity"
         >
-          {currentStep === totalSteps - 1 ? "Finish" : "Next Step"}
+          {currentStep === totalSteps - 1 ? "إنهاء" : "الخطوة التالية"}
         </button>
       </div>
     </div>

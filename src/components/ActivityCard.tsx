@@ -33,15 +33,15 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    return date.toLocaleDateString();
+    if (diffMins < 1) return "الآن";
+    if (diffMins < 60) return `منذ ${diffMins} د`;
+    if (diffHours < 24) return `منذ ${diffHours} س`;
+    if (diffDays < 7) return `منذ ${diffDays} ي`;
+    return date.toLocaleDateString("ar");
   };
 
   const renderActivity = () => {
-    const userName = activity.user.name || "Someone";
+    const userName = activity.user.name || "شخص ما";
     const userAvatar = activity.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=25f459&color=fff&size=64`;
 
     switch (activity.type) {
@@ -62,13 +62,13 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 <span className="font-bold text-gray-900 dark:text-white">{userName}</span>
                 {" "}
-                created a new recipe
+                أنشأ وصفة جديدة
               </p>
               <Link
                 href={`/recipe/${activity.entityId}`}
                 className="text-sm text-primary hover:underline"
               >
-                View recipe
+                عرض الوصفة
               </Link>
             </div>
           </div>
@@ -92,15 +92,15 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 <span className="font-bold text-gray-900 dark:text-white">{userName}</span>
                 {" "}
-                {activity.type === "LIKE" ? "liked" : "saved"}
+                {activity.type === "LIKE" ? "أعجب بـ" : "حفظ"}
                 {" "}
-                a recipe
+                وصفة
               </p>
               <Link
                 href={`/recipe/${activity.entityId}`}
                 className="text-sm text-primary hover:underline"
               >
-                View recipe
+                عرض الوصفة
               </Link>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 <span className="font-bold text-gray-900 dark:text-white">{userName}</span>
                 {" "}
-                started following
+                بدأ متابعة
                 {" "}
                 <Link
                   href={`/profile/${activity.userId}`}
@@ -153,14 +153,14 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 <span className="font-bold text-gray-900 dark:text-white">{userName}</span>
                 {" "}
-                commented on a{" "}
-                {activity.entityType === "recipe" ? "recipe" : "post"}
+                علّق على{" "}
+                {activity.entityType === "recipe" ? "وصفة" : "منشور"}
               </p>
               <Link
                 href={activity.entityType === "recipe" ? `/recipe/${activity.entityId}` : `/explore/${activity.entityId}`}
                 className="text-sm text-primary hover:underline"
               >
-                View {activity.entityType}
+                عرض {activity.entityType === "recipe" ? "الوصفة" : "المنشور"}
               </Link>
             </div>
           </div>

@@ -77,7 +77,7 @@ export default function EventDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       </div>
     );
   }
@@ -85,7 +85,7 @@ export default function EventDetailPage() {
   if (!event) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center">
-        <p className="text-gray-500 dark:text-gray-400">Event not found.</p>
+        <p className="text-gray-500 dark:text-gray-400">الفعالية غير موجودة.</p>
       </div>
     );
   }
@@ -114,16 +114,16 @@ export default function EventDetailPage() {
             <p className="text-gray-600 dark:text-gray-400">{event.location}</p>
           )}
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Hosted by {event.host.name || "Unknown"}
+            بواسطة {event.host.name || "غير معروف"}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {event._count.rsvps} {event._count.rsvps === 1 ? "attendee" : "attendees"}
+            {event._count.rsvps} {event._count.rsvps === 1 ? "حاضر" : "حاضرين"}
           </p>
         </div>
 
         {event.description && (
           <div className="mt-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">About</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">عن الفعالية</h2>
             <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
               {event.description}
             </p>
@@ -141,7 +141,7 @@ export default function EventDetailPage() {
                 : "border border-[#25f459] text-[#25f459] hover:bg-[#25f459] hover:text-gray-900"
             } disabled:opacity-50`}
           >
-            {event.userRsvp === "GOING" ? "Going" : "Going"}
+            {event.userRsvp === "GOING" ? "سأحضر" : "سأحضر"}
           </button>
           <button
             onClick={() => handleRsvp("INTERESTED")}
@@ -152,7 +152,7 @@ export default function EventDetailPage() {
                 : "border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-gray-900"
             } disabled:opacity-50`}
           >
-            Interested
+            مهتم
           </button>
           {event.userRsvp && (
             <button
@@ -160,7 +160,7 @@ export default function EventDetailPage() {
               disabled={rsvpLoading}
               className="px-5 py-2 rounded-lg text-sm font-medium border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors disabled:opacity-50"
             >
-              Cancel
+              إلغاء
             </button>
           )}
         </div>

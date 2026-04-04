@@ -76,13 +76,13 @@ export default function CollectionsPage() {
     <div className="bg-background-light font-display text-slate-900 min-h-screen pb-24">
       {/* Header */}
       <header className="sticky top-0 z-10 flex items-center p-4 justify-between bg-background-light/80 backdrop-blur-md border-b border-primary/10">
-        <h1 className="text-xl font-bold">My Collections</h1>
+        <h1 className="text-xl font-bold">مجموعاتي</h1>
         <button
           onClick={() => setShowCreateForm(!showCreateForm)}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-background-dark rounded-full font-bold text-sm hover:bg-primary/80 transition-colors"
         >
           <MaterialIcon icon="add" />
-          Create
+          إنشاء
         </button>
       </header>
 
@@ -91,23 +91,23 @@ export default function CollectionsPage() {
         <div className="p-4 bg-white border-b border-primary/10">
           <form onSubmit={handleCreate} className="space-y-4">
             <div>
-              <label className="block text-sm font-bold mb-2">Name</label>
+              <label className="block text-sm font-bold mb-2">الاسم</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Collection name"
+                placeholder="اسم المجموعة"
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 maxLength={100}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-bold mb-2">Description (optional)</label>
+              <label className="block text-sm font-bold mb-2">الوصف (اختياري)</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="What's this collection about?"
+                placeholder="عن ماذا هذه المجموعة؟"
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
                 rows={3}
                 maxLength={500}
@@ -122,7 +122,7 @@ export default function CollectionsPage() {
                 className="w-4 h-4 text-green-600 rounded focus:ring-green-500"
               />
               <label htmlFor="isPublic" className="text-sm">
-                Make collection public
+                جعل المجموعة عامة
               </label>
             </div>
             <div className="flex gap-3">
@@ -131,7 +131,7 @@ export default function CollectionsPage() {
                 disabled={creating || !name.trim()}
                 className="flex-1 py-3 bg-primary text-background-dark rounded-lg font-bold text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {creating ? "Creating..." : "Create Collection"}
+                {creating ? "جاري الإنشاء..." : "إنشاء مجموعة"}
               </button>
               <button
                 type="button"
@@ -139,7 +139,7 @@ export default function CollectionsPage() {
                 disabled={creating}
                 className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
               >
-                Cancel
+                إلغاء
               </button>
             </div>
           </form>
@@ -151,9 +151,9 @@ export default function CollectionsPage() {
         {collections.length === 0 ? (
           <div className="text-center py-16">
             <MaterialIcon icon="collections_bookmark" className="text-6xl text-gray-300 dark:text-gray-600 mb-4" />
-            <p className="text-gray-500 dark:text-gray-400 mb-2">No collections yet</p>
+            <p className="text-gray-500 dark:text-gray-400 mb-2">لا توجد مجموعات بعد</p>
             <p className="text-sm text-gray-400 dark:text-gray-500">
-              Create your first collection to organize your favorite recipes
+              أنشئ مجموعتك الأولى لتنظيم وصفاتك المفضلة
             </p>
           </div>
         ) : (
@@ -171,7 +171,7 @@ export default function CollectionsPage() {
                   {collection.isPublic && (
                     <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 border border-green-200 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shrink-0 ml-2">
                       <MaterialIcon icon="public" className="text-[10px]" />
-                      Public
+                      عامة
                     </span>
                   )}
                 </div>
@@ -182,7 +182,7 @@ export default function CollectionsPage() {
                 )}
                 <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                   <MaterialIcon icon="restaurant" />
-                  <span>{collection._count.recipes} recipes</span>
+                  <span>{collection._count.recipes} وصفات</span>
                 </div>
               </Link>
             ))}

@@ -18,10 +18,10 @@ export default function DarkModeToggle() {
     setDark(next);
     if (next) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem("brewcraft-dark", "true");
+      localStorage.setItem("wsfa-dark", "true");
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.setItem("brewcraft-dark", "false");
+      localStorage.setItem("wsfa-dark", "false");
     }
   };
 
@@ -31,7 +31,7 @@ export default function DarkModeToggle() {
       <div className="flex items-center justify-between w-full px-4 py-3 rounded-xl border border-slate-200 bg-white">
         <div className="flex items-center gap-3">
           <MaterialIcon icon="light_mode" className="text-xl" />
-          <span className="text-sm font-medium">Dark Mode</span>
+          <span className="text-sm font-medium">الوضع الداكن</span>
         </div>
         <div className="w-11 h-6 rounded-full bg-slate-300 relative">
           <div className="absolute top-0.5 size-5 rounded-full shadow translate-x-0.5 bg-white" />
@@ -47,7 +47,7 @@ export default function DarkModeToggle() {
     >
       <div className="flex items-center gap-3">
         <MaterialIcon icon={dark ? "dark_mode" : "light_mode"} className="text-xl" />
-        <span className="text-sm font-medium">Dark Mode</span>
+        <span className="text-sm font-medium">الوضع الداكن</span>
       </div>
       <div className={`w-11 h-6 rounded-full relative transition-colors ${dark ? "bg-primary" : "bg-slate-300"}`}>
         <div className={`absolute top-0.5 size-5 rounded-full shadow transition-transform ${dark ? "translate-x-5 bg-slate-900" : "translate-x-0.5 bg-white"}`} />

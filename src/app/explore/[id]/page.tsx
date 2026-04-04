@@ -83,9 +83,9 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
   const handleShare = () => {
     const shareUrl = `${window.location.origin}/explore/${id}`;
     if (navigator.share) {
-      navigator.share({ title: post?.caption || "Check this out on WSFA!", url: shareUrl }).catch(() => {});
+      navigator.share({ title: post?.caption || "شاهد هذا على WSFA!", url: shareUrl }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(shareUrl).then(() => alert("Link copied!")).catch(() => {});
+      navigator.clipboard.writeText(shareUrl).then(() => alert("تم نسخ الرابط!")).catch(() => {});
     }
   };
 
@@ -102,14 +102,14 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
       <div className="bg-background-light min-h-screen flex items-center justify-center">
         <div className="text-center">
           <MaterialIcon icon="error_outline" className="text-4xl text-red-400" />
-          <p className="text-sm text-slate-500 mt-2">Post not found</p>
-          <Link href="/explore" className="text-primary text-sm font-bold mt-3 block">Back to Explore</Link>
+          <p className="text-sm text-slate-500 mt-2">المنشور غير موجود</p>
+          <Link href="/explore" className="text-primary text-sm font-bold mt-3 block">العودة للاستكشاف</Link>
         </div>
       </div>
     );
   }
 
-  const displayName = post.company?.name || post.author.name || "Anonymous";
+  const displayName = post.company?.name || post.author.name || "مجهول";
   const displayAvatar = post.company?.logo || post.author.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=25f459&color=fff&size=64`;
   const profileLink = post.company ? `/brand/${post.company.id}` : "#";
   const followUserId = post.author.id;
@@ -122,7 +122,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
         <Link href="/explore" className="flex size-10 items-center justify-center rounded-full hover:bg-primary/10">
           <MaterialIcon icon="arrow_back" />
         </Link>
-        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">Post</h2>
+        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">منشور</h2>
         <button onClick={handleShare} className="flex size-10 items-center justify-center rounded-full hover:bg-primary/10">
           <MaterialIcon icon="share" />
         </button>
@@ -144,7 +144,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
               {post.company && (
                 <div className="flex items-center gap-1">
                   <MaterialIcon icon="verified" className="text-primary text-[10px]" filled />
-                  <span className="text-[10px] text-primary font-bold uppercase tracking-wider">Brand</span>
+                  <span className="text-[10px] text-primary font-bold uppercase tracking-wider">علامة تجارية</span>
                 </div>
               )}
             </Link>

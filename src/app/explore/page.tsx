@@ -40,7 +40,7 @@ export default async function ExplorePage() {
   return (
     <div className="bg-background-light text-espresso min-h-screen flex flex-col">
       <header className="flex items-center p-4 justify-between sticky top-0 z-10 bg-background-light/80 backdrop-blur-md border-b border-espresso/5">
-        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">Explore</h2>
+        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">استكشف</h2>
       </header>
 
       <main className="flex-1 px-4 pb-24 pt-4">
@@ -58,8 +58,8 @@ export default async function ExplorePage() {
         {posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-espresso/40">
             <MaterialIcon icon="explore" className="text-5xl mb-3" />
-            <p className="text-sm font-medium">Nothing to explore yet</p>
-            <p className="text-xs mt-1">Roasters and brands will share content here</p>
+            <p className="text-sm font-medium">لا يوجد محتوى للاستكشاف بعد</p>
+            <p className="text-xs mt-1">ستشارك المحمصات والعلامات التجارية محتواها هنا</p>
           </div>
         ) : (
           <div className="columns-2 gap-3 space-y-3">
@@ -78,7 +78,7 @@ export default async function ExplorePage() {
                     className="w-full object-cover"
                   />
                 ) : (
-                  <img src={post.imageUrl} alt={post.caption || "Gallery post"} className="w-full object-cover" />
+                  <img src={post.imageUrl} alt={post.caption || "منشور المعرض"} className="w-full object-cover" />
                 )}
                 <div className="p-3">
                   {/* Roaster Info - Prominent */}

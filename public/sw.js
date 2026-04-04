@@ -1,4 +1,4 @@
-const CACHE_NAME = "brewcraft-v1";
+const CACHE_NAME = "wsfa-v1";
 const APP_SHELL = ["/", "/offline"];
 
 // Install: cache app shell

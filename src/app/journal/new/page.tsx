@@ -88,7 +88,7 @@ function NewBrewLogInner() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          Log a Brew
+          سجّل تحضيراً
         </h1>
 
         {error && (
@@ -101,7 +101,7 @@ function NewBrewLogInner() {
           {/* Title */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Title *
+              العنوان *
             </label>
             <input
               type="text"
@@ -116,14 +116,14 @@ function NewBrewLogInner() {
           {/* Recipe */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Recipe
+              الوصفة
             </label>
             <select
               value={recipeId}
               onChange={(e) => setRecipeId(e.target.value)}
               className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#25f459] focus:border-transparent"
             >
-              <option value="">No recipe</option>
+              <option value="">بدون وصفة</option>
               {recipes.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.title}
@@ -135,13 +135,13 @@ function NewBrewLogInner() {
           {/* Notes */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Notes
+              الملاحظات
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={4}
-              placeholder="How did it taste? Any adjustments you'd make?"
+              placeholder="كيف كان الطعم؟ هل تريد تعديل شيء؟"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#25f459] focus:border-transparent"
             />
           </div>
@@ -149,7 +149,7 @@ function NewBrewLogInner() {
           {/* Rating */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Rating
+              التقييم
             </label>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
@@ -179,7 +179,7 @@ function NewBrewLogInner() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Grind Size
+                حجم الطحن
               </label>
               <input
                 type="text"
@@ -191,7 +191,7 @@ function NewBrewLogInner() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Water Temp (&deg;C)
+                حرارة الماء (&deg;C)
               </label>
               <input
                 type="number"
@@ -205,7 +205,7 @@ function NewBrewLogInner() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Brew Time (seconds)
+                وقت التحضير (ثواني)
               </label>
               <input
                 type="number"
@@ -219,7 +219,7 @@ function NewBrewLogInner() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Coffee (grams)
+                القهوة (غرام)
               </label>
               <input
                 type="number"
@@ -233,7 +233,7 @@ function NewBrewLogInner() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Water (ml)
+                الماء (مل)
               </label>
               <input
                 type="number"
@@ -246,7 +246,7 @@ function NewBrewLogInner() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Date
+                التاريخ
               </label>
               <input
                 type="date"
@@ -264,14 +264,14 @@ function NewBrewLogInner() {
               disabled={submitting}
               className="flex-1 py-3 bg-[#25f459] text-gray-900 font-semibold rounded-lg hover:bg-[#25f459]/90 transition-colors disabled:opacity-50"
             >
-              {submitting ? "Saving..." : "Save Brew Log"}
+              {submitting ? "جاري الحفظ..." : "حفظ سجل التحضير"}
             </button>
             <button
               type="button"
               onClick={() => router.back()}
               className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
-              Cancel
+              إلغاء
             </button>
           </div>
         </form>

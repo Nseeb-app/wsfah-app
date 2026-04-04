@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import MaterialIcon from "./MaterialIcon";
 
 const navItems = [
-  { href: "/home", icon: "home", label: "Home" },
-  { href: "/search", icon: "search", label: "Search" },
-  { href: "/create", icon: "add", label: "Create", isFab: true },
-  { href: "/rewards", icon: "workspace_premium", label: "Rewards" },
-  { href: "/explore", icon: "explore", label: "Explore" },
+  { href: "/home", icon: "home", label: "الرئيسية" },
+  { href: "/search", icon: "search", label: "البحث" },
+  { href: "/create", icon: "add", label: "إنشاء", isFab: true },
+  { href: "/rewards", icon: "workspace_premium", label: "المكافآت" },
+  { href: "/explore", icon: "explore", label: "استكشف" },
 ];
 
 export default function BottomNav() {

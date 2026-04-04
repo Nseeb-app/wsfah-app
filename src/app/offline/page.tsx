@@ -16,10 +16,10 @@ export default function OfflinePage() {
           />
         </svg>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-          You&apos;re offline
+          أنت غير متصل
         </h1>
         <p className="text-gray-500 dark:text-gray-400">
-          Connect to the internet to continue browsing WSFA.
+          اتصل بالإنترنت لمتابعة تصفح WSFA.
         </p>
       </div>
     </div>

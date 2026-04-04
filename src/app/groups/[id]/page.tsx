@@ -105,7 +105,7 @@ export default function GroupDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       </div>
     );
   }
@@ -113,7 +113,7 @@ export default function GroupDetailPage() {
   if (!group) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center">
-        <p className="text-gray-500 dark:text-gray-400">Group not found.</p>
+        <p className="text-gray-500 dark:text-gray-400">المجموعة غير موجودة.</p>
       </div>
     );
   }
@@ -129,10 +129,10 @@ export default function GroupDetailPage() {
           )}
           <div className="flex items-center gap-4 mt-3">
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              {group._count.members} {group._count.members === 1 ? "member" : "members"}
+              {group._count.members} {group._count.members === 1 ? "عضو" : "أعضاء"}
             </span>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Created by {group.creator.name || "Unknown"}
+              أنشأها {group.creator.name || "غير معروف"}
             </span>
           </div>
           <div className="mt-4">
@@ -141,14 +141,14 @@ export default function GroupDetailPage() {
                 onClick={handleLeave}
                 className="border border-red-500 text-red-500 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-500 hover:text-white transition-colors"
               >
-                Leave Group
+                مغادرة المجموعة
               </button>
             ) : (
               <button
                 onClick={handleJoin}
                 className="bg-[#25f459] text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1de04d] transition-colors"
               >
-                Join Group
+                انضم للمجموعة
               </button>
             )}
           </div>
@@ -160,7 +160,7 @@ export default function GroupDetailPage() {
             <textarea
               value={postBody}
               onChange={(e) => setPostBody(e.target.value)}
-              placeholder="Write something to the group..."
+              placeholder="اكتب شيئاً للمجموعة..."
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#25f459] resize-none"
               rows={3}
             />
@@ -169,7 +169,7 @@ export default function GroupDetailPage() {
               disabled={!postBody.trim() || posting}
               className="mt-2 bg-[#25f459] text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1de04d] disabled:opacity-50 transition-colors"
             >
-              {posting ? "Posting..." : "Post"}
+              {posting ? "جاري النشر..." : "نشر"}
             </button>
           </form>
         )}
@@ -178,7 +178,7 @@ export default function GroupDetailPage() {
         <div className="space-y-4">
           {posts.length === 0 ? (
             <p className="text-gray-500 dark:text-gray-400 text-center py-8">
-              No posts yet. Be the first to share something!
+              لا توجد منشورات بعد. كن أول من يشارك شيئاً!
             </p>
           ) : (
             posts.map((post) => (
@@ -200,7 +200,7 @@ export default function GroupDetailPage() {
                   )}
                   <div>
                     <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      {post.author.name || "Unknown"}
+                      {post.author.name || "غير معروف"}
                     </p>
                     <p className="text-xs text-gray-400 dark:text-gray-500">
                       {new Date(post.createdAt).toLocaleDateString()}

@@ -81,9 +81,9 @@ export default async function ProfilePage() {
 
   // Role badge configuration
   const roleBadgeConfig: Record<string, { label: string; color: string; icon?: string }> = {
-    USER: { label: "Home Barista", color: "bg-green-100 text-green-700 border-green-200" },
-    CREATOR: { label: "Verified Creator", color: "bg-purple-100 text-purple-700 border-purple-200", icon: "verified" },
-    BRAND_ADMIN: { label: "Brand Admin", color: "bg-amber-100 text-amber-700 border-amber-200" },
+    USER: { label: "باريستا منزلي", color: "bg-green-100 text-green-700 border-green-200" },
+    CREATOR: { label: "مبدع موثق", color: "bg-purple-100 text-purple-700 border-purple-200", icon: "verified" },
+    BRAND_ADMIN: { label: "مدير علامة تجارية", color: "bg-amber-100 text-amber-700 border-amber-200" },
   };
 
   const currentRoleBadge = roleBadgeConfig[user.role] || roleBadgeConfig.USER;
@@ -105,7 +105,7 @@ export default async function ProfilePage() {
         <Link href="/" className="flex size-10 items-center justify-center rounded-full hover:bg-primary/10">
           <MaterialIcon icon="arrow_back" />
         </Link>
-        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">Profile</h2>
+        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">الملف الشخصي</h2>
         <Link href="/settings" className="flex size-10 items-center justify-center rounded-full hover:bg-primary/10">
           <MaterialIcon icon="settings" />
         </Link>
@@ -145,7 +145,7 @@ export default async function ProfilePage() {
           </div>
           <div className="w-full flex gap-3 mt-2">
             <Link href="/settings" className="flex-1 bg-primary text-background-dark font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center">
-              Edit Profile
+              تعديل الملف
             </Link>
             <ShareButton url={`/profile/${user.id}`} title={`Check out ${user.name}'s profile on WSFA!`} />
           </div>
@@ -160,25 +160,25 @@ export default async function ProfilePage() {
                   <MaterialIcon icon="analytics" className="text-purple-600 dark:text-purple-400 text-xl" />
                 </div>
                 <div className="text-start">
-                  <h3 className="font-bold text-sm text-purple-900 dark:text-purple-200">Recipe Analytics</h3>
-                  <p className="text-xs text-purple-600 dark:text-purple-400">Your content performance</p>
+                  <h3 className="font-bold text-sm text-purple-900 dark:text-purple-200">تحليلات الوصفات</h3>
+                  <p className="text-xs text-purple-600 dark:text-purple-400">أداء محتواك</p>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-3">
                 <div className="bg-white rounded-xl p-3 text-center border border-purple-100 dark:border-purple-800">
                   <p className="text-lg font-bold text-purple-700 dark:text-purple-300">{user.recipes.length}</p>
-                  <p className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">Total Recipes</p>
+                  <p className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">إجمالي الوصفات</p>
                 </div>
                 <div className="bg-white rounded-xl p-3 text-center border border-purple-100 dark:border-purple-800">
                   <p className="text-lg font-bold text-purple-700 dark:text-purple-300">{formatCount(totalLikes)}</p>
-                  <p className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">Total Likes</p>
+                  <p className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">إجمالي الإعجابات</p>
                 </div>
                 <div className="bg-white rounded-xl p-3 text-center border border-purple-100 dark:border-purple-800">
                   <div className="flex items-center justify-center gap-0.5">
                     <p className="text-lg font-bold text-purple-700 dark:text-purple-300">{avgRating.toFixed(1)}</p>
                     <MaterialIcon icon="star" className="text-xs text-purple-400" filled />
                   </div>
-                  <p className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">Avg Rating</p>
+                  <p className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">متوسط التقييم</p>
                 </div>
               </div>
             </div>
@@ -193,7 +193,7 @@ export default async function ProfilePage() {
                   <MaterialIcon icon="storefront" className="text-amber-600 dark:text-amber-400 text-2xl" />
                 </div>
                 <div className="flex-1 min-w-0 text-start">
-                  <h3 className="font-bold text-sm text-amber-900 dark:text-amber-200">Manage My Brand</h3>
+                  <h3 className="font-bold text-sm text-amber-900 dark:text-amber-200">إدارة علامتي التجارية</h3>
                   <p className="text-xs text-amber-600 dark:text-amber-400 truncate">{company.name}</p>
                 </div>
                 <MaterialIcon icon="arrow_back" className="text-amber-400 text-xl shrink-0" />
@@ -205,10 +205,10 @@ export default async function ProfilePage() {
         {/* Stats */}
         <div className="flex gap-3 px-4 py-2">
           {[
-            { value: formatCount(user.followers), label: "Followers" },
-            { value: formatCount(user.following), label: "Following" },
-            { value: String(user.recipes.length), label: "Recipes" },
-            { value: user.avgRating.toFixed(1), label: "Avg Rating", star: true },
+            { value: formatCount(user.followers), label: "متابعين" },
+            { value: formatCount(user.following), label: "يتابع" },
+            { value: String(user.recipes.length), label: "وصفات" },
+            { value: user.avgRating.toFixed(1), label: "متوسط التقييم", star: true },
           ].map((s) => (
             <div key={s.label} className="flex-1 bg-white rounded-xl border border-slate-200 p-3 text-center">
               <div className="flex items-center justify-center gap-1">
@@ -224,8 +224,8 @@ export default async function ProfilePage() {
         {user.badges.length > 0 && (
           <div className="px-4 py-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold">Badges</h3>
-              <span className="text-primary text-sm font-bold cursor-pointer">View All</span>
+              <h3 className="text-lg font-bold">الشارات</h3>
+              <span className="text-primary text-sm font-bold cursor-pointer">عرض الكل</span>
             </div>
             <div className="flex gap-3 overflow-x-auto no-scrollbar">
               {user.badges.map((ub) => (

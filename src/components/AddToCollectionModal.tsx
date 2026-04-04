@@ -124,7 +124,7 @@ export default function AddToCollectionModal({ recipeId, onClose }: AddToCollect
       <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-bold">Add to Collection</h2>
+          <h2 className="text-lg font-bold">إضافة إلى مجموعة</h2>
           <button
             onClick={onClose}
             className="flex items-center justify-center rounded-full size-8 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -142,12 +142,12 @@ export default function AddToCollectionModal({ recipeId, onClose }: AddToCollect
           ) : collections.length === 0 ? (
             <div className="text-center py-8">
               <MaterialIcon icon="collections_bookmark" className="text-4xl text-gray-300 dark:text-gray-600 mb-3" />
-              <p className="text-gray-500 dark:text-gray-400 mb-4">No collections yet</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">لا توجد مجموعات بعد</p>
               <button
                 onClick={() => setShowCreateForm(true)}
                 className="text-primary font-bold text-sm"
               >
-                Create your first collection
+                أنشئ مجموعتك الأولى
               </button>
             </div>
           ) : (
@@ -172,7 +172,7 @@ export default function AddToCollectionModal({ recipeId, onClose }: AddToCollect
                         {collection.name}
                       </span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {collection._count.recipes} recipes
+                        {collection._count.recipes} وصفات
                       </span>
                     </div>
                     {isUpdating && (
@@ -187,14 +187,14 @@ export default function AddToCollectionModal({ recipeId, onClose }: AddToCollect
           {/* Create New Collection Form */}
           {showCreateForm && (
             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <h3 className="font-bold text-sm mb-3">Create New Collection</h3>
+              <h3 className="font-bold text-sm mb-3">إنشاء مجموعة جديدة</h3>
               <form onSubmit={handleCreate} className="space-y-3">
                 <div>
                   <input
                     type="text"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    placeholder="Collection name"
+                    placeholder="اسم المجموعة"
                     className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     maxLength={100}
                     required
@@ -204,7 +204,7 @@ export default function AddToCollectionModal({ recipeId, onClose }: AddToCollect
                   <textarea
                     value={newDescription}
                     onChange={(e) => setNewDescription(e.target.value)}
-                    placeholder="Description (optional)"
+                    placeholder="الوصف (اختياري)"
                     className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
                     rows={2}
                     maxLength={500}
@@ -219,7 +219,7 @@ export default function AddToCollectionModal({ recipeId, onClose }: AddToCollect
                     className="w-4 h-4 text-green-600 rounded focus:ring-green-500"
                   />
                   <label htmlFor="newIsPublic" className="text-sm">
-                    Make collection public
+                    جعل المجموعة عامة
                   </label>
                 </div>
                 <button
@@ -227,7 +227,7 @@ export default function AddToCollectionModal({ recipeId, onClose }: AddToCollect
                   disabled={creating || !newName.trim()}
                   className="w-full py-3 bg-primary text-background-dark rounded-lg font-bold text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {creating ? "Creating..." : "Create & Add"}
+                  {creating ? "جارٍ الإنشاء..." : "إنشاء وإضافة"}
                 </button>
               </form>
             </div>
@@ -239,7 +239,7 @@ export default function AddToCollectionModal({ recipeId, onClose }: AddToCollect
               className="w-full mt-4 py-3 border border-primary text-primary rounded-lg font-bold text-sm hover:bg-primary/5 transition-colors"
             >
               <MaterialIcon icon="add" className="mr-1" />
-              Create New Collection
+              إنشاء مجموعة جديدة
             </button>
           )}
         </div>

@@ -44,7 +44,7 @@ export default function PromotedBrands({ placement }: PromotedBrandsProps) {
       <div className="flex items-center gap-2 mb-3">
         <MaterialIcon icon="campaign" className="text-amber-500 text-lg" />
         <h3 className="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400">
-          Sponsored
+          إعلان مموّل
         </h3>
       </div>
       <div className="flex overflow-x-auto gap-3 no-scrollbar -mx-2 px-2">
@@ -74,7 +74,7 @@ export default function PromotedBrands({ placement }: PromotedBrandsProps) {
                   {p.company.name}
                 </h4>
                 <span className="bg-amber-500 text-white text-[8px] font-black uppercase px-1.5 py-0.5 rounded ml-auto">
-                  AD
+                  إعلان
                 </span>
               </div>
               {p.company.description && (

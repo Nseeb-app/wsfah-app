@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Epilogue } from "next/font/google";
+import { Epilogue, Noto_Sans_Arabic } from "next/font/google";
 import Script from "next/script";
 import SessionProvider from "@/components/SessionProvider";
 import AdProvider from "@/components/AdProvider";
@@ -11,9 +11,15 @@ const epilogue = Epilogue({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
+const notoArabic = Noto_Sans_Arabic({
+  variable: "--font-arabic",
+  subsets: ["arabic"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
+
 export const metadata: Metadata = {
-  title: "WSFA",
-  description: "Discover, brew, and share premium coffee & tea recipes",
+  title: "وصفة - WSFA",
+  description: "اكتشف، حضّر، وشارك أفضل وصفات القهوة والشاي",
 };
 
 export default function RootLayout({
@@ -22,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" translate="no" suppressHydrationWarning>
+    <html lang="ar" dir="rtl" translate="no" suppressHydrationWarning>
       <head>
         <meta name="google" content="notranslate" />
         <link
@@ -32,11 +38,11 @@ export default function RootLayout({
         {/* Apply dark mode before first paint to prevent flash */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{if(localStorage.getItem('brewcraft-dark')==='true'){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+            __html: `(function(){try{if(localStorage.getItem('wsfa-dark')==='true'){document.documentElement.classList.add('dark')}}catch(e){}})()`,
           }}
         />
       </head>
-      <body className={`${epilogue.variable} font-display antialiased`}>
+      <body className={`${epilogue.variable} ${notoArabic.variable} font-arabic antialiased`}>
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (
           <Script
             async

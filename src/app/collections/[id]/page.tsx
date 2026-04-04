@@ -113,8 +113,8 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
       <div className="bg-background-light min-h-screen flex items-center justify-center">
         <div className="text-center">
           <MaterialIcon icon="error_outline" className="text-4xl text-red-400" />
-          <p className="text-sm text-slate-500 mt-2">Collection not found</p>
-          <Link href="/collections" className="text-primary text-sm font-bold mt-3 block">Back to Collections</Link>
+          <p className="text-sm text-slate-500 mt-2">المجموعة غير موجودة</p>
+          <Link href="/collections" className="text-primary text-sm font-bold mt-3 block">العودة للمجموعات</Link>
         </div>
       </div>
     );
@@ -145,7 +145,7 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
         <div className="p-4 bg-white border-b border-primary/10">
           <form onSubmit={handleUpdate} className="space-y-4">
             <div>
-              <label className="block text-sm font-bold mb-2">Name</label>
+              <label className="block text-sm font-bold mb-2">الاسم</label>
               <input
                 type="text"
                 value={name}
@@ -156,7 +156,7 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
               />
             </div>
             <div>
-              <label className="block text-sm font-bold mb-2">Description (optional)</label>
+              <label className="block text-sm font-bold mb-2">الوصف (اختياري)</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -174,7 +174,7 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
                 className="w-4 h-4 text-green-600 rounded focus:ring-green-500"
               />
               <label htmlFor="isPublic" className="text-sm">
-                Make collection public
+                جعل المجموعة عامة
               </label>
             </div>
             <div className="flex gap-3">
@@ -183,7 +183,7 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
                 disabled={editing || !name.trim()}
                 className="flex-1 py-3 bg-primary text-background-dark rounded-lg font-bold text-sm hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {editing ? "Saving..." : "Save Changes"}
+                {editing ? "جاري الحفظ..." : "حفظ التغييرات"}
               </button>
               <button
                 type="button"
@@ -191,7 +191,7 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
                 disabled={editing}
                 className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
               >
-                Cancel
+                إلغاء
               </button>
             </div>
           </form>
@@ -213,16 +213,16 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
           {collection.isPublic ? (
             <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 border border-green-200 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
               <MaterialIcon icon="public" className="text-xs" />
-              Public Collection
+              مجموعة عامة
             </span>
           ) : (
             <span className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
               <MaterialIcon icon="lock" className="text-xs" />
-              Private Collection
+              مجموعة خاصة
             </span>
           )}
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            {collection.recipes.length} recipes
+            {collection.recipes.length} وصفات
           </span>
         </div>
 
@@ -230,9 +230,9 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
         {collection.recipes.length === 0 ? (
           <div className="text-center py-16">
             <MaterialIcon icon="restaurant" className="text-6xl text-gray-300 dark:text-gray-600 mb-4" />
-            <p className="text-gray-500 dark:text-gray-400 mb-2">No recipes yet</p>
+            <p className="text-gray-500 dark:text-gray-400 mb-2">لا توجد وصفات بعد</p>
             <p className="text-sm text-gray-400 dark:text-gray-500">
-              Add recipes to this collection to get started
+              أضف وصفات لهذه المجموعة للبدء
             </p>
           </div>
         ) : (
@@ -260,7 +260,7 @@ export default function CollectionDetailPage({ params }: { params: Promise<{ id:
                     <span>•</span>
                     <span className="flex items-center gap-0.5">
                       <MaterialIcon icon="star" className="text-[10px] text-amber-400" filled />
-                      {recipe.rating > 0 ? recipe.rating.toFixed(1) : "No rating"}
+                      {recipe.rating > 0 ? recipe.rating.toFixed(1) : "بدون تقييم"}
                     </span>
                     <span>•</span>
                     <span className="flex items-center gap-0.5">

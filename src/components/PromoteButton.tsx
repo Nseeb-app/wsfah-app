@@ -80,7 +80,7 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
         className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-3 rounded-xl flex items-center gap-2 font-bold text-sm hover:from-amber-600 hover:to-orange-600 transition-all active:scale-95 shadow-lg shadow-amber-500/20"
       >
         <MaterialIcon icon="campaign" className="text-lg" />
-        Promote
+        ترويج
       </button>
 
       {open && (
@@ -89,7 +89,7 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
               <div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Request Promotion</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">طلب ترويج</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{companyName}</p>
               </div>
               <button
@@ -104,13 +104,13 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
               {/* Placement */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                  Where to promote?
+                  أين تريد الترويج؟
                 </label>
                 <div className="space-y-2">
                   {[
-                    { value: "HOME_TOP", label: "Home Page", desc: "Featured at the top of the home feed", icon: "home" },
-                    { value: "EXPLORE_TOP", label: "Explore Page", desc: "Banner at the top of explore gallery", icon: "explore" },
-                    { value: "BOTH", label: "Both Pages", desc: "Maximum visibility on home + explore", icon: "star" },
+                    { value: "HOME_TOP", label: "الصفحة الرئيسية", desc: "يظهر في أعلى الصفحة الرئيسية", icon: "home" },
+                    { value: "EXPLORE_TOP", label: "صفحة الاستكشاف", desc: "بانر في أعلى معرض الاستكشاف", icon: "explore" },
+                    { value: "BOTH", label: "كلا الصفحتين", desc: "أقصى ظهور في الرئيسية والاستكشاف", icon: "star" },
                   ].map((opt) => (
                     <button
                       key={opt.value}
@@ -142,7 +142,7 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
               {filteredPricing.length > 0 && (
                 <div>
                   <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                    Select a package
+                    اختر باقة
                   </label>
                   <div className="space-y-2">
                     {filteredPricing.map((p) => {
@@ -159,7 +159,7 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
                         >
                           <div>
                             <p className="font-semibold text-sm text-gray-900 dark:text-white">{p.name}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">{p.duration} days</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">{p.duration} يوم</p>
                           </div>
                           <div className="text-right">
                             {p.discount > 0 ? (
@@ -167,7 +167,7 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
                                 <p className="text-xs text-gray-400 line-through">${p.price.toFixed(2)}</p>
                                 <p className="font-bold text-amber-600 dark:text-amber-400">${final.toFixed(2)}</p>
                                 <span className="text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 px-1.5 py-0.5 rounded-full font-bold">
-                                  -{p.discount}% OFF
+                                  -{p.discount}% خصم
                                 </span>
                               </>
                             ) : (
@@ -184,12 +184,12 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
               {/* Message */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                  Message to admin (optional)
+                  رسالة للمشرف (اختياري)
                 </label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell us about your promotion goals..."
+                  placeholder="أخبرنا عن أهداف ترويجك..."
                   maxLength={500}
                   rows={3}
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-amber-500"
@@ -202,12 +202,12 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-bold text-gray-900 dark:text-white">{selectedPlan.name}</p>
-                      <p className="text-xs text-gray-500">{selectedPlan.duration} days promotion</p>
+                      <p className="text-xs text-gray-500">{selectedPlan.duration} يوم ترويج</p>
                     </div>
                     <div className="text-right">
                       <p className="text-xl font-extrabold text-amber-600 dark:text-amber-400">${finalPrice.toFixed(2)}</p>
                       {selectedPlan.discount > 0 && (
-                        <p className="text-xs text-green-600">You save ${(selectedPlan.price - finalPrice).toFixed(2)}</p>
+                        <p className="text-xs text-green-600">توفر ${(selectedPlan.price - finalPrice).toFixed(2)}</p>
                       )}
                     </div>
                   </div>
@@ -219,11 +219,11 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
                 <div className="flex items-start gap-2">
                   <MaterialIcon icon="info" className="text-amber-600 dark:text-amber-400 mt-0.5" />
                   <div className="text-xs text-amber-700 dark:text-amber-400">
-                    <p className="font-bold mb-1">How it works</p>
+                    <p className="font-bold mb-1">كيف تعمل؟</p>
                     <ul className="space-y-1 list-disc list-inside">
-                      <li>Your request will be reviewed by the admin</li>
-                      <li>Once approved, your brand will appear in the promoted section</li>
-                      <li>Payment will be arranged after approval</li>
+                      <li>سيتم مراجعة طلبك من قبل المشرف</li>
+                      <li>بعد الموافقة، ستظهر علامتك التجارية في قسم الترويج</li>
+                      <li>سيتم ترتيب الدفع بعد الموافقة</li>
                     </ul>
                   </div>
                 </div>
@@ -233,13 +233,13 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
               {result === "success" && (
                 <div className="flex items-center gap-2 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-green-700 dark:text-green-300 text-sm font-medium">
                   <MaterialIcon icon="check_circle" filled className="text-green-500" />
-                  Request submitted! The admin will review it shortly.
+                  تم إرسال الطلب! سيتم مراجعته قريباً.
                 </div>
               )}
               {result === "conflict" && (
                 <div className="flex items-center gap-2 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl text-yellow-700 dark:text-yellow-300 text-sm font-medium">
                   <MaterialIcon icon="warning" className="text-yellow-500" />
-                  You already have a pending promotion request.
+                  لديك طلب ترويج قيد المراجعة بالفعل.
                 </div>
               )}
               {result === "error" && (
@@ -260,7 +260,7 @@ export default function PromoteButton({ companyId, companyName }: PromoteButtonP
                 ) : (
                   <>
                     <MaterialIcon icon="send" className="text-lg" />
-                    Submit Promotion Request
+                    إرسال طلب الترويج
                   </>
                 )}
               </button>

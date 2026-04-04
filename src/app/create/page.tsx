@@ -249,13 +249,13 @@ export default function CreatePage() {
         >
           <MaterialIcon icon="close" />
         </Link>
-        <h1 className="text-lg font-bold">Create Recipe</h1>
+        <h1 className="text-lg font-bold">إنشاء وصفة</h1>
         <button
           onClick={handlePublish}
           disabled={publishing}
           className="text-primary font-bold text-sm active:scale-95 transition-transform disabled:opacity-50"
         >
-          {publishing ? "..." : "Publish"}
+          {publishing ? "..." : "نشر"}
         </button>
       </header>
 
@@ -264,7 +264,7 @@ export default function CreatePage() {
         <div className="mx-6 mt-4 bg-primary/10 border border-primary/20 rounded-xl p-4 flex items-center gap-3">
           <MaterialIcon icon="check_circle" className="text-primary text-xl" />
           <p className="text-sm font-medium text-primary">
-            Recipe published successfully!
+            تم نشر الوصفة بنجاح!
           </p>
         </div>
       )}
@@ -307,8 +307,8 @@ export default function CreatePage() {
                 <MaterialIcon icon="add_a_photo" className="text-2xl text-primary" />
               </div>
               <div className="text-center">
-                <p className="text-sm font-bold">Add Cover Photo</p>
-                <p className="text-xs text-espresso/40 mt-1">Tap to upload</p>
+                <p className="text-sm font-bold">إضافة صورة غلاف</p>
+                <p className="text-xs text-espresso/40 mt-1">انقر للرفع</p>
               </div>
             </>
           )}
@@ -316,13 +316,13 @@ export default function CreatePage() {
 
         {/* Recipe Name */}
         <div>
-          <label className={labelClass}>Recipe Name</label>
+          <label className={labelClass}>اسم الوصفة</label>
           <input
             dir="auto"
             value={recipeName}
             onChange={(e) => setRecipeName(e.target.value)}
             className={inputClass}
-            placeholder="e.g., Morning Ritual Pour Over"
+            placeholder="مثال: قهوة الصباح بالترشيح"
           />
         </div>
 
@@ -335,7 +335,7 @@ export default function CreatePage() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold uppercase tracking-widest text-espresso/60">
-                  Publish As
+                  النشر باسم
                 </p>
               </div>
             </div>
@@ -353,7 +353,7 @@ export default function CreatePage() {
                   icon="group"
                   className={`text-lg ${!publishAsBrand ? "text-primary" : "text-espresso/30"}`}
                 />
-                <span dir="auto">Community Recipe</span>
+                <span dir="auto">وصفة مجتمعية</span>
               </button>
               <button
                 type="button"
@@ -375,7 +375,7 @@ export default function CreatePage() {
               <div className="mx-4 mb-3 px-3 py-2 bg-amber-50 rounded-lg flex items-center gap-2">
                 <MaterialIcon icon="info" className="text-sm text-amber-600" />
                 <p className="text-xs text-amber-700" dir="auto">
-                  This recipe will be published under <strong>{userBrand.name}</strong> as an official brand recipe.
+                  سيتم نشر هذه الوصفة تحت <strong>{userBrand.name}</strong> كوصفة رسمية للعلامة التجارية.
                 </p>
               </div>
             )}
@@ -385,7 +385,7 @@ export default function CreatePage() {
         {/* Category & Difficulty */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className={labelClass}>Category</label>
+            <label className={labelClass}>القسم</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -400,41 +400,41 @@ export default function CreatePage() {
             </select>
           </div>
           <div>
-            <label className={labelClass}>Difficulty</label>
+            <label className={labelClass}>الصعوبة</label>
             <select
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
               className={`${inputClass} appearance-none`}
             >
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
+              <option value="Beginner">مبتدئ</option>
+              <option value="Intermediate">متوسط</option>
+              <option value="Advanced">متقدم</option>
             </select>
           </div>
         </div>
 
         {/* Brew Time */}
         <div>
-          <label className={labelClass}>Brew Time</label>
+          <label className={labelClass}>وقت التحضير</label>
           <input
             dir="auto"
             value={brewTime}
             onChange={(e) => setBrewTime(e.target.value)}
             className={inputClass}
-            placeholder="e.g., 10 mins"
+            placeholder="مثال: ١٠ دقائق"
           />
         </div>
 
         {/* Description */}
         <div>
-          <label className={labelClass}>Description</label>
+          <label className={labelClass}>الوصف</label>
           <textarea
             dir="auto"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
             className={`${inputClass} resize-none`}
-            placeholder="Tell the story behind your recipe..."
+            placeholder="أخبرنا قصة وصفتك..."
           />
         </div>
 
@@ -448,9 +448,9 @@ export default function CreatePage() {
               <MaterialIcon icon="tune" className="text-lg text-primary" />
             </div>
             <div className="flex-1">
-              <h2 className="text-sm font-bold">Brewing Parameters</h2>
+              <h2 className="text-sm font-bold">معايير التحضير</h2>
               <p className="text-xs text-espresso/40">
-                Fine-tune your brew for the perfect cup
+                اضبط معايير تحضيرك للكوب المثالي
               </p>
             </div>
             <BrewMethodPicker
@@ -475,14 +475,14 @@ export default function CreatePage() {
               </div>
               <div className="flex-1 min-w-0">
                 <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">
-                  Temperature
+                  الحرارة
                 </label>
                 <input
                   inputMode="numeric"
                   value={temperature}
                   onChange={(e) => setTemperature(e.target.value)}
                   className="w-full bg-transparent text-sm font-medium outline-none placeholder:text-espresso/30"
-                  placeholder="e.g., 93"
+                  placeholder="مثال: ٩٣"
                 />
               </div>
             </div>
@@ -497,14 +497,14 @@ export default function CreatePage() {
               </div>
               <div className="flex-1 min-w-0">
                 <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">
-                  Coffee-to-Water Ratio
+                  نسبة القهوة إلى الماء
                 </label>
                 <input
                   dir="ltr"
                   value={ratio}
                   onChange={(e) => setRatio(e.target.value)}
                   className="w-full bg-transparent text-sm font-medium outline-none placeholder:text-espresso/30"
-                  placeholder="e.g., 1:15"
+                  placeholder="مثال: ١:١٥"
                 />
               </div>
             </div>
@@ -519,14 +519,14 @@ export default function CreatePage() {
               </div>
               <div className="flex-1 min-w-0">
                 <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">
-                  Grind Size
+                  حجم الطحن
                 </label>
                 <select
                   value={grindSize}
                   onChange={(e) => setGrindSize(e.target.value)}
                   className="w-full bg-transparent text-sm font-medium outline-none appearance-none placeholder:text-espresso/30"
                 >
-                  <option value="">Select grind size...</option>
+                  <option value="">اختر حجم الطحن...</option>
                   {GRIND_SIZES.map((size) => (
                     <option key={size} value={size}>
                       {size}
@@ -546,7 +546,7 @@ export default function CreatePage() {
               </div>
               <div className="flex-1 min-w-0">
                 <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">
-                  Brew Timer
+                  مؤقت التحضير
                 </label>
                 <div className="flex items-center gap-3">
                   <input
@@ -559,7 +559,7 @@ export default function CreatePage() {
                       )
                     }
                     className="flex-1 bg-transparent text-sm font-medium outline-none placeholder:text-espresso/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    placeholder="e.g., 240"
+                    placeholder="مثال: ٢٤٠"
                   />
                   {typeof brewTimeSec === "number" && brewTimeSec > 0 && (
                     <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-lg whitespace-nowrap">
@@ -578,13 +578,13 @@ export default function CreatePage() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <label className="text-xs font-bold uppercase tracking-widest text-espresso/60">
-              Ingredients
+              المكونات
             </label>
             <button
               onClick={addIngredient}
               className="text-primary text-xs font-bold flex items-center gap-1"
             >
-              <MaterialIcon icon="add" className="text-sm" /> Add
+              <MaterialIcon icon="add" className="text-sm" /> إضافة
             </button>
           </div>
           <div className="space-y-3">
@@ -597,7 +597,7 @@ export default function CreatePage() {
                     updateIngredient(idx, "name", e.target.value)
                   }
                   className="flex-1 bg-white rounded-xl px-4 py-3 border border-espresso/10 text-sm font-medium outline-none focus:border-primary"
-                  placeholder="Ingredient"
+                  placeholder="المكوّن"
                 />
                 <input
                   inputMode="decimal"
@@ -606,7 +606,7 @@ export default function CreatePage() {
                     updateIngredient(idx, "amount", e.target.value)
                   }
                   className="w-20 bg-white rounded-xl px-3 py-3 border border-espresso/10 text-sm font-medium outline-none focus:border-primary"
-                  placeholder="Amt"
+                  placeholder="الكمية"
                 />
                 <select
                   value={ing.unit}
@@ -640,13 +640,13 @@ export default function CreatePage() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <label className="text-xs font-bold uppercase tracking-widest text-espresso/60">
-              Steps
+              الخطوات
             </label>
             <button
               onClick={addStep}
               className="text-primary text-xs font-bold flex items-center gap-1"
             >
-              <MaterialIcon icon="add" className="text-sm" /> Add Step
+              <MaterialIcon icon="add" className="text-sm" /> إضافة خطوة
             </button>
           </div>
           <div className="space-y-3">
@@ -661,7 +661,7 @@ export default function CreatePage() {
                   onChange={(e) => updateStep(idx, e.target.value)}
                   rows={2}
                   className="flex-1 bg-white rounded-xl px-4 py-3 border border-espresso/10 text-sm font-medium outline-none focus:border-primary resize-none"
-                  placeholder={`Step ${idx + 1} instructions...`}
+                  placeholder={`تعليمات الخطوة ${idx + 1}...`}
                 />
                 {steps.length > 1 && (
                   <button
@@ -681,7 +681,7 @@ export default function CreatePage() {
           <div className="flex items-center justify-center gap-2 py-2">
             <MaterialIcon icon="verified" className="text-primary text-lg" />
             <span className="text-xs font-bold text-primary uppercase tracking-wider">
-              Publishing as Verified Creator
+              النشر كمبدع موثق
             </span>
           </div>
         )}
@@ -691,7 +691,7 @@ export default function CreatePage() {
           <div className="flex items-center justify-center gap-2 py-2">
             <MaterialIcon icon="storefront" className="text-amber-600 text-lg" />
             <span className="text-xs font-bold text-amber-600 uppercase tracking-wider" dir="auto">
-              Publishing under {userBrand.name}
+              النشر تحت {userBrand.name}
             </span>
           </div>
         )}
@@ -707,10 +707,10 @@ export default function CreatePage() {
           }`}
         >
           {publishing
-            ? "Publishing..."
+            ? "جارٍ النشر..."
             : publishAsBrand && userBrand
-              ? `Publish as ${userBrand.name}`
-              : "Publish Recipe"}
+              ? `نشر باسم ${userBrand.name}`
+              : "نشر الوصفة"}
         </button>
       </main>
 

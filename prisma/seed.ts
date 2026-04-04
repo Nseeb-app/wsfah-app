@@ -33,7 +33,7 @@ async function main() {
   const superAdmin = await prisma.user.create({
     data: {
       name: "Super Admin",
-      email: "admin@brewcraft.com",
+      email: "admin@wsfa.app",
       password: defaultPassword,
       image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC9Eisln7x9cluXhHWg-D9M3gkoBEK0Of4_91XSwUuSnjJNFGV1yNLOvAkF3y1Bu9kL_ORjljfApRjtmwiv11BuFEp2SCzAhAmx2V-2zyBPojROsNDNhDcxzW49_9mdOjsbVcpz0CiSoL81hkWMz6HHaDzzfKYubOfogYR6A1OWnRIAZoor8Fi5f_QwyezOra6ni3ySJNQbBD0GAOHazGn89c9HItMLKap8FWVeeRCjmhFb8VTseU2--Z5bmjfvImKAd6uQPOkqJtFT",
       role: "SUPERADMIN",

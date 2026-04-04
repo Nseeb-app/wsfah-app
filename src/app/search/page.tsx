@@ -34,7 +34,7 @@ export default function SearchPage() {
 
 function SearchContent() {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get("category") || "All";
+  const initialCategory = searchParams.get("category") || "الكل";
 
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -44,7 +44,7 @@ function SearchContent() {
 
   // Sync activeCategory when URL param changes
   useEffect(() => {
-    const urlCategory = searchParams.get("category") || "All";
+    const urlCategory = searchParams.get("category") || "الكل";
     setActiveCategory(urlCategory);
   }, [searchParams]);
 
@@ -59,7 +59,7 @@ function SearchContent() {
     setLoading(true);
     const params = new URLSearchParams();
     if (query) params.set("search", query);
-    if (activeCategory !== "All") params.set("category", activeCategory);
+    if (activeCategory !== "الكل") params.set("category", activeCategory);
 
     fetch(`/api/recipes?${params}`)
       .then((r) => r.json())
@@ -70,7 +70,7 @@ function SearchContent() {
       .catch(() => setLoading(false));
   }, [query, activeCategory]);
 
-  const allCategories = ["All", ...categories.map((c) => c.name)];
+  const allCategories = ["الكل", ...categories.map((c) => c.name)];
 
   return (
     <div className="bg-background-light text-espresso min-h-screen flex flex-col">
@@ -79,7 +79,7 @@ function SearchContent() {
           <Link href="/" className="size-10 rounded-full flex items-center justify-center hover:bg-primary/10">
             <MaterialIcon icon="arrow_back" />
           </Link>
-          <h1 className="text-lg font-bold">Search</h1>
+          <h1 className="text-lg font-bold">البحث</h1>
         </div>
         <label className="flex items-center bg-white rounded-2xl px-4 py-3 shadow-sm border border-espresso/5">
           <MaterialIcon icon="search" className="text-espresso/40 mr-3" />
@@ -89,7 +89,7 @@ function SearchContent() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="bg-transparent border-none focus:ring-0 p-0 w-full text-sm placeholder:text-espresso/30 font-medium outline-none"
-            placeholder="Search recipes, roasters, or tea blends"
+            placeholder="ابحث عن وصفات، محمصات، أو خلطات شاي"
             type="text"
           />
           {query && (
@@ -126,8 +126,8 @@ function SearchContent() {
         ) : recipes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-espresso/40">
             <MaterialIcon icon="search_off" className="text-5xl mb-4" />
-            <p className="text-sm font-medium">No recipes found</p>
-            <p className="text-xs mt-1">Try a different search or category</p>
+            <p className="text-sm font-medium">لا توجد وصفات</p>
+            <p className="text-xs mt-1">جرّب بحثاً أو قسماً مختلفاً</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">
@@ -142,11 +142,11 @@ function SearchContent() {
                   <div className="absolute top-3 left-3 flex gap-1">
                     {item.brand ? (
                       <div className="bg-brand-gold text-[8px] font-black px-2 py-0.5 rounded text-white shadow-sm flex items-center gap-0.5">
-                        <MaterialIcon icon="verified" className="text-[10px]" /> BRAND
+                        <MaterialIcon icon="verified" className="text-[10px]" /> علامة تجارية
                       </div>
                     ) : (
                       <div className="bg-community-teal text-[8px] font-black px-2 py-0.5 rounded text-white shadow-sm flex items-center gap-0.5">
-                        <MaterialIcon icon="group" className="text-[10px]" /> COMMUNITY
+                        <MaterialIcon icon="group" className="text-[10px]" /> مجتمع
                       </div>
                     )}
                   </div>

@@ -32,9 +32,9 @@ type GalleryPost = {
 type TabKey = "store" | "recipes" | "gallery";
 
 const tabs: { key: TabKey; label: string; icon: string }[] = [
-  { key: "store", label: "Store", icon: "storefront" },
-  { key: "recipes", label: "Recipes", icon: "menu_book" },
-  { key: "gallery", label: "Gallery", icon: "photo_library" },
+  { key: "store", label: "المتجر", icon: "storefront" },
+  { key: "recipes", label: "الوصفات", icon: "menu_book" },
+  { key: "gallery", label: "المعرض", icon: "photo_library" },
 ];
 
 interface BrandTabsProps {
@@ -129,7 +129,7 @@ export default function BrandTabs({ products, recipes, galleryPosts, isOwner, co
           {localProducts.length === 0 ? (
             <div className="col-span-2 text-center py-12 text-slate-400">
               <MaterialIcon icon="inventory_2" className="text-4xl mb-2" />
-              <p className="text-sm">No products yet</p>
+              <p className="text-sm">لا توجد منتجات بعد</p>
             </div>
           ) : (
             localProducts.map((p) => (
@@ -140,29 +140,29 @@ export default function BrandTabs({ products, recipes, galleryPosts, isOwner, co
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
                       className="w-full text-sm font-bold border border-slate-200 rounded-lg px-3 py-2"
-                      placeholder="Product name"
+                      placeholder="اسم المنتج"
                       dir="auto"
                     />
                     <input
                       value={editPrice}
                       onChange={(e) => setEditPrice(e.target.value)}
                       className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2"
-                      placeholder="Price"
+                      placeholder="السعر"
                       inputMode="decimal"
                     />
                     <input
                       value={editUrl}
                       onChange={(e) => setEditUrl(e.target.value)}
                       className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2"
-                      placeholder="Store link (https://...)"
+                      placeholder="رابط المتجر (https://...)"
                       dir="ltr"
                     />
                     <div className="flex gap-2">
                       <button onClick={() => handleSaveProduct(p.id)} className="flex-1 bg-primary text-slate-900 text-xs font-bold py-2 rounded-lg">
-                        Save
+                        حفظ
                       </button>
                       <button onClick={() => setEditingProduct(null)} className="flex-1 bg-slate-100 text-slate-600 text-xs font-bold py-2 rounded-lg">
-                        Cancel
+                        إلغاء
                       </button>
                     </div>
                   </div>
@@ -215,7 +215,7 @@ export default function BrandTabs({ products, recipes, galleryPosts, isOwner, co
           {recipes.length === 0 ? (
             <div className="col-span-2 text-center py-12 text-slate-400">
               <MaterialIcon icon="menu_book" className="text-4xl mb-2" />
-              <p className="text-sm">No recipes yet</p>
+              <p className="text-sm">لا توجد وصفات بعد</p>
             </div>
           ) : (
             recipes.map((r) => (
@@ -255,13 +255,13 @@ export default function BrandTabs({ products, recipes, galleryPosts, isOwner, co
             <div className="mb-4 bg-white rounded-xl border border-primary/20 p-4 space-y-3">
               <p className="text-sm font-bold flex items-center gap-2">
                 <MaterialIcon icon="add_photo_alternate" className="text-primary" />
-                Add to Gallery
+                أضف إلى المعرض
               </p>
               <input
                 value={galleryCaption}
                 onChange={(e) => setGalleryCaption(e.target.value)}
                 className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2"
-                placeholder="Caption (optional)"
+                placeholder="وصف (اختياري)"
                 dir="auto"
               />
               <input
@@ -279,7 +279,7 @@ export default function BrandTabs({ products, recipes, galleryPosts, isOwner, co
                 disabled={uploading}
                 className="w-full bg-primary text-slate-900 text-sm font-bold py-2.5 rounded-lg disabled:opacity-50"
               >
-                {uploading ? "Uploading..." : "Upload Photo"}
+                {uploading ? "جارٍ الرفع..." : "رفع صورة"}
               </button>
             </div>
           )}
@@ -287,7 +287,7 @@ export default function BrandTabs({ products, recipes, galleryPosts, isOwner, co
           {localGallery.length === 0 ? (
             <div className="text-center py-12 text-slate-400">
               <MaterialIcon icon="photo_library" className="text-4xl mb-2" />
-              <p className="text-sm">No gallery posts yet</p>
+              <p className="text-sm">لا توجد منشورات في المعرض بعد</p>
             </div>
           ) : (
             <div className="columns-2 gap-3 space-y-3">

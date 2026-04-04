@@ -94,7 +94,7 @@ export default function ConversationPage() {
           </svg>
         </button>
         <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
-          {otherUser?.name || "Conversation"}
+          {otherUser?.name || "محادثة"}
         </h1>
       </div>
 
@@ -146,7 +146,7 @@ export default function ConversationPage() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message..."
+          placeholder="اكتب رسالة..."
           className="flex-1 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#25f459] focus:border-transparent"
         />
         <button
@@ -154,7 +154,7 @@ export default function ConversationPage() {
           disabled={!input.trim() || sending}
           className="bg-[#25f459] text-gray-900 rounded-full px-5 py-2 text-sm font-medium hover:bg-[#1de04d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          Send
+          إرسال
         </button>
       </form>
     </div>

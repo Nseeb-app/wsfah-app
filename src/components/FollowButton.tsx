@@ -46,7 +46,7 @@ export default function FollowButton({ userId, className = "" }: FollowButtonPro
           : "bg-primary text-background-dark hover:opacity-90"
       } ${className}`}
     >
-      {loading ? "..." : isFollowing ? "Following" : "Follow"}
+      {loading ? "..." : isFollowing ? "متابَع" : "متابعة"}
     </button>
   );
 }

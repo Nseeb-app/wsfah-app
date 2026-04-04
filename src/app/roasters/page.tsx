@@ -16,10 +16,10 @@ export default async function RoastersPage() {
   });
 
   const typeLabels: Record<string, string> = {
-    roaster: "Roastery",
-    cafe: "Café",
-    tea_brand: "Tea Brand",
-    equipment: "Equipment",
+    roaster: "محمصة",
+    cafe: "مقهى",
+    tea_brand: "علامة شاي",
+    equipment: "معدات",
   };
 
   const typeIcons: Record<string, string> = {
@@ -35,7 +35,7 @@ export default async function RoastersPage() {
         <Link href="/" className="flex size-10 items-center justify-center rounded-full hover:bg-primary/10">
           <MaterialIcon icon="arrow_back" />
         </Link>
-        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">All Brands</h2>
+        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">جميع العلامات التجارية</h2>
         <div className="size-10" />
       </header>
 
@@ -43,7 +43,7 @@ export default async function RoastersPage() {
         {companies.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-espresso/40">
             <MaterialIcon icon="storefront" className="text-5xl mb-3" />
-            <p className="text-sm font-medium">No brands yet</p>
+            <p className="text-sm font-medium">لا توجد علامات تجارية بعد</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
@@ -65,7 +65,7 @@ export default async function RoastersPage() {
                     </div>
                     {c.isVerified && (
                       <div className="bg-primary text-white text-[8px] font-black px-2 py-1 rounded-full flex items-center gap-0.5 uppercase tracking-wider">
-                        <MaterialIcon icon="verified" className="text-[10px]" filled /> Verified
+                        <MaterialIcon icon="verified" className="text-[10px]" filled /> موثق
                       </div>
                     )}
                   </div>

@@ -70,9 +70,9 @@ export default function SettingsPage() {
       if (!patchRes.ok) throw new Error("Save failed");
       const updated = await patchRes.json();
       setUser((prev) => (prev ? { ...prev, image: updated.image } : prev));
-      setMessage({ type: "success", text: "Profile picture updated!" });
+      setMessage({ type: "success", text: "تم تحديث صورة الملف الشخصي!" });
     } catch {
-      setMessage({ type: "error", text: "Failed to update profile picture." });
+      setMessage({ type: "error", text: "فشل تحديث صورة الملف الشخصي." });
     } finally {
       setUploadingAvatar(false);
     }
@@ -126,7 +126,7 @@ export default function SettingsPage() {
       }
 
       if (Object.keys(body).length === 0) {
-        setMessage({ type: "error", text: "No changes to save." });
+        setMessage({ type: "error", text: "لا توجد تغييرات للحفظ." });
         setSaving(false);
         return;
       }
@@ -139,16 +139,16 @@ export default function SettingsPage() {
 
       if (!res.ok) {
         const err = await res.json();
-        setMessage({ type: "error", text: err.error || "Failed to save changes." });
+        setMessage({ type: "error", text: err.error || "فشل حفظ التغييرات." });
       } else {
         const updated = await res.json();
         setUser((prev) => (prev ? { ...prev, ...updated } : prev));
         setCurrentPassword("");
         setNewPassword("");
-        setMessage({ type: "success", text: "Profile updated successfully!" });
+        setMessage({ type: "success", text: "تم تحديث الملف الشخصي بنجاح!" });
       }
     } catch {
-      setMessage({ type: "error", text: "Something went wrong. Please try again." });
+      setMessage({ type: "error", text: "حدث خطأ ما. حاول مرة أخرى." });
     } finally {
       setSaving(false);
     }
@@ -157,11 +157,11 @@ export default function SettingsPage() {
   const roleBadgeLabel = (role: string) => {
     switch (role) {
       case "CREATOR":
-        return "Creator";
+        return "مبدع";
       case "BRAND_ADMIN":
-        return "Brand Admin";
+        return "مدير علامة تجارية";
       default:
-        return "Home Barista";
+        return "باريستا منزلي";
     }
   };
 
@@ -190,7 +190,7 @@ export default function SettingsPage() {
           <MaterialIcon icon="arrow_back" />
         </Link>
         <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">
-          Settings
+          الإعدادات
         </h2>
         <div className="size-10" />
       </header>
@@ -242,27 +242,27 @@ export default function SettingsPage() {
         {/* Profile Fields */}
         <section className="mb-6">
           <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-2 block">
-            Name
+            الاسم
           </label>
           <input
             dir="auto"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Your name"
+            placeholder="اسمك"
             className="w-full px-4 py-3 rounded-xl bg-white border border-espresso/10 text-sm font-medium outline-none focus:border-primary"
           />
         </section>
 
         <section className="mb-6">
           <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-2 block">
-            Bio
+            النبذة
           </label>
           <textarea
             dir="auto"
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            placeholder="Tell us about yourself..."
+            placeholder="أخبرنا عن نفسك..."
             rows={3}
             className="w-full px-4 py-3 rounded-xl bg-white border border-espresso/10 text-sm font-medium outline-none focus:border-primary resize-none"
           />
@@ -270,7 +270,7 @@ export default function SettingsPage() {
 
         <section className="mb-6">
           <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-2 block">
-            Email
+            البريد الإلكتروني
           </label>
           <input
             dir="ltr"
@@ -284,7 +284,7 @@ export default function SettingsPage() {
 
         <section className="mb-6">
           <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-2 block">
-            Phone
+            الهاتف
           </label>
           <input
             dir="ltr"
@@ -299,33 +299,33 @@ export default function SettingsPage() {
         {/* Password Section */}
         <div className="border-t border-espresso/10 pt-6 mb-6">
           <h3 className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-4 block">
-            Change Password
+            تغيير كلمة المرور
           </h3>
 
           <section className="mb-4">
             <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-2 block">
-              Current Password
+              كلمة المرور الحالية
             </label>
             <input
               dir="auto"
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              placeholder="Enter current password"
+              placeholder="أدخل كلمة المرور الحالية"
               className="w-full px-4 py-3 rounded-xl bg-white border border-espresso/10 text-sm font-medium outline-none focus:border-primary"
             />
           </section>
 
           <section className="mb-4">
             <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-2 block">
-              New Password
+              كلمة المرور الجديدة
             </label>
             <input
               dir="auto"
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Enter new password"
+              placeholder="أدخل كلمة المرور الجديدة"
               className="w-full px-4 py-3 rounded-xl bg-white border border-espresso/10 text-sm font-medium outline-none focus:border-primary"
             />
           </section>
@@ -340,12 +340,12 @@ export default function SettingsPage() {
           {saving ? (
             <>
               <div className="animate-spin rounded-full h-4 w-4 border-2 border-espresso border-t-transparent" />
-              Saving...
+              جاري الحفظ...
             </>
           ) : (
             <>
               <MaterialIcon icon="save" className="text-lg" />
-              Save Changes
+              حفظ التغييرات
             </>
           )}
         </button>
@@ -354,19 +354,19 @@ export default function SettingsPage() {
         <div className="border-t border-espresso/10 pt-6 mb-6">
           <h3 className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-4 flex items-center gap-2">
             <MaterialIcon icon="lock" className="text-sm" />
-            Privacy
+            الخصوصية
           </h3>
 
           <div className="space-y-4">
             {/* Who sees followers */}
             <div className="bg-white rounded-xl border border-espresso/10 p-4">
-              <p className="text-sm font-bold mb-1">Who can see my followers</p>
-              <p className="text-xs text-espresso/50 mb-3">Control who sees your followers list</p>
+              <p className="text-sm font-bold mb-1">من يستطيع رؤية متابعيني</p>
+              <p className="text-xs text-espresso/50 mb-3">تحكم بمن يرى قائمة متابعيك</p>
               <div className="flex gap-2">
                 {[
-                  { value: "everyone", label: "Everyone" },
-                  { value: "followers", label: "Followers" },
-                  { value: "none", label: "No one" },
+                  { value: "everyone", label: "الجميع" },
+                  { value: "followers", label: "المتابعون" },
+                  { value: "none", label: "لا أحد" },
                 ].map((opt) => (
                   <button
                     key={opt.value}
@@ -385,12 +385,12 @@ export default function SettingsPage() {
 
             {/* Liked recipes visibility */}
             <div className="bg-white rounded-xl border border-espresso/10 p-4">
-              <p className="text-sm font-bold mb-1">Liked recipes</p>
-              <p className="text-xs text-espresso/50 mb-3">Show your liked recipes on your profile</p>
+              <p className="text-sm font-bold mb-1">الوصفات المعجب بها</p>
+              <p className="text-xs text-espresso/50 mb-3">اعرض وصفاتك المعجب بها في ملفك الشخصي</p>
               <div className="flex gap-2">
                 {[
-                  { value: "public", label: "Public" },
-                  { value: "private", label: "Private" },
+                  { value: "public", label: "عام" },
+                  { value: "private", label: "خاص" },
                 ].map((opt) => (
                   <button
                     key={opt.value}
@@ -409,12 +409,12 @@ export default function SettingsPage() {
 
             {/* Saved recipes visibility */}
             <div className="bg-white rounded-xl border border-espresso/10 p-4">
-              <p className="text-sm font-bold mb-1">Saved recipes</p>
-              <p className="text-xs text-espresso/50 mb-3">Show your saved recipes on your profile</p>
+              <p className="text-sm font-bold mb-1">الوصفات المحفوظة</p>
+              <p className="text-xs text-espresso/50 mb-3">اعرض وصفاتك المحفوظة في ملفك الشخصي</p>
               <div className="flex gap-2">
                 {[
-                  { value: "public", label: "Public" },
-                  { value: "private", label: "Private" },
+                  { value: "public", label: "عام" },
+                  { value: "private", label: "خاص" },
                 ].map((opt) => (
                   <button
                     key={opt.value}
@@ -442,10 +442,10 @@ export default function SettingsPage() {
                     body: JSON.stringify(privacy),
                   });
                   if (res.ok) {
-                    setMessage({ type: "success", text: "Privacy settings saved!" });
+                    setMessage({ type: "success", text: "تم حفظ إعدادات الخصوصية!" });
                   }
                 } catch {
-                  setMessage({ type: "error", text: "Failed to save privacy settings." });
+                  setMessage({ type: "error", text: "فشل حفظ إعدادات الخصوصية." });
                 } finally {
                   setPrivacySaving(false);
                 }
@@ -454,7 +454,7 @@ export default function SettingsPage() {
               className="w-full bg-espresso/5 text-espresso font-bold py-3 rounded-xl hover:bg-espresso/10 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <MaterialIcon icon="shield" className="text-lg" />
-              {privacySaving ? "Saving..." : "Save Privacy Settings"}
+              {privacySaving ? "جاري الحفظ..." : "حفظ إعدادات الخصوصية"}
             </button>
           </div>
         </div>
@@ -462,7 +462,7 @@ export default function SettingsPage() {
         {/* Appearance */}
         <div className="mb-6">
           <h3 className="text-xs font-bold uppercase tracking-widest text-espresso/60 mb-3 block">
-            Appearance
+            المظهر
           </h3>
           <DarkModeToggle />
         </div>
@@ -473,7 +473,7 @@ export default function SettingsPage() {
           className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-50 text-slate-700 font-bold text-sm hover:bg-slate-100 transition-colors mb-4 border border-slate-200"
         >
           <MaterialIcon icon="person" className="text-lg" />
-          View Profile
+          عرض الملف الشخصي
         </Link>
 
         {/* Sign Out */}
@@ -482,7 +482,7 @@ export default function SettingsPage() {
           className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-red-50 text-red-600 font-bold text-sm hover:bg-red-100 transition-colors"
         >
           <MaterialIcon icon="logout" className="text-lg" />
-          Sign Out
+          تسجيل الخروج
         </button>
       </main>
 

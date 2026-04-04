@@ -33,7 +33,7 @@ export default function RecommendedRecipes() {
   return (
     <section className="py-6">
       <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
-        Recommended for You
+        موصى بها لك
       </h2>
       <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
         {recipes.map((recipe) => (
@@ -82,7 +82,7 @@ export default function RecommendedRecipes() {
               </div>
               {recipe.author?.name && (
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 truncate">
-                  by {recipe.author.name}
+                  {recipe.author.name}
                 </p>
               )}
             </div>

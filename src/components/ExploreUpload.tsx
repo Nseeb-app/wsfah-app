@@ -22,7 +22,7 @@ export default function ExploreUpload({ companyId, companyName }: ExploreUploadP
       formData.append("file", file);
       const uploadRes = await fetch("/api/upload", { method: "POST", body: formData });
       if (!uploadRes.ok) {
-        setMessage("Failed to upload file");
+        setMessage("فشل رفع الملف");
         return;
       }
       const { url } = await uploadRes.json();
@@ -42,14 +42,14 @@ export default function ExploreUpload({ companyId, companyName }: ExploreUploadP
 
       if (postRes.ok) {
         setCaption("");
-        setMessage("Posted successfully!");
+        setMessage("تم النشر بنجاح!");
         setTimeout(() => window.location.reload(), 1000);
       } else {
         const err = await postRes.json();
-        setMessage(err.error || "Failed to post");
+        setMessage(err.error || "فشل النشر");
       }
     } catch {
-      setMessage("Something went wrong");
+      setMessage("حدث خطأ ما");
     } finally {
       setUploading(false);
     }
@@ -60,15 +60,15 @@ export default function ExploreUpload({ companyId, companyName }: ExploreUploadP
       <div className="flex items-center gap-2 mb-3">
         <MaterialIcon icon="add_photo_alternate" className="text-primary text-xl" />
         <div>
-          <p className="text-sm font-bold">Share Content</p>
-          <p className="text-[10px] text-slate-500">Posting as <span className="text-primary font-bold">{companyName}</span></p>
+          <p className="text-sm font-bold">مشاركة محتوى</p>
+          <p className="text-[10px] text-slate-500">النشر باسم <span className="text-primary font-bold">{companyName}</span></p>
         </div>
       </div>
       <input
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
         className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 mb-3"
-        placeholder="Caption (optional)"
+        placeholder="وصف (اختياري)"
         dir="auto"
       />
       <input
@@ -93,7 +93,7 @@ export default function ExploreUpload({ companyId, companyName }: ExploreUploadP
           className="flex-1 bg-primary text-slate-900 text-sm font-bold py-2.5 rounded-lg disabled:opacity-50 flex items-center justify-center gap-2"
         >
           <MaterialIcon icon="photo_camera" className="text-base" />
-          {uploading ? "Uploading..." : "Photo"}
+          {uploading ? "جارٍ الرفع..." : "صورة"}
         </button>
         <button
           onClick={() => {
@@ -106,11 +106,11 @@ export default function ExploreUpload({ companyId, companyName }: ExploreUploadP
           className="flex-1 bg-primary/10 text-primary text-sm font-bold py-2.5 rounded-lg disabled:opacity-50 flex items-center justify-center gap-2 border border-primary/20"
         >
           <MaterialIcon icon="videocam" className="text-base" />
-          {uploading ? "Uploading..." : "Video"}
+          {uploading ? "جارٍ الرفع..." : "فيديو"}
         </button>
       </div>
       {message && (
-        <p className={`text-xs mt-2 font-medium ${message.includes("success") ? "text-green-600" : "text-red-500"}`}>
+        <p className={`text-xs mt-2 font-medium ${message.includes("بنجاح") ? "text-green-600" : "text-red-500"}`}>
           {message}
         </p>
       )}

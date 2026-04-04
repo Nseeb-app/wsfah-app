@@ -51,7 +51,7 @@ export default function LoginPage() {
     try {
       const result = await loginWithPhoneOtp(phone, otp);
       if (result && !result.success) {
-        setError(result.error || "Invalid OTP code");
+        setError(result.error || "رمز التحقق غير صحيح");
         setLoading(false);
       }
       // If successful, server action redirects automatically
@@ -69,7 +69,7 @@ export default function LoginPage() {
     try {
       const result = await loginWithCredentials(email, password);
       if (result && !result.success) {
-        setError(result.error || "Invalid email or password");
+        setError(result.error || "البريد الإلكتروني أو كلمة المرور غير صحيحة");
         setLoading(false);
       }
       // If successful, server action redirects automatically
@@ -91,8 +91,8 @@ export default function LoginPage() {
           <div className="size-16 bg-[#25f459] rounded-2xl flex items-center justify-center mx-auto mb-4">
             <MaterialIcon icon="coffee" className="text-3xl text-[#1a0f0a]" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Welcome back</h1>
-          <p className="text-sm text-slate-500 dark:text-white/60 mt-1">Sign in to WSFA</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">أهلاً بعودتك</h1>
+          <p className="text-sm text-slate-500 dark:text-white/60 mt-1">تسجيل الدخول إلى وصفة</p>
         </div>
 
         {/* Tabs */}
@@ -107,7 +107,7 @@ export default function LoginPage() {
                   : "text-slate-500 dark:text-white/60 hover:text-slate-700 dark:hover:text-white"
               }`}
             >
-              {t === "phone" ? "Phone" : "Email"}
+              {t === "phone" ? "الهاتف" : "البريد الإلكتروني"}
             </button>
           ))}
         </div>
@@ -123,7 +123,7 @@ export default function LoginPage() {
           <div className="space-y-4">
             <div>
               <label className="text-xs font-medium text-slate-500 dark:text-white/60 mb-1.5 block">
-                Phone Number
+                رقم الهاتف
               </label>
               <input
                 dir="ltr"
@@ -142,26 +142,26 @@ export default function LoginPage() {
                 disabled={loading || !phone}
                 className="w-full py-3 rounded-xl bg-[#25f459] text-[#1a0f0a] font-bold text-sm disabled:opacity-50 transition-opacity"
               >
-                {loading ? "Sending..." : "Send OTP"}
+                {loading ? "جارٍ الإرسال..." : "إرسال الرمز"}
               </button>
             ) : (
               <>
                 {testOtp && (
                   <div className="bg-[#25f459]/10 border border-[#25f459]/30 rounded-xl p-3">
                     <p className="text-xs text-[#25f459] text-center">
-                      Test OTP: <span className="font-mono font-bold">{testOtp}</span>
+                      رمز تجريبي: <span className="font-mono font-bold">{testOtp}</span>
                     </p>
                   </div>
                 )}
                 <div>
                   <label className="text-xs font-medium text-slate-500 dark:text-white/60 mb-1.5 block">
-                    OTP Code
+                    رمز التحقق
                   </label>
                   <input
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    placeholder="Enter 6-digit code"
+                    placeholder="أدخل الرمز المكون من 6 أرقام"
                     maxLength={6}
                     className="w-full px-4 py-3 rounded-xl bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/30 text-sm text-center tracking-[0.5em] font-mono focus:outline-none focus:border-[#25f459]/50"
                   />
@@ -171,13 +171,13 @@ export default function LoginPage() {
                   disabled={loading || otp.length !== 6}
                   className="w-full py-3 rounded-xl bg-[#25f459] text-[#1a0f0a] font-bold text-sm disabled:opacity-50 transition-opacity"
                 >
-                  {loading ? "Verifying..." : "Verify & Sign In"}
+                  {loading ? "جارٍ التحقق..." : "تحقق وسجّل الدخول"}
                 </button>
                 <button
                   onClick={() => { setOtpSent(false); setOtp(""); setTestOtp(""); }}
                   className="w-full text-center text-xs text-slate-400 dark:text-white/40 hover:text-slate-600 dark:hover:text-white/60"
                 >
-                  Resend OTP
+                  إعادة إرسال الرمز
                 </button>
               </>
             )}
@@ -189,7 +189,7 @@ export default function LoginPage() {
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
               <label className="text-xs font-medium text-slate-500 dark:text-white/60 mb-1.5 block">
-                Email
+                البريد الإلكتروني
               </label>
               <input
                 dir="ltr"
@@ -202,13 +202,13 @@ export default function LoginPage() {
             </div>
             <div>
               <label className="text-xs font-medium text-slate-500 dark:text-white/60 mb-1.5 block">
-                Password
+                كلمة المرور
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="أدخل كلمة المرور"
                 className="w-full px-4 py-3 rounded-xl bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/30 text-sm focus:outline-none focus:border-[#25f459]/50 focus:ring-1 focus:ring-[#25f459]/20"
               />
             </div>
@@ -217,7 +217,7 @@ export default function LoginPage() {
               disabled={loading || !email || !password}
               className="w-full py-3 rounded-xl bg-[#25f459] text-[#1a0f0a] font-bold text-sm disabled:opacity-50 transition-opacity"
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "جارٍ تسجيل الدخول..." : "تسجيل الدخول"}
             </button>
           </form>
         )}
@@ -225,7 +225,7 @@ export default function LoginPage() {
         {/* Divider */}
         <div className="flex items-center gap-4 my-6">
           <div className="flex-1 h-px bg-slate-200 dark:bg-white/10" />
-          <span className="text-xs text-slate-400 dark:text-white/40">or</span>
+          <span className="text-xs text-slate-400 dark:text-white/40">أو</span>
           <div className="flex-1 h-px bg-slate-200 dark:bg-white/10" />
         </div>
 
@@ -252,14 +252,14 @@ export default function LoginPage() {
               fill="#EA4335"
             />
           </svg>
-          Continue with Google
+          المتابعة مع Google
         </button>
 
         {/* Sign up link */}
         <p className="text-center text-sm text-slate-500 dark:text-white/50 mt-6">
-          Don&apos;t have an account?{" "}
+          ليس لديك حساب؟{" "}
           <Link href="/signup" className="text-[#25f459] font-semibold">
-            Sign Up
+            إنشاء حساب
           </Link>
         </p>
       </div>

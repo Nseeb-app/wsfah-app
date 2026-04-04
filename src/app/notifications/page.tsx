@@ -132,7 +132,7 @@ export default function NotificationsPage() {
           <MaterialIcon icon="arrow_back" />
         </Link>
         <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">
-          Notifications
+          الإشعارات
           {unreadCount > 0 && (
             <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold bg-primary text-espresso rounded-full">
               {unreadCount}
@@ -151,7 +151,7 @@ export default function NotificationsPage() {
             className="text-sm font-bold text-primary hover:text-primary/80 transition-colors disabled:opacity-50 flex items-center gap-1"
           >
             <MaterialIcon icon="done_all" className="text-base" />
-            {markingAllRead ? "Marking..." : "Mark all as read"}
+            {markingAllRead ? "جاري التحديد..." : "تحديد الكل كمقروء"}
           </button>
         </div>
       )}
@@ -161,22 +161,22 @@ export default function NotificationsPage() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <div className="size-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-slate-500 font-medium">Loading notifications...</p>
+            <p className="text-sm text-slate-500 font-medium">جاري تحميل الإشعارات...</p>
           </div>
         ) : notifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4 px-8">
             <div className="size-20 rounded-full bg-primary/10 flex items-center justify-center">
               <MaterialIcon icon="notifications_none" className="text-4xl text-primary" />
             </div>
-            <h3 className="text-lg font-bold text-espresso">No notifications yet</h3>
+            <h3 className="text-lg font-bold text-espresso">لا توجد إشعارات بعد</h3>
             <p className="text-sm text-slate-500 text-center leading-relaxed">
-              When someone likes your recipe, follows you, or you earn a badge, you will see it here.
+              عندما يعجب أحد بوصفتك، أو يتابعك، أو تحصل على شارة، ستراها هنا.
             </p>
             <Link
               href="/"
               className="mt-2 bg-primary text-espresso font-bold text-sm px-6 py-3 rounded-xl hover:opacity-90 transition-opacity"
             >
-              Explore recipes
+              استكشف الوصفات
             </Link>
           </div>
         ) : (

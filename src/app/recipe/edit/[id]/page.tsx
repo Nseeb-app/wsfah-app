@@ -247,20 +247,20 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
         >
           <MaterialIcon icon="close" />
         </Link>
-        <h1 className="text-lg font-bold">Edit Recipe</h1>
+        <h1 className="text-lg font-bold">تعديل الوصفة</h1>
         <button
           onClick={handleSave}
           disabled={saving}
           className="text-primary font-bold text-sm active:scale-95 transition-transform disabled:opacity-50"
         >
-          {saving ? "..." : "Save"}
+          {saving ? "..." : "حفظ"}
         </button>
       </header>
 
       {saved && (
         <div className="mx-6 mt-4 bg-primary/10 border border-primary/20 rounded-xl p-4 flex items-center gap-3">
           <MaterialIcon icon="check_circle" className="text-primary text-xl" />
-          <p className="text-sm font-medium text-primary">Recipe updated successfully!</p>
+          <p className="text-sm font-medium text-primary">تم تحديث الوصفة بنجاح!</p>
         </div>
       )}
 
@@ -301,8 +301,8 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
                 <MaterialIcon icon="add_a_photo" className="text-2xl text-primary" />
               </div>
               <div className="text-center">
-                <p className="text-sm font-bold">Add Cover Photo</p>
-                <p className="text-xs text-espresso/40 mt-1">Tap to upload</p>
+                <p className="text-sm font-bold">أضف صورة غلاف</p>
+                <p className="text-xs text-espresso/40 mt-1">اضغط للرفع</p>
               </div>
             </>
           )}
@@ -310,7 +310,7 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
 
         {/* Recipe Name */}
         <div>
-          <label className={labelClass}>Recipe Name</label>
+          <label className={labelClass}>اسم الوصفة</label>
           <input
             dir="auto"
             value={recipeName}
@@ -323,13 +323,13 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
         {/* Category & Difficulty */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className={labelClass}>Category</label>
+            <label className={labelClass}>القسم</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className={`${inputClass} appearance-none`}
             >
-              <option value="">Select...</option>
+              <option value="">اختر...</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.name}>
                   {cat.name}
@@ -338,22 +338,22 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
             </select>
           </div>
           <div>
-            <label className={labelClass}>Difficulty</label>
+            <label className={labelClass}>المستوى</label>
             <select
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
               className={`${inputClass} appearance-none`}
             >
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
+              <option value="Beginner">مبتدئ</option>
+              <option value="Intermediate">متوسط</option>
+              <option value="Advanced">متقدم</option>
             </select>
           </div>
         </div>
 
         {/* Brew Time */}
         <div>
-          <label className={labelClass}>Brew Time</label>
+          <label className={labelClass}>وقت التحضير</label>
           <input
             dir="auto"
             value={brewTime}
@@ -365,14 +365,14 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
 
         {/* Description */}
         <div>
-          <label className={labelClass}>Description</label>
+          <label className={labelClass}>الوصف</label>
           <textarea
             dir="auto"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
             className={`${inputClass} resize-none`}
-            placeholder="Tell the story behind your recipe..."
+            placeholder="اروِ قصة وصفتك..."
           />
         </div>
 
@@ -383,8 +383,8 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
               <MaterialIcon icon="tune" className="text-lg text-primary" />
             </div>
             <div>
-              <h2 className="text-sm font-bold">Brewing Parameters</h2>
-              <p className="text-xs text-espresso/40">Fine-tune your brew</p>
+              <h2 className="text-sm font-bold">معايير التحضير</h2>
+              <p className="text-xs text-espresso/40">اضبط تحضيرك</p>
             </div>
           </div>
 
@@ -394,7 +394,7 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
                 <MaterialIcon icon="thermostat" className="text-xl text-red-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">Temperature</label>
+                <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">الحرارة</label>
                 <input
                   inputMode="numeric"
                   value={temperature}
@@ -410,7 +410,7 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
                 <MaterialIcon icon="balance" className="text-xl text-blue-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">Coffee-to-Water Ratio</label>
+                <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">النسبة</label>
                 <input
                   dir="ltr"
                   value={ratio}
@@ -426,13 +426,13 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
                 <MaterialIcon icon="grain" className="text-xl text-amber-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">Grind Size</label>
+                <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">حجم الطحن</label>
                 <select
                   value={grindSize}
                   onChange={(e) => setGrindSize(e.target.value)}
                   className="w-full bg-transparent text-sm font-medium outline-none appearance-none"
                 >
-                  <option value="">Select grind size...</option>
+                  <option value="">اختر حجم الطحن...</option>
                   {GRIND_SIZES.map((size) => (
                     <option key={size} value={size}>{size}</option>
                   ))}
@@ -445,7 +445,7 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
                 <MaterialIcon icon="timer" className="text-xl text-primary" />
               </div>
               <div className="flex-1 min-w-0">
-                <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">Brew Timer (seconds)</label>
+                <label className="text-xs font-bold uppercase tracking-widest text-espresso/60 block mb-1">مؤقت التحضير (ثواني)</label>
                 <div className="flex items-center gap-3">
                   <input
                     type="number"
@@ -472,9 +472,9 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
         {/* Ingredients */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <label className="text-xs font-bold uppercase tracking-widest text-espresso/60">Ingredients</label>
+            <label className="text-xs font-bold uppercase tracking-widest text-espresso/60">المكونات</label>
             <button onClick={addIngredient} className="text-primary text-xs font-bold flex items-center gap-1">
-              <MaterialIcon icon="add" className="text-sm" /> Add
+              <MaterialIcon icon="add" className="text-sm" /> إضافة
             </button>
           </div>
           <div className="space-y-3">
@@ -485,14 +485,14 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
                   value={ing.name}
                   onChange={(e) => updateIngredient(idx, "name", e.target.value)}
                   className="flex-1 bg-white rounded-xl px-4 py-3 border border-espresso/10 text-sm font-medium outline-none focus:border-primary"
-                  placeholder="Ingredient"
+                  placeholder="المكوّن"
                 />
                 <input
                   inputMode="decimal"
                   value={ing.amount}
                   onChange={(e) => updateIngredient(idx, "amount", e.target.value)}
                   className="w-20 bg-white rounded-xl px-3 py-3 border border-espresso/10 text-sm font-medium outline-none focus:border-primary"
-                  placeholder="Amt"
+                  placeholder="الكمية"
                 />
                 <select
                   value={ing.unit}
@@ -516,9 +516,9 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
         {/* Steps */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <label className="text-xs font-bold uppercase tracking-widest text-espresso/60">Steps</label>
+            <label className="text-xs font-bold uppercase tracking-widest text-espresso/60">الخطوات</label>
             <button onClick={addStep} className="text-primary text-xs font-bold flex items-center gap-1">
-              <MaterialIcon icon="add" className="text-sm" /> Add Step
+              <MaterialIcon icon="add" className="text-sm" /> إضافة خطوة
             </button>
           </div>
           <div className="space-y-3">
@@ -551,7 +551,7 @@ export default function EditRecipePage({ params }: { params: Promise<{ id: strin
           disabled={saving}
           className="w-full bg-primary text-espresso font-bold py-4 rounded-xl text-sm active:scale-[0.98] transition-transform shadow-lg shadow-primary/20 disabled:opacity-50"
         >
-          {saving ? "Saving..." : "Save Changes"}
+          {saving ? "جاري الحفظ..." : "حفظ التغييرات"}
         </button>
       </main>
 

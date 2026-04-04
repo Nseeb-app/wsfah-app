@@ -128,7 +128,7 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
   };
 
   const handleDelete = async (commentId: string) => {
-    if (!confirm("Are you sure you want to delete this comment?")) return;
+    if (!confirm("هل أنت متأكد من حذف هذا التعليق؟")) return;
 
     try {
       setSubmitting(true);
@@ -154,11 +154,11 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    return date.toLocaleDateString();
+    if (diffMins < 1) return "الآن";
+    if (diffMins < 60) return `منذ ${diffMins} د`;
+    if (diffHours < 24) return `منذ ${diffHours} س`;
+    if (diffDays < 7) return `منذ ${diffDays} ي`;
+    return date.toLocaleDateString("ar");
   };
 
   const renderComment = (comment: Comment, isReply = false) => {
@@ -189,7 +189,7 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span className="font-semibold text-gray-900 dark:text-white truncate">
-                {comment.author.name || "Anonymous"}
+                {comment.author.name || "مجهول"}
               </span>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 {formatDate(comment.createdAt)}
@@ -210,7 +210,7 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
                     disabled={submitting || !editBody.trim()}
                     className="px-3 py-1 bg-green-600 text-white rounded-md text-sm hover:bg-green-700 disabled:opacity-50"
                   >
-                    Save
+                    حفظ
                   </button>
                   <button
                     onClick={() => {
@@ -220,7 +220,7 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
                     disabled={submitting}
                     className="px-3 py-1 bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-white rounded-md text-sm hover:bg-gray-400 dark:hover:bg-gray-500 disabled:opacity-50"
                   >
-                    Cancel
+                    إلغاء
                   </button>
                 </div>
               </div>
@@ -237,7 +237,7 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
                     }}
                     className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
                   >
-                    Reply
+                    رد
                   </button>
                 )}
                 {isOwnComment && (
@@ -249,13 +249,13 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
                       }}
                       className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                     >
-                      Edit
+                      تعديل
                     </button>
                     <button
                       onClick={() => handleDelete(comment.id)}
                       className="text-sm text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
                     >
-                      Delete
+                      حذف
                     </button>
                   </>
                 )}
@@ -275,7 +275,7 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
   return (
     <div className="mt-8">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-        Comments ({comments.reduce((acc, c) => acc + 1 + c.replies.length, 0)})
+        التعليقات ({comments.reduce((acc, c) => acc + 1 + c.replies.length, 0)})
       </h2>
 
       {session?.user && (
@@ -302,8 +302,8 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder={
                   replyingTo
-                    ? "Write a reply..."
-                    : "Write a comment..."
+                    ? "اكتب رداً..."
+                    : "اكتب تعليقاً..."
                 }
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
                 rows={3}
@@ -319,7 +319,7 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
                     }}
                     className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                   >
-                    Cancel reply
+                    إلغاء الرد
                   </button>
                 )}
                 <button
@@ -327,7 +327,7 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
                   disabled={submitting || !newComment.trim()}
                   className="ml-auto px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {submitting ? "Posting..." : "Post Comment"}
+                  {submitting ? "جارٍ النشر..." : "نشر التعليق"}
                 </button>
               </div>
             </div>
@@ -337,11 +337,11 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
 
       {!session?.user && (
         <p className="text-gray-500 dark:text-gray-400 mb-4">
-          Please{" "}
+          يرجى{" "}
           <a href="/login" className="text-green-600 dark:text-green-400 hover:underline">
-            sign in
+            تسجيل الدخول
           </a>{" "}
-          to leave a comment.
+          لكتابة تعليق.
         </p>
       )}
 
@@ -349,20 +349,20 @@ export default function CommentSection({ recipeId, postId }: CommentSectionProps
         {comments.map((comment) => renderComment(comment))}
       </div>
 
-      {loading && <p className="text-center text-gray-500 dark:text-gray-400 mt-4">Loading...</p>}
+      {loading && <p className="text-center text-gray-500 dark:text-gray-400 mt-4">جارٍ التحميل...</p>}
 
       {nextCursor && !loading && (
         <button
           onClick={() => fetchComments(nextCursor!)}
           className="mt-4 w-full py-2 text-center text-green-600 dark:text-green-400 hover:underline"
         >
-          Load more comments
+          تحميل المزيد من التعليقات
         </button>
       )}
 
       {!loading && comments.length === 0 && (
         <p className="text-center text-gray-500 dark:text-gray-400 py-8">
-          No comments yet. Be the first to comment!
+          لا توجد تعليقات بعد. كن أول من يعلق!
         </p>
       )}
     </div>

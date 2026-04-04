@@ -48,7 +48,7 @@ export default function MessagesPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       </div>
     );
   }
@@ -57,12 +57,12 @@ export default function MessagesPage() {
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <div className="max-w-2xl mx-auto px-4 py-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-          Messages
+          الرسائل
         </h1>
 
         {conversations.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400 text-center py-12">
-            No conversations yet.
+            لا توجد محادثات بعد.
           </p>
         ) : (
           <div className="space-y-1">
@@ -100,7 +100,7 @@ export default function MessagesPage() {
                           : "text-gray-700 dark:text-gray-300"
                       }`}
                     >
-                      {c.otherUser?.name || "Unknown"}
+                      {c.otherUser?.name || "غير معروف"}
                     </span>
                     {c.lastMessage && (
                       <span className="text-xs text-gray-400 dark:text-gray-500 ml-2 flex-shrink-0">

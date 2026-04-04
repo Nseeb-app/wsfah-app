@@ -34,10 +34,10 @@ export default function BrandVerifyPage({ params }: { params: Promise<{ id: stri
         setSuccess(true);
       } else {
         const data = await res.json();
-        setError(data.error || "Failed to submit verification request.");
+        setError(data.error || "فشل تقديم طلب التوثيق.");
       }
     } catch {
-      setError("Network error. Please try again.");
+      setError("خطأ في الشبكة. حاول مرة أخرى.");
     } finally {
       setSubmitting(false);
     }
@@ -53,11 +53,10 @@ export default function BrandVerifyPage({ params }: { params: Promise<{ id: stri
             </svg>
           </div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-            Verification Request Submitted
+            تم تقديم طلب التوثيق
           </h2>
           <p className="text-gray-500 dark:text-gray-400 text-sm">
-            Your brand verification request has been submitted and is pending review. You will be
-            notified once a decision is made.
+            تم تقديم طلب توثيق علامتك التجارية وهو قيد المراجعة. سيتم إعلامك عند اتخاذ القرار.
           </p>
         </div>
       </div>
@@ -67,16 +66,15 @@ export default function BrandVerifyPage({ params }: { params: Promise<{ id: stri
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 max-w-md w-full">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Verify Your Brand</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">توثيق العلامة التجارية</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-          Submit documentation to verify your brand. Provide URLs to supporting documents (one per
-          line).
+          قدّم المستندات لتوثيق علامتك التجارية. أدخل روابط المستندات الداعمة (رابط واحد في كل سطر).
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Document URLs
+              روابط المستندات
             </label>
             <textarea
               value={documents}
@@ -86,7 +84,7 @@ export default function BrandVerifyPage({ params }: { params: Promise<{ id: stri
               className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm resize-none focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
             />
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              Enter one URL per line. Accepted: business license, tax certificate, etc.
+              أدخل رابطاً واحداً في كل سطر. المقبول: رخصة تجارية، شهادة ضريبية، إلخ.
             </p>
           </div>
 
@@ -97,7 +95,7 @@ export default function BrandVerifyPage({ params }: { params: Promise<{ id: stri
             disabled={submitting}
             className="w-full py-2.5 rounded-lg bg-[#25f459] hover:bg-[#20d64e] text-black font-medium text-sm transition-colors disabled:opacity-50"
           >
-            {submitting ? "Submitting..." : "Submit Verification Request"}
+            {submitting ? "جاري التقديم..." : "تقديم طلب التوثيق"}
           </button>
         </form>
       </div>

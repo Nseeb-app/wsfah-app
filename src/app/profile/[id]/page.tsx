@@ -41,17 +41,17 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
       <div className="bg-background-light min-h-screen flex items-center justify-center">
         <div className="text-center">
           <MaterialIcon icon="person_off" className="text-4xl text-slate-400" />
-          <p className="text-sm text-slate-500 mt-2">User not found</p>
-          <Link href="/" className="text-primary text-sm font-bold mt-3 block">Go Home</Link>
+          <p className="text-sm text-slate-500 mt-2">المستخدم غير موجود</p>
+          <Link href="/" className="text-primary text-sm font-bold mt-3 block">الرئيسية</Link>
         </div>
       </div>
     );
   }
 
   const roleBadgeConfig: Record<string, { label: string; color: string; icon?: string }> = {
-    USER: { label: "Home Barista", color: "bg-green-100 text-green-700 border-green-200" },
-    CREATOR: { label: "Verified Creator", color: "bg-purple-100 text-purple-700 border-purple-200", icon: "verified" },
-    BRAND_ADMIN: { label: "Brand Admin", color: "bg-amber-100 text-amber-700 border-amber-200" },
+    USER: { label: "باريستا منزلي", color: "bg-green-100 text-green-700 border-green-200" },
+    CREATOR: { label: "مبدع موثق", color: "bg-purple-100 text-purple-700 border-purple-200", icon: "verified" },
+    BRAND_ADMIN: { label: "مدير علامة تجارية", color: "bg-amber-100 text-amber-700 border-amber-200" },
   };
   const currentRoleBadge = roleBadgeConfig[user.role] || roleBadgeConfig.USER;
 
@@ -76,7 +76,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         <Link href="/" className="flex size-10 items-center justify-center rounded-full hover:bg-primary/10">
           <MaterialIcon icon="arrow_back" />
         </Link>
-        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">Profile</h2>
+        <h2 className="text-lg font-bold leading-tight tracking-tight flex-1 text-center">الملف الشخصي</h2>
         <div className="size-10" />
       </header>
 
@@ -121,7 +121,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-sm text-amber-900" dir="auto">{company.name}</h3>
-                  <p className="text-xs text-amber-600">View Brand</p>
+                  <p className="text-xs text-amber-600">عرض العلامة التجارية</p>
                 </div>
                 <MaterialIcon icon="arrow_forward" className="text-amber-400 text-xl shrink-0" />
               </div>
@@ -135,31 +135,31 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             <>
               <div className="flex-1 bg-white rounded-xl border border-slate-200 p-3 text-center">
                 <p className="text-lg font-bold">{formatCount(user.followers)}</p>
-                <p className="text-slate-500 text-[10px] mt-0.5">Followers</p>
+                <p className="text-slate-500 text-[10px] mt-0.5">متابعين</p>
               </div>
               <div className="flex-1 bg-white rounded-xl border border-slate-200 p-3 text-center">
                 <p className="text-lg font-bold">{formatCount(user.following)}</p>
-                <p className="text-slate-500 text-[10px] mt-0.5">Following</p>
+                <p className="text-slate-500 text-[10px] mt-0.5">يتابع</p>
               </div>
             </>
           )}
           <div className="flex-1 bg-white rounded-xl border border-slate-200 p-3 text-center">
             <p className="text-lg font-bold">{user.recipes.length}</p>
-            <p className="text-slate-500 text-[10px] mt-0.5">Recipes</p>
+            <p className="text-slate-500 text-[10px] mt-0.5">وصفات</p>
           </div>
           <div className="flex-1 bg-white rounded-xl border border-slate-200 p-3 text-center">
             <div className="flex items-center justify-center gap-1">
               <p className="text-lg font-bold">{user.avgRating.toFixed(1)}</p>
               <MaterialIcon icon="star" className="text-primary text-xs" filled />
             </div>
-            <p className="text-slate-500 text-[10px] mt-0.5">Avg Rating</p>
+            <p className="text-slate-500 text-[10px] mt-0.5">متوسط التقييم</p>
           </div>
         </div>
 
         {/* Badges */}
         {user.badges.length > 0 && (
           <div className="px-4 py-6">
-            <h3 className="text-lg font-bold mb-4">Badges</h3>
+            <h3 className="text-lg font-bold mb-4">الشارات</h3>
             <div className="flex gap-3 overflow-x-auto no-scrollbar">
               {user.badges.map((ub) => (
                 <div key={ub.id} className="flex flex-col items-center gap-2 shrink-0 min-w-[72px]">
@@ -181,7 +181,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         {/* Recipes */}
         {user.recipes.length > 0 && (
           <div className="px-4 py-4">
-            <h3 className="text-lg font-bold mb-4">Recipes</h3>
+            <h3 className="text-lg font-bold mb-4">الوصفات</h3>
             <div className="grid grid-cols-2 gap-3">
               {user.recipes.map((r) => (
                 <Link href={`/recipe/${r.id}`} key={r.id} className="flex flex-col gap-2">
@@ -195,7 +195,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
                   <div>
                     <h4 className="font-bold text-sm leading-tight" dir="auto">{r.title}</h4>
                     <p className="text-[10px] opacity-60 font-semibold flex items-center gap-1">
-                      {r.likes} likes
+                      {r.likes} إعجاب
                       {r.rating > 0 && (
                         <> &bull; {r.rating.toFixed(1)} <MaterialIcon icon="star" className="text-[10px] text-primary" /></>
                       )}

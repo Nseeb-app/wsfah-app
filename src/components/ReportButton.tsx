@@ -3,11 +3,11 @@
 import { useState } from "react";
 
 const REASONS = [
-  { value: "spam", label: "Spam" },
-  { value: "inappropriate", label: "Inappropriate" },
-  { value: "harassment", label: "Harassment" },
-  { value: "misinformation", label: "Misinformation" },
-  { value: "other", label: "Other" },
+  { value: "spam", label: "بريد مزعج" },
+  { value: "inappropriate", label: "محتوى غير لائق" },
+  { value: "harassment", label: "تحرش" },
+  { value: "misinformation", label: "معلومات مضللة" },
+  { value: "other", label: "أخرى" },
 ];
 
 interface ReportButtonProps {
@@ -35,7 +35,7 @@ export default function ReportButton({ entityType, entityId }: ReportButtonProps
       });
 
       if (res.ok) {
-        setFeedback({ type: "success", message: "Report submitted. Thank you." });
+        setFeedback({ type: "success", message: "تم إرسال البلاغ. شكراً لك." });
         setReason("");
         setDetails("");
         setTimeout(() => {
@@ -44,10 +44,10 @@ export default function ReportButton({ entityType, entityId }: ReportButtonProps
         }, 2000);
       } else {
         const data = await res.json();
-        setFeedback({ type: "error", message: data.error || "Failed to submit report." });
+        setFeedback({ type: "error", message: data.error || "فشل إرسال البلاغ." });
       }
     } catch {
-      setFeedback({ type: "error", message: "Network error. Please try again." });
+      setFeedback({ type: "error", message: "خطأ في الشبكة. يرجى المحاولة مرة أخرى." });
     } finally {
       setSubmitting(false);
     }
@@ -58,14 +58,14 @@ export default function ReportButton({ entityType, entityId }: ReportButtonProps
       <button
         onClick={() => setOpen(!open)}
         className="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-colors text-sm"
-        title="Report"
+        title="إبلاغ"
       >
-        Report
+        إبلاغ
       </button>
 
       {open && (
         <div className="absolute right-0 top-8 z-50 w-72 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-lg p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Report Content</h4>
+          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">الإبلاغ عن محتوى</h4>
 
           <div className="space-y-2 mb-3">
             {REASONS.map((r) => (
@@ -98,7 +98,7 @@ export default function ReportButton({ entityType, entityId }: ReportButtonProps
           </div>
 
           <textarea
-            placeholder="Additional details (optional)"
+            placeholder="تفاصيل إضافية (اختياري)"
             value={details}
             onChange={(e) => setDetails(e.target.value)}
             rows={3}
@@ -123,14 +123,14 @@ export default function ReportButton({ entityType, entityId }: ReportButtonProps
               }}
               className="flex-1 px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
-              Cancel
+              إلغاء
             </button>
             <button
               onClick={handleSubmit}
               disabled={!reason || submitting}
               className="flex-1 px-3 py-2 rounded-lg text-sm font-medium bg-red-600 hover:bg-red-700 text-white disabled:opacity-50"
             >
-              {submitting ? "Submitting..." : "Submit"}
+              {submitting ? "جارٍ الإرسال..." : "إرسال"}
             </button>
           </div>
         </div>

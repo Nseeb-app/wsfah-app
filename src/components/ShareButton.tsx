@@ -54,7 +54,7 @@ export default function ShareButton({ url, title, className }: ShareButtonProps)
       <MaterialIcon icon={copied ? "check" : "share"} className="block" />
       {copied && (
         <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-espresso text-white text-[10px] font-bold px-2 py-1 rounded whitespace-nowrap">
-          Copied!
+          تم النسخ!
         </span>
       )}
     </button>

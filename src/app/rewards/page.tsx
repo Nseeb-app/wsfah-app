@@ -95,13 +95,13 @@ export default function RewardsPage() {
       if (res.ok) {
         const data = await res.json();
         setUser((prev) => prev ? { ...prev, points: data.remainingPoints } : prev);
-        setRedeemMessage({ type: "success", text: "Reward redeemed successfully!" });
+        setRedeemMessage({ type: "success", text: "تم استبدال المكافأة بنجاح!" });
       } else {
         const err = await res.json();
-        setRedeemMessage({ type: "error", text: err.error || "Failed to redeem" });
+        setRedeemMessage({ type: "error", text: err.error || "فشل الاستبدال" });
       }
     } catch {
-      setRedeemMessage({ type: "error", text: "Something went wrong" });
+      setRedeemMessage({ type: "error", text: "حدث خطأ ما" });
     } finally {
       setRedeeming(null);
     }
@@ -135,7 +135,7 @@ export default function RewardsPage() {
           <MaterialIcon icon="arrow_back" />
         </Link>
         <h2 className="text-slate-900 text-lg font-bold leading-tight tracking-tight flex-1 text-center">
-          WSFA Rewards
+          مكافآت WSFA
         </h2>
         <Link href="/notifications" className="flex items-center justify-center rounded-lg h-12 bg-transparent text-slate-900 p-0">
           <MaterialIcon icon="notifications" />
@@ -159,7 +159,7 @@ export default function RewardsPage() {
               <div className="flex items-center gap-2 mt-1">
                 <MaterialIcon icon="stars" className={`text-sm ${tierColors[memberTier]}`} />
                 <p className={`text-sm font-semibold uppercase tracking-wider ${tierColors[memberTier]}`}>
-                  {memberTier} Member
+                  عضو {memberTier}
                 </p>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function RewardsPage() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <MaterialIcon icon="military_tech" className={tierColors[memberTier]} />
-              <p className="text-slate-900 text-base font-bold">Rank Progress</p>
+              <p className="text-slate-900 text-base font-bold">تقدم المرتبة</p>
             </div>
             <span className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full ${
               memberTier === "Gold" ? "bg-amber-100 text-amber-600" :
@@ -223,13 +223,13 @@ export default function RewardsPage() {
                 </div>
                 <p className="text-xs text-slate-500 font-medium mt-2 text-center">
                   {isMaxed ? (
-                    <span className="text-amber-500 font-bold">Max tier reached! You&apos;re a Gold member!</span>
+                    <span className="text-amber-500 font-bold">وصلت لأعلى مرتبة! أنت عضو ذهبي!</span>
                   ) : (
                     <>
                       <span className="text-slate-900 font-bold">{user.points.toLocaleString()}</span>
                       {" / "}
                       {currentTier.max.toLocaleString()} pts &mdash;{" "}
-                      <span className="text-primary font-bold">{(currentTier.max - user.points).toLocaleString()} pts to {nextTierName}</span>
+                      <span className="text-primary font-bold">{(currentTier.max - user.points).toLocaleString()} نقطة لـ{nextTierName}</span>
                     </>
                   )}
                 </p>
@@ -255,7 +255,7 @@ export default function RewardsPage() {
         <div className="flex flex-col gap-2 rounded-xl p-6 bg-primary text-slate-900 shadow-lg shadow-primary/20">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-slate-900/70 text-sm font-bold uppercase tracking-widest">Total Points Balance</p>
+              <p className="text-slate-900/70 text-sm font-bold uppercase tracking-widest">رصيد النقاط الإجمالي</p>
               <p className="text-4xl font-extrabold leading-tight mt-1">
                 {user.points.toLocaleString()}
               </p>
@@ -264,7 +264,7 @@ export default function RewardsPage() {
           </div>
           <div className="mt-4 pt-4 border-t border-slate-900/10 flex justify-between items-center">
             <span className="text-sm font-bold">
-              Next tier: {memberTier === "Gold" ? "Max reached!" : memberTier === "Silver" ? `${2000 - user.points} pts to Gold` : `${1000 - user.points} pts to Silver`}
+              المرتبة التالية: {memberTier === "Gold" ? "وصلت الأعلى!" : memberTier === "Silver" ? `${2000 - user.points} نقطة للذهبي` : `${1000 - user.points} نقطة للفضي`}
             </span>
           </div>
         </div>
@@ -276,9 +276,9 @@ export default function RewardsPage() {
           <div className="flex gap-2 justify-between items-center mb-3">
             <div className="flex items-center gap-2">
               <MaterialIcon icon="local_fire_department" className="text-orange-500" />
-              <p className="text-slate-900 text-base font-bold leading-normal">Daily Streak</p>
+              <p className="text-slate-900 text-base font-bold leading-normal">سلسلة يومية</p>
             </div>
-            <p className="text-slate-900 text-sm font-bold">{user.dailyStreak}/5 days</p>
+            <p className="text-slate-900 text-sm font-bold">{user.dailyStreak}/5 أيام</p>
           </div>
           <div className="h-3 rounded-full bg-primary/20 overflow-hidden">
             <div
@@ -288,11 +288,11 @@ export default function RewardsPage() {
           </div>
           <p className="text-slate-600 text-xs mt-3 font-medium">
             {user.dailyStreak >= 5 ? (
-              <span className="text-primary font-bold">Streak complete! +50 bonus points earned!</span>
+              <span className="text-primary font-bold">السلسلة مكتملة! +50 نقطة إضافية!</span>
             ) : (
               <>
-                {5 - user.dailyStreak} more day{5 - user.dailyStreak !== 1 ? "s" : ""} to earn{" "}
-                <span className="text-primary font-bold">50 bonus points</span>!
+                {5 - user.dailyStreak} يوم متبقي للحصول على{" "}
+                <span className="text-primary font-bold">50 نقطة إضافية</span>!
               </>
             )}
           </p>
@@ -302,17 +302,17 @@ export default function RewardsPage() {
       {/* Active Challenges */}
       <div className="px-4 py-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-slate-900 text-lg font-bold">Active Challenges</h3>
+          <h3 className="text-slate-900 text-lg font-bold">التحديات النشطة</h3>
           <Link href="/challenges" className="text-primary text-sm font-bold">
-            View All
+            عرض الكل
           </Link>
         </div>
         {activeChallenges.length === 0 ? (
           <div className="bg-white rounded-xl p-6 border border-primary/5 text-center">
             <MaterialIcon icon="emoji_events" className="text-3xl text-espresso/20 mb-2" />
-            <p className="text-sm text-espresso/50 font-medium">No active challenges</p>
+            <p className="text-sm text-espresso/50 font-medium">لا توجد تحديات نشطة</p>
             <Link href="/challenges" className="text-primary text-xs font-bold mt-2 inline-block">
-              Browse Challenges
+              تصفح التحديات
             </Link>
           </div>
         ) : (
@@ -328,7 +328,7 @@ export default function RewardsPage() {
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-bold text-slate-900" dir="auto">{ch.title}</p>
-                    <p className="text-xs text-slate-500 mt-1">Reward: {ch.rewardPoints} Points</p>
+                    <p className="text-xs text-slate-500 mt-1">المكافأة: {ch.rewardPoints} نقطة</p>
                     <div className="mt-2 h-1.5 w-full bg-primary/10 rounded-full overflow-hidden">
                       <div className="h-full bg-primary" style={{ width: `${progress}%` }} />
                     </div>
@@ -345,11 +345,11 @@ export default function RewardsPage() {
 
       {/* Redeemable Rewards */}
       <div className="px-4 py-6">
-        <h3 className="text-slate-900 text-lg font-bold mb-4">Redeemable Rewards</h3>
+        <h3 className="text-slate-900 text-lg font-bold mb-4">مكافآت قابلة للاستبدال</h3>
         {rewards.length === 0 ? (
           <div className="bg-white rounded-xl p-6 border border-primary/5 text-center">
             <MaterialIcon icon="redeem" className="text-3xl text-espresso/20 mb-2" />
-            <p className="text-sm text-espresso/50 font-medium">No rewards available yet</p>
+            <p className="text-sm text-espresso/50 font-medium">لا توجد مكافآت متاحة بعد</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">
@@ -374,7 +374,7 @@ export default function RewardsPage() {
                       {redeeming === rw.id ? (
                         <span className="flex items-center justify-center gap-2">
                           <div className="size-3 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
-                          Redeeming...
+                          جاري الاستبدال...
                         </span>
                       ) : (
                         `${rw.pointsCost.toLocaleString()} pts`

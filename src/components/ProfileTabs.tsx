@@ -35,9 +35,9 @@ const PLACEHOLDER_IMG =
 type TabKey = "recipes" | "saved" | "liked";
 
 const tabs: { key: TabKey; label: string }[] = [
-  { key: "recipes", label: "My Recipes" },
-  { key: "saved", label: "Saved" },
-  { key: "liked", label: "Liked" },
+  { key: "recipes", label: "وصفاتي" },
+  { key: "saved", label: "المحفوظات" },
+  { key: "liked", label: "الإعجابات" },
 ];
 
 function RecipeGrid({ items, emptyIcon, emptyText, emptyAction }: {
@@ -120,24 +120,24 @@ export default function ProfileTabs({ recipes, saves, likes }: ProfileTabsProps)
           <RecipeGrid
             items={recipes}
             emptyIcon="menu_book"
-            emptyText="No recipes yet"
-            emptyAction={{ label: "Create your first recipe", href: "/create" }}
+            emptyText="لا توجد وصفات بعد"
+            emptyAction={{ label: "أنشئ وصفتك الأولى", href: "/create" }}
           />
         )}
         {activeTab === "saved" && (
           <RecipeGrid
             items={savedRecipes}
             emptyIcon="bookmark"
-            emptyText="No saved recipes yet"
-            emptyAction={{ label: "Explore recipes", href: "/search" }}
+            emptyText="لا توجد وصفات محفوظة بعد"
+            emptyAction={{ label: "استكشف الوصفات", href: "/search" }}
           />
         )}
         {activeTab === "liked" && (
           <RecipeGrid
             items={likedRecipes}
             emptyIcon="favorite"
-            emptyText="No liked recipes yet"
-            emptyAction={{ label: "Explore recipes", href: "/search" }}
+            emptyText="لا توجد وصفات معجب بها بعد"
+            emptyAction={{ label: "استكشف الوصفات", href: "/search" }}
           />
         )}
       </div>

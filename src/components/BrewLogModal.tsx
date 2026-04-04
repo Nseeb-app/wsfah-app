@@ -4,13 +4,13 @@ import { useState } from "react";
 import MaterialIcon from "./MaterialIcon";
 
 const FLAVOR_OPTIONS = [
-  "Fruity", "Berry", "Citrus", "Tropical",
-  "Nutty", "Chocolatey", "Caramel", "Vanilla",
-  "Floral", "Herbal", "Spicy", "Smoky",
-  "Honey", "Buttery", "Earthy", "Woody",
+  "فاكهي", "توت", "حمضيات", "استوائي",
+  "مكسرات", "شوكولاتة", "كراميل", "فانيلا",
+  "زهري", "أعشاب", "حار", "مدخن",
+  "عسل", "زبدة", "ترابي", "خشبي",
 ];
 
-const GRIND_SIZES = ["Extra Fine", "Fine", "Medium-Fine", "Medium", "Medium-Coarse", "Coarse"];
+const GRIND_SIZES = ["ناعم جداً", "ناعم", "متوسط ناعم", "متوسط", "متوسط خشن", "خشن"];
 
 interface BrewLogModalProps {
   recipeId?: string;
@@ -89,7 +89,7 @@ export default function BrewLogModal({ recipeId, recipeName, defaultParams, onCl
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 z-10 rounded-t-2xl">
           <div>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">Log Your Brew</h3>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white">سجّل تحضيرك</h3>
             {recipeName && <p className="text-sm text-gray-500">{recipeName}</p>}
           </div>
           <button onClick={onClose} className="size-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center">
@@ -109,7 +109,7 @@ export default function BrewLogModal({ recipeId, recipeName, defaultParams, onCl
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
-              {t === "brew" ? "Brew Details" : "Tasting Notes"}
+              {t === "brew" ? "تفاصيل التحضير" : "ملاحظات التذوق"}
             </button>
           ))}
         </div>
@@ -119,13 +119,13 @@ export default function BrewLogModal({ recipeId, recipeName, defaultParams, onCl
             <>
               {/* Title */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">العنوان</label>
                 <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
               </div>
 
               {/* Rating */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rating</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">التقييم</label>
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((v) => (
                     <button
@@ -148,36 +148,36 @@ export default function BrewLogModal({ recipeId, recipeName, defaultParams, onCl
               {/* Brew Params Grid */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Coffee (g)</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">القهوة (جم)</label>
                   <input type="number" value={coffeeGrams} onChange={(e) => setCoffeeGrams(e.target.value)} placeholder="18" className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Water (ml)</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">الماء (مل)</label>
                   <input type="number" value={waterMl} onChange={(e) => setWaterMl(e.target.value)} placeholder="300" className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Temp (°C)</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">الحرارة (°م)</label>
                   <input type="number" value={waterTemp} onChange={(e) => setWaterTemp(e.target.value)} placeholder="93" className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Brew Time (sec)</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">وقت التحضير (ثانية)</label>
                   <input type="number" value={brewTime} onChange={(e) => setBrewTime(e.target.value)} placeholder="240" className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm" />
                 </div>
               </div>
 
               {/* Grind Size */}
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Grind Size</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">حجم الطحن</label>
                 <select value={grindSize} onChange={(e) => setGrindSize(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
-                  <option value="">Select...</option>
+                  <option value="">اختر...</option>
                   {GRIND_SIZES.map((g) => <option key={g} value={g}>{g}</option>)}
                 </select>
               </div>
 
               {/* Notes */}
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Notes</label>
-                <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} placeholder="How did it turn out? Any adjustments for next time?" className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm resize-none" />
+                <label className="block text-xs font-medium text-gray-500 mb-1">ملاحظات</label>
+                <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} placeholder="كيف كانت النتيجة؟ أي تعديلات للمرة القادمة؟" className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm resize-none" />
               </div>
             </>
           ) : (
@@ -185,9 +185,9 @@ export default function BrewLogModal({ recipeId, recipeName, defaultParams, onCl
               {/* Tasting Sliders */}
               <div className="space-y-5">
                 {[
-                  { label: "Acidity", value: acidity, set: setAcidity, low: "Low", high: "Bright" },
-                  { label: "Body", value: body, set: setBody, low: "Light", high: "Full" },
-                  { label: "Sweetness", value: sweetness, set: setSweetness, low: "Dry", high: "Sweet" },
+                  { label: "الحموضة", value: acidity, set: setAcidity, low: "منخفضة", high: "عالية" },
+                  { label: "القوام", value: body, set: setBody, low: "خفيف", high: "كامل" },
+                  { label: "الحلاوة", value: sweetness, set: setSweetness, low: "جاف", high: "حلو" },
                 ].map((s) => (
                   <div key={s.label}>
                     <div className="flex items-center justify-between mb-1">
@@ -213,7 +213,7 @@ export default function BrewLogModal({ recipeId, recipeName, defaultParams, onCl
 
               {/* Flavor Tags */}
               <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Flavor Notes</label>
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">نكهات</label>
                 <div className="flex flex-wrap gap-2">
                   {FLAVOR_OPTIONS.map((f) => (
                     <button
@@ -244,7 +244,7 @@ export default function BrewLogModal({ recipeId, recipeName, defaultParams, onCl
             ) : (
               <>
                 <MaterialIcon icon="save" className="text-lg" />
-                Save Brew Log
+                حفظ السجل
               </>
             )}
           </button>

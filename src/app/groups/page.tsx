@@ -67,12 +67,12 @@ export default function GroupsPage() {
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <div className="max-w-3xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Groups</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">المجموعات</h1>
           <button
             onClick={() => setShowCreate(!showCreate)}
             className="bg-[#25f459] text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1de04d] transition-colors"
           >
-            Create Group
+            إنشاء مجموعة
           </button>
         </div>
 
@@ -84,13 +84,13 @@ export default function GroupsPage() {
           >
             <input
               type="text"
-              placeholder="Group name"
+              placeholder="اسم المجموعة"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#25f459]"
             />
             <textarea
-              placeholder="Description (optional)"
+              placeholder="الوصف (اختياري)"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#25f459] resize-none"
@@ -105,7 +105,7 @@ export default function GroupsPage() {
                 className="accent-[#25f459]"
               />
               <label htmlFor="isPublic" className="text-sm text-gray-700 dark:text-gray-300">
-                Public group
+                مجموعة عامة
               </label>
             </div>
             <button
@@ -113,7 +113,7 @@ export default function GroupsPage() {
               disabled={creating || !form.name.trim()}
               className="bg-[#25f459] text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1de04d] disabled:opacity-50 transition-colors"
             >
-              {creating ? "Creating..." : "Create"}
+              {creating ? "جاري الإنشاء..." : "إنشاء"}
             </button>
           </form>
         )}
@@ -121,7 +121,7 @@ export default function GroupsPage() {
         {/* Search */}
         <input
           type="text"
-          placeholder="Search groups..."
+          placeholder="ابحث عن مجموعات..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full mb-6 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#25f459]"
@@ -129,9 +129,9 @@ export default function GroupsPage() {
 
         {/* List */}
         {loading ? (
-          <p className="text-gray-500 dark:text-gray-400 text-center py-12">Loading...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-center py-12">جاري التحميل...</p>
         ) : groups.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400 text-center py-12">No groups found.</p>
+          <p className="text-gray-500 dark:text-gray-400 text-center py-12">لا توجد مجموعات.</p>
         ) : (
           <div className="space-y-3">
             {groups.map((g) => (
@@ -147,14 +147,14 @@ export default function GroupsPage() {
                     </p>
                   )}
                   <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                    {g._count.members} {g._count.members === 1 ? "member" : "members"}
+                    {g._count.members} {g._count.members === 1 ? "عضو" : "أعضاء"}
                   </p>
                 </div>
                 <button
                   onClick={() => handleJoin(g.id)}
                   className="flex-shrink-0 border border-[#25f459] text-[#25f459] px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-[#25f459] hover:text-gray-900 transition-colors"
                 >
-                  Join
+                  انضم
                 </button>
               </div>
             ))}

@@ -36,7 +36,7 @@ export default async function BrandProfilePage({ params }: { params: Promise<{ i
   if (!company) notFound();
 
   const isOwner = session?.user?.id === company.ownerId;
-  const typeLabel = company.type === "roaster" ? "Roastery" : company.type === "cafe" ? "Café" : company.type === "tea_brand" ? "Tea Brand" : "Equipment";
+  const typeLabel = company.type === "roaster" ? "محمصة" : company.type === "cafe" ? "مقهى" : company.type === "tea_brand" ? "علامة شاي" : "معدات";
 
   return (
     <div className="bg-background-light min-h-screen flex flex-col relative overflow-hidden text-slate-900">
@@ -72,7 +72,7 @@ export default async function BrandProfilePage({ params }: { params: Promise<{ i
           <div className="space-y-1">
             <h2 className="text-2xl font-bold tracking-tight" dir="auto">{company.name}</h2>
             <p className="text-primary font-semibold text-sm">
-              {company.isVerified ? "Verified " : ""}{typeLabel}
+              {company.isVerified ? "موثق " : ""}{typeLabel}
             </p>
             {company.description && (
               <p className="text-slate-600 text-sm max-w-xs mx-auto px-4 mt-2" dir="auto">{company.description}</p>
@@ -94,9 +94,9 @@ export default async function BrandProfilePage({ params }: { params: Promise<{ i
         {/* Stats */}
         <div className="flex gap-3 px-4 py-2">
           {[
-            { value: String(company.products.length), label: "Products" },
-            { value: String(company.recipes.length), label: "Recipes" },
-            { value: String(company.galleryPosts.length), label: "Gallery" },
+            { value: String(company.products.length), label: "المنتجات" },
+            { value: String(company.recipes.length), label: "الوصفات" },
+            { value: String(company.galleryPosts.length), label: "المعرض" },
           ].map((s) => (
             <div key={s.label} className="flex-1 bg-white rounded-xl border border-slate-200 p-3 text-center">
               <p className="text-lg font-bold">{s.value}</p>

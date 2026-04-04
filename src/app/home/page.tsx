@@ -55,7 +55,7 @@ export default async function HomePage() {
   };
 
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
+  const greeting = hour < 12 ? "صباح الخير" : hour < 18 ? "مساء الخير" : "مساء الخير";
 
   return (
     <div className="bg-background-light text-espresso min-h-screen flex flex-col">
@@ -71,7 +71,7 @@ export default async function HomePage() {
               />
             </Link>
             <div>
-              <p className="text-xs uppercase tracking-widest opacity-60 font-semibold">Discovery</p>
+              <p className="text-xs uppercase tracking-widest opacity-60 font-semibold">اكتشف</p>
               <h1 className="text-xl font-bold tracking-tight">{greeting}, {userName}</h1>
             </div>
           </div>
@@ -86,7 +86,7 @@ export default async function HomePage() {
           <div className="flex items-center bg-white rounded-2xl px-4 py-3 shadow-sm border border-espresso/5">
             <MaterialIcon icon="search" className="text-espresso/40 mr-3" />
             <span className="text-sm text-espresso/30 font-medium flex-1">
-              Search recipes, roasters, or tea blends
+              ابحث عن وصفات، محمصات، أو خلطات شاي
             </span>
             <MaterialIcon icon="tune" className="text-espresso/40 ml-2 text-xl" />
           </div>
@@ -102,8 +102,8 @@ export default async function HomePage() {
         {featuredRecipe && (
           <section className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold">Weekly Roaster&apos;s Pick</h2>
-              <Link href="/search" className="text-xs font-bold text-primary uppercase tracking-wider cursor-pointer">See All</Link>
+              <h2 className="text-lg font-bold">اختيار المحمصة الأسبوعي</h2>
+              <Link href="/search" className="text-xs font-bold text-primary uppercase tracking-wider cursor-pointer">عرض الكل</Link>
             </div>
             <Link href={`/recipe/${featuredRecipe.slug}`}>
               <div className="relative group overflow-hidden rounded-2xl bg-espresso text-oat-milk shadow-xl aspect-[4/5] flex flex-col justify-end">
@@ -117,7 +117,7 @@ export default async function HomePage() {
                   <div className="flex items-center gap-2 mb-3">
                     {featuredRecipe.isVerified && (
                       <span className="bg-primary/90 text-espresso text-[10px] font-extrabold px-2 py-1 rounded uppercase tracking-tighter">
-                        Verified Brand
+                        علامة تجارية موثقة
                       </span>
                     )}
                     <div className="flex items-center text-xs font-medium opacity-90">
@@ -145,7 +145,7 @@ export default async function HomePage() {
         {/* Categories */}
         <section className="mb-8 -mx-6">
           <div className="px-6 mb-4">
-            <h2 className="text-lg font-bold">Categories</h2>
+            <h2 className="text-lg font-bold">الأقسام</h2>
           </div>
           <div className="flex overflow-x-auto gap-4 px-6 no-scrollbar">
             {categories.map((cat, i) => (
@@ -169,12 +169,12 @@ export default async function HomePage() {
         {roasters.length > 0 && (
           <section className="mb-8 -mx-6">
             <div className="px-6 mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-bold">Featured Roasters</h2>
-              <Link href="/roasters" className="text-xs font-bold text-primary uppercase tracking-wider">See All</Link>
+              <h2 className="text-lg font-bold">محمصات مميزة</h2>
+              <Link href="/roasters" className="text-xs font-bold text-primary uppercase tracking-wider">عرض الكل</Link>
             </div>
             <div className="flex overflow-x-auto gap-4 px-6 no-scrollbar">
               {roasters.map((r) => {
-                const typeLabel = r.type === "roaster" ? "Roastery" : r.type === "cafe" ? "Cafe" : r.type === "tea_brand" ? "Tea Brand" : "Equipment";
+                const typeLabel = r.type === "roaster" ? "محمصة" : r.type === "cafe" ? "مقهى" : r.type === "tea_brand" ? "علامة شاي" : "معدات";
                 return (
                   <Link href={`/brand/${r.id}`} key={r.id} className="flex flex-col items-center gap-2 shrink-0 group cursor-pointer">
                     <div className="size-16 rounded-full border-2 border-primary/30 p-0.5 group-hover:border-primary transition-colors">
@@ -201,7 +201,7 @@ export default async function HomePage() {
         {/* Trending Now */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold">Trending Now</h2>
+            <h2 className="text-lg font-bold">رائج الآن</h2>
             <div className="flex gap-2">
               <button className="size-8 rounded-full bg-white shadow-sm border border-espresso/5 flex items-center justify-center">
                 <MaterialIcon icon="grid_view" className="text-sm" />
@@ -223,11 +223,11 @@ export default async function HomePage() {
                   <div className="absolute top-3 left-3 flex gap-1">
                     {item.brand ? (
                       <div className="bg-brand-gold text-[8px] font-black px-2 py-0.5 rounded text-white shadow-sm flex items-center gap-0.5">
-                        <MaterialIcon icon="verified" className="text-[10px]" /> BRAND
+                        <MaterialIcon icon="verified" className="text-[10px]" /> علامة تجارية
                       </div>
                     ) : (
                       <div className="bg-community-teal text-[8px] font-black px-2 py-0.5 rounded text-white shadow-sm flex items-center gap-0.5">
-                        <MaterialIcon icon="group" className="text-[10px]" /> COMMUNITY
+                        <MaterialIcon icon="group" className="text-[10px]" /> مجتمعي
                       </div>
                     )}
                   </div>
@@ -240,7 +240,7 @@ export default async function HomePage() {
                   <p className="text-[10px] opacity-60 font-semibold tracking-wide flex items-center gap-1 uppercase">
                     {item.brand?.name || item.author.name} &bull;{" "}
                     {item.brand ? (
-                      <span className="text-brand-gold">Gold Pick</span>
+                      <span className="text-brand-gold">اختيار ذهبي</span>
                     ) : (
                       <>
                         {item.rating.toFixed(1)} <MaterialIcon icon="star" className="text-[10px] text-primary" />

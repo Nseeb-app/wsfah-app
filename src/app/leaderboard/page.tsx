@@ -16,9 +16,9 @@ interface LeaderboardEntry {
 type SortTab = "points" | "recipes" | "followers";
 
 const TABS: { key: SortTab; label: string }[] = [
-  { key: "points", label: "Points" },
-  { key: "recipes", label: "Recipes" },
-  { key: "followers", label: "Followers" },
+  { key: "points", label: "النقاط" },
+  { key: "recipes", label: "الوصفات" },
+  { key: "followers", label: "المتابعين" },
 ];
 
 function getMedal(rank: number): string | null {
@@ -55,7 +55,7 @@ export default function LeaderboardPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-        Leaderboard
+        المتصدرين
       </h1>
 
       {/* Tabs */}
@@ -83,11 +83,11 @@ export default function LeaderboardPage() {
       {/* List */}
       {loading ? (
         <p className="text-center text-gray-500 dark:text-gray-400 py-12">
-          Loading...
+          جاري التحميل...
         </p>
       ) : entries.length === 0 ? (
         <p className="text-center text-gray-500 dark:text-gray-400 py-12">
-          No users yet.
+          لا يوجد مستخدمون بعد.
         </p>
       ) : (
         <div className="space-y-2">
@@ -113,7 +113,7 @@ export default function LeaderboardPage() {
                 {entry.image ? (
                   <img
                     src={entry.image}
-                    alt={entry.name || "User"}
+                    alt={entry.name || "مستخدم"}
                     className="w-10 h-10 rounded-full object-cover shrink-0"
                   />
                 ) : (
@@ -127,7 +127,7 @@ export default function LeaderboardPage() {
                 {/* Name */}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                    {entry.name || "Anonymous"}
+                    {entry.name || "مجهول"}
                   </p>
                 </div>
 

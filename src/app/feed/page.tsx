@@ -66,16 +66,16 @@ export default function FeedPage() {
     <div className="bg-background-light font-display text-slate-900 min-h-screen pb-24">
       {/* Header */}
       <header className="sticky top-0 z-10 flex items-center p-4 justify-between bg-background-light/80 backdrop-blur-md border-b border-primary/10">
-        <h1 className="text-xl font-bold">Activity Feed</h1>
+        <h1 className="text-xl font-bold">آخر الأخبار</h1>
       </header>
 
       {/* Feed */}
       <div className="p-4">
         {activities.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-500 dark:text-gray-400 mb-2">No activity yet</p>
+            <p className="text-gray-500 dark:text-gray-400 mb-2">لا يوجد نشاط بعد</p>
             <p className="text-sm text-gray-400 dark:text-gray-500">
-              Follow users to see their activity in your feed
+              تابع مستخدمين لرؤية نشاطهم في صفحتك
             </p>
           </div>
         ) : (
@@ -99,7 +99,7 @@ export default function FeedPage() {
               onClick={handleLoadMore}
               className="px-6 py-3 bg-primary text-background-dark rounded-full font-bold text-sm hover:bg-primary/80 transition-colors"
             >
-              Load More
+              تحميل المزيد
             </button>
           </div>
         )}

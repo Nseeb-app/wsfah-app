@@ -75,12 +75,12 @@ export default function EventsPage() {
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <div className="max-w-3xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Events</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">الفعاليات</h1>
           <button
             onClick={() => setShowCreate(!showCreate)}
             className="bg-[#25f459] text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1de04d] transition-colors"
           >
-            Create Event
+            إنشاء فعالية
           </button>
         </div>
 
@@ -92,13 +92,13 @@ export default function EventsPage() {
           >
             <input
               type="text"
-              placeholder="Event title"
+              placeholder="عنوان الفعالية"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#25f459]"
             />
             <textarea
-              placeholder="Description (optional)"
+              placeholder="الوصف (اختياري)"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#25f459] resize-none"
@@ -106,7 +106,7 @@ export default function EventsPage() {
             />
             <input
               type="text"
-              placeholder="Location (optional)"
+              placeholder="الموقع (اختياري)"
               value={form.location}
               onChange={(e) => setForm({ ...form, location: e.target.value })}
               className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#25f459]"
@@ -114,7 +114,7 @@ export default function EventsPage() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
-                  Start date
+                  تاريخ البدء
                 </label>
                 <input
                   type="datetime-local"
@@ -125,7 +125,7 @@ export default function EventsPage() {
               </div>
               <div>
                 <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
-                  End date (optional)
+                  تاريخ الانتهاء (اختياري)
                 </label>
                 <input
                   type="datetime-local"
@@ -140,17 +140,17 @@ export default function EventsPage() {
               disabled={creating || !form.title.trim() || !form.startDate}
               className="bg-[#25f459] text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1de04d] disabled:opacity-50 transition-colors"
             >
-              {creating ? "Creating..." : "Create Event"}
+              {creating ? "جاري الإنشاء..." : "إنشاء فعالية"}
             </button>
           </form>
         )}
 
         {/* Event list */}
         {loading ? (
-          <p className="text-gray-500 dark:text-gray-400 text-center py-12">Loading...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-center py-12">جاري التحميل...</p>
         ) : events.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400 text-center py-12">
-            No upcoming events.
+            لا توجد فعاليات قادمة.
           </p>
         ) : (
           <div className="space-y-3">
@@ -168,7 +168,7 @@ export default function EventsPage() {
                   </p>
                 )}
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                  {event._count.rsvps} {event._count.rsvps === 1 ? "attendee" : "attendees"}
+                  {event._count.rsvps} {event._count.rsvps === 1 ? "حاضر" : "حاضرين"}
                 </p>
               </button>
             ))}

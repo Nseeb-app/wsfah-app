@@ -106,7 +106,7 @@ export default function ChallengesPage() {
           <Link href="/rewards" className="size-10 rounded-full flex items-center justify-center hover:bg-primary/10">
             <MaterialIcon icon="arrow_back" />
           </Link>
-          <h1 className="text-lg font-bold">Challenges</h1>
+          <h1 className="text-lg font-bold">التحديات</h1>
         </div>
 
         {/* User Rank Badge */}
@@ -115,8 +115,8 @@ export default function ChallengesPage() {
             <MaterialIcon icon="military_tech" className="text-xl text-primary" />
           </div>
           <div className="flex-1">
-            <p className="text-xs text-espresso/60 font-medium">Your Rank</p>
-            <p className="text-sm font-bold">{userRank} Member</p>
+            <p className="text-xs text-espresso/60 font-medium">مرتبتك</p>
+            <p className="text-sm font-bold">عضو {userRank}</p>
           </div>
           <span className={`text-xs font-bold px-3 py-1 rounded-full ${rankColors[userRank]?.badge || "bg-orange-100 text-orange-600"}`}>
             {user?.points?.toLocaleString() || 0} pts
@@ -166,8 +166,8 @@ export default function ChallengesPage() {
         ) : challenges.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-espresso/40">
             <MaterialIcon icon="emoji_events" className="text-5xl mb-4" />
-            <p className="text-sm font-medium">No challenges available</p>
-            <p className="text-xs mt-1">Check back later for new challenges!</p>
+            <p className="text-sm font-medium">لا توجد تحديات متاحة</p>
+            <p className="text-xs mt-1">تحقق لاحقاً لتحديات جديدة!</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -222,7 +222,7 @@ export default function ChallengesPage() {
                     {isJoined && (
                       <div className="mt-3">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] font-bold text-espresso/50">Progress</span>
+                          <span className="text-[10px] font-bold text-espresso/50">التقدم</span>
                           <span className="text-[10px] font-bold">
                             {userProgress.currentProgress}/{ch.maxProgress}
                           </span>
@@ -241,17 +241,17 @@ export default function ChallengesPage() {
                       {isLocked ? (
                         <p className="text-xs text-espresso/40 font-medium flex items-center gap-1">
                           <MaterialIcon icon="lock" className="text-sm" />
-                          Reach {ch.rank} rank to unlock
+                          حقق مرتبة {ch.rank} للفتح
                         </p>
                       ) : isCompleted ? (
                         <div className="flex items-center gap-2 text-green-600">
                           <MaterialIcon icon="check_circle" className="text-lg" />
-                          <span className="text-xs font-bold">Completed!</span>
+                          <span className="text-xs font-bold">مكتمل!</span>
                         </div>
                       ) : isJoined ? (
                         <div className="flex items-center gap-2 text-primary">
                           <MaterialIcon icon="trending_up" className="text-lg" />
-                          <span className="text-xs font-bold">In Progress</span>
+                          <span className="text-xs font-bold">قيد التنفيذ</span>
                         </div>
                       ) : (
                         <button
@@ -259,7 +259,7 @@ export default function ChallengesPage() {
                           disabled={joining === ch.id}
                           className="bg-primary text-espresso text-xs font-bold px-4 py-2 rounded-lg active:scale-95 transition-transform disabled:opacity-50"
                         >
-                          {joining === ch.id ? "Joining..." : "Join Challenge"}
+                          {joining === ch.id ? "جاري الانضمام..." : "انضم للتحدي"}
                         </button>
                       )}
                     </div>

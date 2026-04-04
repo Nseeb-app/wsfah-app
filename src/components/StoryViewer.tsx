@@ -128,7 +128,7 @@ export default function StoryViewer({ stories, onClose }: StoryViewerProps) {
         <button
           onClick={onClose}
           className="text-white text-2xl leading-none p-2 hover:opacity-70 transition-opacity"
-          aria-label="Close"
+          aria-label="إغلاق"
         >
           &times;
         </button>
@@ -149,7 +149,7 @@ export default function StoryViewer({ stories, onClose }: StoryViewerProps) {
           <img
             key={current.id}
             src={current.mediaUrl}
-            alt={current.caption || "Story"}
+            alt={current.caption || "قصة"}
             className="absolute inset-0 w-full h-full object-contain"
           />
         )}

@@ -4,85 +4,85 @@ import MaterialIcon from "./MaterialIcon";
 const features = [
   {
     icon: "coffee_maker",
-    title: "Guided Brew Mode",
-    desc: "Step-by-step instructions with built-in timers. Nail your pour-over, espresso, or matcha every time.",
+    title: "وضع التحضير الموجّه",
+    desc: "تعليمات خطوة بخطوة مع مؤقتات مدمجة. أتقن تحضير الفلتر، الإسبريسو، أو الماتشا في كل مرة.",
   },
   {
     icon: "menu_book",
-    title: "Recipe Library",
-    desc: "Thousands of community and brand-verified recipes for coffee, tea, matcha, and more.",
+    title: "مكتبة الوصفات",
+    desc: "آلاف الوصفات من المجتمع والعلامات التجارية المعتمدة للقهوة والشاي والماتشا والمزيد.",
   },
   {
     icon: "edit_note",
-    title: "Brew Journal",
-    desc: "Log every brew with parameters, notes, and ratings. Track your progress and dial in perfection.",
+    title: "دفتر التحضير",
+    desc: "سجّل كل تحضير بالمعايير والملاحظات والتقييمات. تابع تقدمك واوصل للكمال.",
   },
   {
     icon: "group",
-    title: "Community & Groups",
-    desc: "Join brewing communities, share photos, follow top brewers, and discover new techniques.",
+    title: "المجتمع والمجموعات",
+    desc: "انضم لمجتمعات التحضير، شارك الصور، تابع أفضل المحضّرين، واكتشف تقنيات جديدة.",
   },
   {
     icon: "emoji_events",
-    title: "Rewards & Challenges",
-    desc: "Earn points for brewing, complete challenges, climb the leaderboard, and redeem real rewards.",
+    title: "المكافآت والتحديات",
+    desc: "اكسب نقاطاً مقابل التحضير، أكمل التحديات، تصدّر المتصدرين، واستبدل مكافآت حقيقية.",
   },
   {
     icon: "storefront",
-    title: "Brand Marketplace",
-    desc: "Discover roasters, cafes, and equipment brands. Read reviews, find nearby shops, and shop products.",
+    title: "سوق العلامات التجارية",
+    desc: "اكتشف المحمصات والمقاهي وعلامات المعدات. اقرأ التقييمات، ابحث عن متاجر قريبة، وتسوّق المنتجات.",
   },
   {
     icon: "timer",
-    title: "Smart Brew Timer",
-    desc: "Precise timers with haptic feedback, background notifications, and recipe-linked parameters.",
+    title: "مؤقت تحضير ذكي",
+    desc: "مؤقتات دقيقة مع اهتزاز تنبيهي، إشعارات في الخلفية، ومعايير مرتبطة بالوصفة.",
   },
   {
     icon: "bluetooth",
-    title: "Smart Scale Integration",
-    desc: "Connect Acaia, Timemore, and other Bluetooth scales for real-time weight tracking during brews.",
+    title: "تكامل الميزان الذكي",
+    desc: "اربط موازين Acaia وTimemore وغيرها عبر البلوتوث لتتبع الوزن لحظياً أثناء التحضير.",
   },
   {
     icon: "collections",
-    title: "Collections & Gallery",
-    desc: "Organize recipes into collections, share brew photos, and browse a beautiful gallery of brews.",
+    title: "المجموعات والمعرض",
+    desc: "نظّم الوصفات في مجموعات، شارك صور التحضير، وتصفّح معرضاً جميلاً من التحضيرات.",
   },
 ];
 
 const userPlans = [
   {
-    name: "Free",
+    name: "مجاني",
     price: "$0",
-    period: "forever",
-    desc: "Everything you need to start brewing better",
+    period: "للأبد",
+    desc: "كل ما تحتاجه لتبدأ تحضيراً أفضل",
     features: [
-      "Browse all recipes",
-      "Brew timer & guided mode",
-      "Brew ratio calculator",
-      "Create up to 3 recipes",
-      "Like & save up to 20 recipes",
-      "Basic search & leaderboard",
+      "تصفّح جميع الوصفات",
+      "مؤقت التحضير والوضع الموجّه",
+      "حاسبة نسبة التحضير",
+      "إنشاء حتى 3 وصفات",
+      "إعجاب وحفظ حتى 20 وصفة",
+      "بحث أساسي ولوحة المتصدرين",
     ],
-    cta: "Get Started",
+    cta: "ابدأ الآن",
     href: "/signup",
     highlighted: false,
   },
   {
-    name: "Pro",
+    name: "احترافي",
     price: "$4.99",
-    period: "/month",
-    desc: "For serious brewers who want the full experience",
+    period: "/شهرياً",
+    desc: "للمحضّرين الجادين الذين يريدون التجربة الكاملة",
     features: [
-      "Everything in Free",
-      "Unlimited recipes & saves",
-      "Brew journal with analytics",
-      "Flavor wheel tagging",
-      "Custom brew profiles",
-      "Offline recipe access",
-      "Recipe cloning & remixing",
-      "Collections, groups & messages",
+      "كل شيء في المجاني",
+      "وصفات وحفظ بلا حدود",
+      "دفتر تحضير مع تحليلات",
+      "وسم عجلة النكهات",
+      "ملفات تحضير مخصصة",
+      "وصول للوصفات بدون إنترنت",
+      "نسخ وإعادة مزج الوصفات",
+      "المجموعات والمجموعات والرسائل",
     ],
-    cta: "Start Free Trial",
+    cta: "ابدأ الفترة التجريبية",
     href: "/signup?plan=pro",
     highlighted: true,
   },
@@ -90,67 +90,67 @@ const userPlans = [
 
 const roasterPlans = [
   {
-    name: "Roaster Basic",
-    price: "$29",
-    period: "/month",
-    desc: "Get your brand in front of thousands of brewers",
+    name: "المحمصة - أساسي",
+    price: "39 SAR",
+    period: "/شهرياً",
+    desc: "اعرض علامتك التجارية أمام آلاف المحضّرين",
     features: [
-      "Verified roaster profile & badge",
-      "Product catalog (up to 50 items)",
-      "Customer reviews & ratings",
-      "Basic brand analytics",
-      "Link recipes to your products",
-      "Community group page",
+      "ملف محمصة موثّق وشارة",
+      "كتالوج منتجات (حتى 50 منتج)",
+      "تقييمات ومراجعات العملاء",
+      "تحليلات أساسية للعلامة التجارية",
+      "ربط الوصفات بمنتجاتك",
+      "صفحة مجموعة مجتمعية",
     ],
-    cta: "Start Free Trial",
+    cta: "ابدأ الفترة التجريبية",
     href: "/signup?plan=roaster",
     highlighted: false,
   },
   {
-    name: "Roaster Pro",
-    price: "$79",
-    period: "/month",
-    desc: "Grow your audience and drive real sales",
+    name: "المحمصة - احترافي",
+    price: "79 SAR",
+    period: "/شهرياً",
+    desc: "وسّع جمهورك وحقق مبيعات فعلية",
     features: [
-      "Everything in Roaster Basic",
-      "Unlimited product catalog",
-      "Promoted recipes in feed",
-      "Advanced analytics & insights",
-      "Brew comparison tool",
-      "Recipe version history",
-      "Event hosting & promotion",
-      "Priority placement in search",
+      "كل شيء في المحمصة - أساسي",
+      "كتالوج منتجات بلا حدود",
+      "وصفات مروّجة في الخلاصة",
+      "تحليلات ورؤى متقدمة",
+      "أداة مقارنة التحضير",
+      "سجل إصدارات الوصفات",
+      "استضافة وترويج الفعاليات",
+      "أولوية الظهور في البحث",
     ],
-    cta: "Start Free Trial",
+    cta: "ابدأ الفترة التجريبية",
     href: "/signup?plan=roaster-pro",
     highlighted: true,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
+    name: "الشركات",
+    price: "مخصص",
     period: "",
-    desc: "For large roasters, chains, and distributors",
+    desc: "للمحمصات الكبيرة والسلاسل والموزعين",
     features: [
-      "Everything in Roaster Pro",
-      "Multi-location management",
-      "API access & integrations",
-      "Dedicated account manager",
-      "Custom branding & landing page",
-      "Bulk product import",
-      "Team member accounts",
-      "White-label brew guides",
+      "كل شيء في المحمصة - احترافي",
+      "إدارة مواقع متعددة",
+      "وصول API وتكاملات",
+      "مدير حساب مخصص",
+      "هوية مخصصة وصفحة هبوط",
+      "استيراد منتجات بالجملة",
+      "حسابات أعضاء الفريق",
+      "أدلة تحضير بعلامتك التجارية",
     ],
-    cta: "Contact Sales",
+    cta: "تواصل مع المبيعات",
     href: "/signup?plan=enterprise",
     highlighted: false,
   },
 ];
 
 const stats = [
-  { value: "10K+", label: "Recipes" },
-  { value: "50K+", label: "Brewers" },
-  { value: "500+", label: "Roasters" },
-  { value: "4.9", label: "App Rating" },
+  { value: "10K+", label: "وصفة" },
+  { value: "50K+", label: "محضّر" },
+  { value: "500+", label: "محمصة" },
+  { value: "4.9", label: "تقييم التطبيق" },
 ];
 
 export default function LandingPage() {
@@ -163,20 +163,20 @@ export default function LandingPage() {
             <div className="size-10 bg-primary rounded-xl flex items-center justify-center">
               <MaterialIcon icon="coffee" className="text-espresso text-xl" />
             </div>
-            <span className="text-xl font-extrabold tracking-tight">BrewCraft</span>
+            <span className="text-xl font-extrabold tracking-tight">وصفة</span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm font-semibold opacity-60 hover:opacity-100 transition-opacity">Features</a>
-            <a href="#pricing" className="text-sm font-semibold opacity-60 hover:opacity-100 transition-opacity">Pricing</a>
-            <Link href="/login" className="text-sm font-bold opacity-80 hover:opacity-100">Log In</Link>
+            <a href="#features" className="text-sm font-semibold opacity-60 hover:opacity-100 transition-opacity">المميزات</a>
+            <a href="#pricing" className="text-sm font-semibold opacity-60 hover:opacity-100 transition-opacity">الأسعار</a>
+            <Link href="/login" className="text-sm font-bold opacity-80 hover:opacity-100">تسجيل الدخول</Link>
             <Link href="/signup" className="bg-primary text-espresso px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-primary/90 transition-colors shadow-sm">
-              Get Started
+              ابدأ الآن
             </Link>
           </div>
           <div className="md:hidden flex items-center gap-3">
-            <Link href="/login" className="text-sm font-bold opacity-80">Log In</Link>
+            <Link href="/login" className="text-sm font-bold opacity-80">تسجيل الدخول</Link>
             <Link href="/signup" className="bg-primary text-espresso px-4 py-2 rounded-xl text-sm font-bold">
-              Sign Up
+              إنشاء حساب
             </Link>
           </div>
         </div>
@@ -189,28 +189,28 @@ export default function LandingPage() {
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-8">
               <MaterialIcon icon="auto_awesome" className="text-primary text-sm" />
-              <span className="text-xs font-bold text-primary uppercase tracking-wider">The Ultimate Brew Companion</span>
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">رفيقك المثالي في عالم القهوة</span>
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6">
-              Brew Better.{" "}
-              <span className="text-primary">Share More.</span>{" "}
-              <span className="opacity-40">Repeat.</span>
+              حضّر أفضل.{" "}
+              <span className="text-primary">شارك أكثر.</span>{" "}
+              <span className="opacity-40">كرّر.</span>
             </h1>
             <p className="text-lg md:text-xl opacity-60 max-w-xl mx-auto mb-10 leading-relaxed font-medium">
-              Discover recipes, track your brews, connect with a global community of coffee and tea enthusiasts, and never make a bad cup again.
+              اكتشف الوصفات، تابع تحضيراتك، تواصل مع مجتمع عشّاق القهوة والشاي، ولا تحضّر كوباً سيئاً مرة أخرى.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/signup"
                 className="bg-primary text-espresso px-8 py-4 rounded-2xl text-base font-extrabold shadow-lg hover:shadow-xl hover:bg-primary/90 transition-all flex items-center gap-2"
               >
-                Start Brewing Free <MaterialIcon icon="arrow_forward" className="text-lg" />
+                ابدأ التحضير مجاناً <MaterialIcon icon="arrow_forward" className="text-lg" />
               </Link>
               <Link
                 href="/search"
                 className="border-2 border-espresso/10 px-8 py-4 rounded-2xl text-base font-bold hover:border-primary/30 transition-colors flex items-center gap-2"
               >
-                <MaterialIcon icon="explore" className="text-lg opacity-60" /> Browse Recipes
+                <MaterialIcon icon="explore" className="text-lg opacity-60" /> تصفّح الوصفات
               </Link>
             </div>
           </div>
@@ -232,10 +232,10 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
-              Everything You Need to Brew
+              كل ما تحتاجه للتحضير
             </h2>
             <p className="text-base opacity-50 max-w-lg mx-auto font-medium">
-              From your first pour-over to mastering latte art — tools for every step of your journey.
+              من أول تحضير فلتر إلى إتقان فن اللاتيه — أدوات لكل خطوة في رحلتك.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -260,14 +260,14 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
-              How It Works
+              كيف تعمل وصفة؟
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
-              { step: "01", icon: "person_add", title: "Create Your Account", desc: "Sign up in seconds. Set your brewing preferences and favorite categories." },
-              { step: "02", icon: "search", title: "Discover & Brew", desc: "Browse recipes, start guided brew mode with timers, and log your results." },
-              { step: "03", icon: "trending_up", title: "Improve & Share", desc: "Track progress in your journal, earn rewards, and share with the community." },
+              { step: "01", icon: "person_add", title: "أنشئ حسابك", desc: "سجّل في ثوانٍ. حدد تفضيلات التحضير والفئات المفضلة لديك." },
+              { step: "02", icon: "search", title: "اكتشف وحضّر", desc: "تصفّح الوصفات، ابدأ وضع التحضير الموجّه مع المؤقتات، وسجّل نتائجك." },
+              { step: "03", icon: "trending_up", title: "طوّر وشارك", desc: "تابع تقدمك في دفتر التحضير، اكسب مكافآت، وشارك مع المجتمع." },
             ].map((item) => (
               <div key={item.step} className="text-center">
                 <div className="relative inline-block mb-6">
@@ -291,10 +291,10 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
-              Simple, Transparent Pricing
+              أسعار بسيطة وشفافة
             </h2>
             <p className="text-base opacity-50 max-w-lg mx-auto font-medium">
-              Start for free. Upgrade when you&apos;re ready for more.
+              ابدأ مجاناً. قم بالترقية عندما تكون جاهزاً للمزيد.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
@@ -309,7 +309,7 @@ export default function LandingPage() {
               >
                 {plan.highlighted && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-espresso text-[10px] font-extrabold px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
-                    Most Popular
+                    الأكثر شعبية
                   </div>
                 )}
                 <div className="mb-6">
@@ -354,13 +354,13 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-brand-gold/10 border border-brand-gold/20 rounded-full px-4 py-1.5 mb-6">
               <MaterialIcon icon="storefront" className="text-brand-gold text-sm" />
-              <span className="text-xs font-bold text-brand-gold uppercase tracking-wider">For Roasters & Brands</span>
+              <span className="text-xs font-bold text-brand-gold uppercase tracking-wider">للمحمصات والعلامات التجارية</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
-              Grow Your Brand on BrewCraft
+              نمّي علامتك التجارية على وصفة
             </h2>
             <p className="text-base opacity-50 max-w-lg mx-auto font-medium">
-              Reach passionate coffee and tea lovers. Showcase your products, build community, and drive sales.
+              اوصل لعشّاق القهوة والشاي المتحمسين. اعرض منتجاتك، ابنِ مجتمعاً، وحقق مبيعات.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -375,7 +375,7 @@ export default function LandingPage() {
               >
                 {plan.highlighted && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-gold text-espresso text-[10px] font-extrabold px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
-                    Best Value
+                    أفضل قيمة
                   </div>
                 )}
                 <div className="mb-6">
@@ -423,16 +423,16 @@ export default function LandingPage() {
             <MaterialIcon icon="coffee" className="text-primary text-4xl" />
           </div>
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
-            Ready to Brew Something Amazing?
+            مستعد لتحضير شيء مذهل؟
           </h2>
           <p className="text-base opacity-50 max-w-md mx-auto mb-8 font-medium">
-            Join thousands of brewers who are perfecting their craft with BrewCraft.
+            انضم لآلاف المحضّرين الذين يتقنون حرفتهم مع وصفة.
           </p>
           <Link
             href="/signup"
             className="inline-flex items-center gap-2 bg-primary text-espresso px-8 py-4 rounded-2xl text-base font-extrabold shadow-lg hover:shadow-xl hover:bg-primary/90 transition-all"
           >
-            Create Free Account <MaterialIcon icon="arrow_forward" className="text-lg" />
+            أنشئ حساب مجاني <MaterialIcon icon="arrow_forward" className="text-lg" />
           </Link>
         </div>
       </section>
@@ -446,41 +446,41 @@ export default function LandingPage() {
                 <div className="size-8 bg-primary rounded-lg flex items-center justify-center">
                   <MaterialIcon icon="coffee" className="text-espresso text-sm" />
                 </div>
-                <span className="font-extrabold tracking-tight">BrewCraft</span>
+                <span className="font-extrabold tracking-tight">وصفة</span>
               </div>
               <p className="text-sm opacity-40 font-medium leading-relaxed">
-                The ultimate platform for coffee and tea enthusiasts.
+                المنصة المثالية لعشّاق القهوة والشاي.
               </p>
             </div>
             <div>
-              <h4 className="font-bold text-sm mb-4 uppercase tracking-wider opacity-60">Product</h4>
+              <h4 className="font-bold text-sm mb-4 uppercase tracking-wider opacity-60">المنتج</h4>
               <div className="space-y-2">
-                <Link href="/search" className="block text-sm opacity-50 hover:opacity-100 font-medium">Recipes</Link>
-                <Link href="/roasters" className="block text-sm opacity-50 hover:opacity-100 font-medium">Roasters</Link>
-                <Link href="/leaderboard" className="block text-sm opacity-50 hover:opacity-100 font-medium">Leaderboard</Link>
-                <Link href="/events" className="block text-sm opacity-50 hover:opacity-100 font-medium">Events</Link>
+                <Link href="/search" className="block text-sm opacity-50 hover:opacity-100 font-medium">الوصفات</Link>
+                <Link href="/roasters" className="block text-sm opacity-50 hover:opacity-100 font-medium">المحمصات</Link>
+                <Link href="/leaderboard" className="block text-sm opacity-50 hover:opacity-100 font-medium">المتصدرين</Link>
+                <Link href="/events" className="block text-sm opacity-50 hover:opacity-100 font-medium">الفعاليات</Link>
               </div>
             </div>
             <div>
-              <h4 className="font-bold text-sm mb-4 uppercase tracking-wider opacity-60">Company</h4>
+              <h4 className="font-bold text-sm mb-4 uppercase tracking-wider opacity-60">الشركة</h4>
               <div className="space-y-2">
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">About</a>
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">Blog</a>
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">Careers</a>
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">Contact</a>
+                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">عن وصفة</a>
+                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">المدونة</a>
+                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">وظائف</a>
+                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">تواصل معنا</a>
               </div>
             </div>
             <div>
-              <h4 className="font-bold text-sm mb-4 uppercase tracking-wider opacity-60">Legal</h4>
+              <h4 className="font-bold text-sm mb-4 uppercase tracking-wider opacity-60">قانوني</h4>
               <div className="space-y-2">
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">Privacy Policy</a>
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">Terms of Service</a>
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">Cookie Policy</a>
+                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">سياسة الخصوصية</a>
+                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">شروط الخدمة</a>
+                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">سياسة ملفات تعريف الارتباط</a>
               </div>
             </div>
           </div>
           <div className="border-t border-espresso/5 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xs opacity-30 font-medium">&copy; {new Date().getFullYear()} BrewCraft. All rights reserved.</p>
+            <p className="text-xs opacity-30 font-medium">&copy; {new Date().getFullYear()} وصفة. جميع الحقوق محفوظة.</p>
             <div className="flex items-center gap-4">
               <a href="#" className="size-8 rounded-full bg-espresso/5 flex items-center justify-center hover:bg-primary/20 transition-colors">
                 <MaterialIcon icon="language" className="text-sm opacity-50" />
