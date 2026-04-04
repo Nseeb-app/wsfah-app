@@ -1,35 +1,55 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// StreamPay sends webhook events when payments/subscriptions change
+// StreamPay webhook event names (from their dashboard)
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  // Verify webhook secret if configured
+  // Verify webhook secret
   const webhookSecret = process.env.STREAM_WEBHOOK_SECRET;
   if (webhookSecret) {
-    const signature = req.headers.get("x-webhook-signature");
+    const signature =
+      req.headers.get("x-webhook-signature") ||
+      req.headers.get("x-webhook-secret");
     if (signature !== webhookSecret) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
   }
 
-  const { event, data } = body;
+  const event = body.event || body.type;
+  const data = body.data || body;
 
   try {
     switch (event) {
-      case "payment.success":
-      case "invoice.paid":
+      case "PAYMENT_SUCCEEDED":
+      case "PAYMENT_MARKED_AS_PAID":
         await handlePaymentSuccess(data);
         break;
 
-      case "subscription.created":
+      case "SUBSCRIPTION_CREATED":
+      case "SUBSCRIPTION_ACTIVATED":
         await handleSubscriptionCreated(data);
         break;
 
-      case "subscription.cancelled":
-      case "subscription.expired":
+      case "SUBSCRIPTION_CANCELED":
+      case "SUBSCRIPTION_INACTIVATED":
         await handleSubscriptionEnded(data);
+        break;
+
+      case "SUBSCRIPTION_CYCLE_RENEWED_SUCCESSFULLY":
+        await handleRenewalSuccess(data);
+        break;
+
+      case "SUBSCRIPTION_CYCLE_RENEWAL_FAILED":
+        await handleRenewalFailed(data);
+        break;
+
+      case "PAYMENT_FAILED":
+        await handlePaymentFailed(data);
+        break;
+
+      case "PAYMENT_REFUNDED":
+        await handleRefund(data);
         break;
 
       default:
@@ -53,16 +73,14 @@ async function handlePaymentSuccess(data: any) {
 
   const now = new Date();
   const expiresAt = new Date(now);
-  expiresAt.setMonth(expiresAt.getMonth() + 1); // 1 month subscription
+  expiresAt.setMonth(expiresAt.getMonth() + 1);
 
   if (planSlug === "pro") {
-    // User subscription
     await prisma.user.update({
       where: { id: userId },
       data: { subscriptionTier: "pro" },
     });
   } else if (planSlug.startsWith("roaster") && companyId) {
-    // Roaster/brand subscription
     const tier = planSlug === "roaster-pro" ? "pro" : "basic";
     await prisma.company.update({
       where: { id: companyId },
@@ -73,7 +91,6 @@ async function handlePaymentSuccess(data: any) {
     });
   }
 
-  // Log the payment in audit
   await prisma.auditLog.create({
     data: {
       userId,
@@ -142,6 +159,110 @@ async function handleSubscriptionEnded(data: any) {
       metadata: JSON.stringify({
         plan: planSlug,
         reason: data.reason || "cancelled",
+      }),
+    },
+  });
+}
+
+async function handleRenewalSuccess(data: any) {
+  const metadata = data.metadata || {};
+  const userId = metadata.user_id;
+  const companyId = metadata.company_id;
+
+  if (!userId) return;
+
+  // Extend expiration by 1 month
+  const expiresAt = new Date();
+  expiresAt.setMonth(expiresAt.getMonth() + 1);
+
+  if (companyId) {
+    await prisma.company.update({
+      where: { id: companyId },
+      data: { subscriptionExpiresAt: expiresAt },
+    });
+  }
+
+  await prisma.auditLog.create({
+    data: {
+      userId,
+      action: "SUBSCRIPTION_RENEWED",
+      entity: "subscription",
+      entityId: data.id,
+      metadata: JSON.stringify({ plan: metadata.plan_slug }),
+    },
+  });
+}
+
+async function handleRenewalFailed(data: any) {
+  const metadata = data.metadata || {};
+  const userId = metadata.user_id;
+
+  if (userId) {
+    await prisma.auditLog.create({
+      data: {
+        userId,
+        action: "SUBSCRIPTION_RENEWAL_FAILED",
+        entity: "subscription",
+        entityId: data.id,
+        metadata: JSON.stringify({
+          plan: metadata.plan_slug,
+          reason: data.reason || "payment_failed",
+        }),
+      },
+    });
+  }
+}
+
+async function handlePaymentFailed(data: any) {
+  const metadata = data.metadata || {};
+  const userId = metadata.user_id;
+
+  if (userId) {
+    await prisma.auditLog.create({
+      data: {
+        userId,
+        action: "PAYMENT_FAILED",
+        entity: "payment",
+        entityId: data.id,
+        metadata: JSON.stringify({
+          plan: metadata.plan_slug,
+          amount: data.amount,
+        }),
+      },
+    });
+  }
+}
+
+async function handleRefund(data: any) {
+  const metadata = data.metadata || {};
+  const userId = metadata.user_id;
+  const planSlug = metadata.plan_slug;
+  const companyId = metadata.company_id;
+
+  if (!userId) return;
+
+  // Downgrade on refund
+  if (planSlug === "pro") {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { subscriptionTier: "free" },
+    });
+  } else if (planSlug?.startsWith("roaster") && companyId) {
+    await prisma.company.update({
+      where: { id: companyId },
+      data: { subscriptionTier: "basic", subscriptionExpiresAt: null },
+    });
+  }
+
+  await prisma.auditLog.create({
+    data: {
+      userId,
+      action: "PAYMENT_REFUNDED",
+      entity: "payment",
+      entityId: data.id,
+      metadata: JSON.stringify({
+        plan: planSlug,
+        amount: data.amount,
       }),
     },
   });
