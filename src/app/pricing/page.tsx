@@ -25,7 +25,7 @@ const USER_PLANS = [
   {
     slug: "pro",
     name: "احترافي",
-    price: "19.99",
+    price: "4.99",
     currency: "SAR",
     period: "/شهرياً",
     highlighted: true,

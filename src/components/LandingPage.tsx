@@ -69,7 +69,7 @@ const userPlans = [
   },
   {
     name: "احترافي",
-    price: "19.99 SAR",
+    price: "4.99 SAR",
     period: "/شهرياً",
     desc: "للمحضّرين الجادين الذين يريدون التجربة الكاملة",
     features: [
