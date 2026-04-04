@@ -41,13 +41,13 @@ export default function AdminVerificationPage() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Brand Verification</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">توثيق العلامات التجارية</h2>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       ) : applications.length === 0 ? (
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 text-center">
-          <p className="text-gray-500 dark:text-gray-400">No pending verification requests.</p>
+          <p className="text-gray-500 dark:text-gray-400">لا توجد طلبات توثيق معلقة.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -62,11 +62,11 @@ export default function AdminVerificationPage() {
                     {app.company.name}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    Applicant: {app.applicant?.name || app.applicant?.email || "Unknown"}
+                    مقدم الطلب: {app.applicant?.name || app.applicant?.email || "غير معروف"}
                   </p>
                   {app.documents && (
                     <div className="mt-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Documents:</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">المستندات:</p>
                       <div className="flex flex-wrap gap-2">
                         {JSON.parse(app.documents).map((url: string, i: number) => (
                           <a
@@ -76,14 +76,14 @@ export default function AdminVerificationPage() {
                             rel="noopener noreferrer"
                             className="text-xs text-[#25f459] hover:underline"
                           >
-                            Document {i + 1}
+                            مستند {i + 1}
                           </a>
                         ))}
                       </div>
                     </div>
                   )}
                   <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                    Submitted: {new Date(app.createdAt).toLocaleDateString()}
+                    تاريخ التقديم: {new Date(app.createdAt).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="flex gap-2 ml-4">
@@ -91,13 +91,13 @@ export default function AdminVerificationPage() {
                     onClick={() => handleAction(app.id, "APPROVED")}
                     className="px-3 py-1.5 rounded bg-green-600 hover:bg-green-700 text-white text-xs font-medium"
                   >
-                    Approve
+                    موافقة
                   </button>
                   <button
                     onClick={() => handleAction(app.id, "REJECTED")}
                     className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium"
                   >
-                    Reject
+                    رفض
                   </button>
                 </div>
               </div>

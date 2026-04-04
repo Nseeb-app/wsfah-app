@@ -5,18 +5,18 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navItems = [
-  { label: "Dashboard", href: "/admin", icon: "dashboard" },
-  { label: "Users", href: "/admin/users", icon: "group" },
-  { label: "Brands", href: "/admin/brands", icon: "storefront" },
-  { label: "Recipes", href: "/admin/recipes", icon: "restaurant_menu" },
-  { label: "Moderation", href: "/admin/moderation", icon: "shield" },
-  { label: "Verification", href: "/admin/verification", icon: "verified" },
-  { label: "Analytics", href: "/admin/analytics", icon: "analytics" },
-  { label: "Subscriptions", href: "/admin/subscriptions", icon: "credit_card" },
-  { label: "Challenges", href: "/admin/challenges", icon: "emoji_events" },
-  { label: "Rewards", href: "/admin/rewards", icon: "redeem" },
-  { label: "Promotions", href: "/admin/promotions", icon: "campaign" },
-  { label: "Ads", href: "/admin/ads", icon: "ads_click" },
+  { label: "لوحة التحكم", href: "/admin", icon: "dashboard" },
+  { label: "المستخدمون", href: "/admin/users", icon: "group" },
+  { label: "العلامات التجارية", href: "/admin/brands", icon: "storefront" },
+  { label: "الوصفات", href: "/admin/recipes", icon: "restaurant_menu" },
+  { label: "الإشراف", href: "/admin/moderation", icon: "shield" },
+  { label: "التوثيق", href: "/admin/verification", icon: "verified" },
+  { label: "التحليلات", href: "/admin/analytics", icon: "analytics" },
+  { label: "الاشتراكات", href: "/admin/subscriptions", icon: "credit_card" },
+  { label: "التحديات", href: "/admin/challenges", icon: "emoji_events" },
+  { label: "المكافآت", href: "/admin/rewards", icon: "redeem" },
+  { label: "الترويج", href: "/admin/promotions", icon: "campaign" },
+  { label: "الإعلانات", href: "/admin/ads", icon: "ads_click" },
 ];
 
 export default function AdminSidebar() {
@@ -36,7 +36,7 @@ export default function AdminSidebar() {
           </span>
         </button>
         <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-          WSFA <span className="text-[#25f459]">Admin</span>
+          WSFA <span className="text-[#25f459]">الإدارة</span>
         </h1>
         <Link href="/" className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
           <span className="material-symbols-outlined text-gray-700 dark:text-gray-300">home</span>
@@ -59,7 +59,7 @@ export default function AdminSidebar() {
       >
         <div className="p-6 border-b border-gray-200 dark:border-gray-800">
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-            WSFA <span className="text-[#25f459]">Admin</span>
+            WSFA <span className="text-[#25f459]">الإدارة</span>
           </h1>
         </div>
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -91,7 +91,7 @@ export default function AdminSidebar() {
             className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <span className="material-symbols-outlined text-xl">arrow_back</span>
-            Back to App
+            العودة للتطبيق
           </Link>
         </div>
       </aside>

@@ -42,13 +42,13 @@ export default function AdminModerationPage() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Moderation</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">الإشراف</h2>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       ) : reports.length === 0 ? (
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 text-center">
-          <p className="text-gray-500 dark:text-gray-400">No pending reports.</p>
+          <p className="text-gray-500 dark:text-gray-400">لا توجد بلاغات معلقة.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -68,7 +68,7 @@ export default function AdminModerationPage() {
                     </span>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    Reported by: {report.reporter?.name || report.reporter?.email || "Unknown"}
+                    أبلغ بواسطة: {report.reporter?.name || report.reporter?.email || "غير معروف"}
                   </p>
                   {report.details && (
                     <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">{report.details}</p>
@@ -82,13 +82,13 @@ export default function AdminModerationPage() {
                     onClick={() => handleAction(report.id, "DISMISSED")}
                     className="px-3 py-1.5 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-xs font-medium"
                   >
-                    Dismiss
+                    رفض
                   </button>
                   <button
                     onClick={() => handleAction(report.id, "ACTION_TAKEN")}
                     className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium"
                   >
-                    Take Action
+                    اتخاذ إجراء
                   </button>
                 </div>
               </div>

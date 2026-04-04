@@ -55,7 +55,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
       onChange(data.url);
     } catch (err) {
       console.error(err);
-      alert("Upload failed");
+      alert("فشل الرفع");
     } finally {
       setUploading(false);
     }
@@ -73,7 +73,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
               : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-transparent"
           }`}
         >
-          Upload
+          رفع
         </button>
         <button
           type="button"
@@ -84,7 +84,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
               : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-transparent"
           }`}
         >
-          URL
+          رابط
         </button>
       </div>
 
@@ -103,7 +103,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
             disabled={uploading}
             className="w-full px-4 py-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 text-sm hover:border-[#25f459]/50 hover:bg-[#25f459]/5 transition-colors disabled:opacity-50"
           >
-            {uploading ? "Uploading..." : value ? "Change Image" : "Click to upload image"}
+            {uploading ? "جاري الرفع..." : value ? "تغيير الصورة" : "اضغط لرفع صورة"}
           </button>
         </div>
       ) : (
@@ -120,7 +120,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
         <div className="relative">
           <img
             src={value}
-            alt="Preview"
+            alt="معاينة"
             className="w-full max-w-[200px] h-auto rounded-lg border border-gray-200 dark:border-gray-700"
           />
           <button
@@ -284,7 +284,7 @@ export default function AdminRecipesPage() {
         fetchRecipes();
       } else {
         const err = await res.json();
-        alert(err.error || "Failed to save");
+        alert(err.error || "فشل الحفظ");
       }
     } catch (err) {
       console.error(err);
@@ -328,7 +328,7 @@ export default function AdminRecipesPage() {
   }
 
   async function deleteRecipe(recipeId: string) {
-    if (!confirm("Are you sure you want to delete this recipe?")) return;
+    if (!confirm("هل أنت متأكد من حذف هذه الوصفة؟")) return;
     try {
       const res = await fetch(`/api/recipes/${recipeId}`, { method: "DELETE" });
       if (res.ok) {
@@ -367,7 +367,7 @@ export default function AdminRecipesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Recipes</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">الوصفات</h2>
         <button
           onClick={() => {
             resetForm();
@@ -375,7 +375,7 @@ export default function AdminRecipesPage() {
           }}
           className="px-4 py-2 rounded-lg bg-[#25f459] text-black font-medium text-sm hover:bg-[#25f459]/80 transition-colors"
         >
-          {showForm ? "Cancel" : "+ New Recipe"}
+          {showForm ? "إلغاء" : "+ وصفة جديدة"}
         </button>
       </div>
 
@@ -383,13 +383,13 @@ export default function AdminRecipesPage() {
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 mb-6 space-y-6">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {editingId ? "Edit Recipe" : "Create New Recipe"}
+            {editingId ? "تعديل الوصفة" : "إنشاء وصفة جديدة"}
           </h3>
 
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className={labelClass}>Title *</label>
+              <label className={labelClass}>العنوان *</label>
               <input
                 type="text"
                 value={form.title}
@@ -399,14 +399,14 @@ export default function AdminRecipesPage() {
               />
             </div>
             <div>
-              <label className={labelClass}>Recipe Image</label>
+              <label className={labelClass}>صورة الوصفة</label>
               <ImageUpload
                 value={form.imageUrl}
                 onChange={(url) => setForm({ ...form, imageUrl: url })}
               />
             </div>
             <div>
-              <label className={labelClass}>Category</label>
+              <label className={labelClass}>القسم</label>
               <select
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
@@ -418,7 +418,7 @@ export default function AdminRecipesPage() {
               </select>
             </div>
             <div>
-              <label className={labelClass}>Difficulty</label>
+              <label className={labelClass}>الصعوبة</label>
               <select
                 value={form.difficulty}
                 onChange={(e) => setForm({ ...form, difficulty: e.target.value })}
@@ -430,17 +430,17 @@ export default function AdminRecipesPage() {
               </select>
             </div>
             <div>
-              <label className={labelClass}>Brew Time (display)</label>
+              <label className={labelClass}>وقت التحضير (عرض)</label>
               <input
                 type="text"
                 value={form.brewTime}
                 onChange={(e) => setForm({ ...form, brewTime: e.target.value })}
                 className={inputClass}
-                placeholder="e.g. 4 min"
+                placeholder="مثال: 4 دقائق"
               />
             </div>
             <div>
-              <label className={labelClass}>Brew Time (seconds)</label>
+              <label className={labelClass}>وقت التحضير (ثواني)</label>
               <input
                 type="number"
                 value={form.brewTimeSeconds}
@@ -451,7 +451,7 @@ export default function AdminRecipesPage() {
           </div>
 
           <div>
-            <label className={labelClass}>Description</label>
+            <label className={labelClass}>الوصف</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
@@ -462,29 +462,29 @@ export default function AdminRecipesPage() {
 
           {/* Toggles */}
           <div className="flex flex-wrap gap-6">
-            <Toggle checked={form.isFeatured} onChange={(v) => setForm({ ...form, isFeatured: v })} label="Featured" />
-            <Toggle checked={form.isVerified} onChange={(v) => setForm({ ...form, isVerified: v })} label="Verified" />
+            <Toggle checked={form.isFeatured} onChange={(v) => setForm({ ...form, isFeatured: v })} label="مميزة" />
+            <Toggle checked={form.isVerified} onChange={(v) => setForm({ ...form, isVerified: v })} label="موثقة" />
             <div className="flex items-center gap-2">
-              <label className="text-sm text-gray-700 dark:text-gray-300">Access:</label>
+              <label className="text-sm text-gray-700 dark:text-gray-300">الوصول:</label>
               <select
                 value={form.accessTier}
                 onChange={(e) => setForm({ ...form, accessTier: e.target.value })}
                 className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
               >
-                <option value="FREE">Free (All Users)</option>
-                <option value="BASIC">Basic Plan</option>
-                <option value="PREMIUM">Premium Plan</option>
-                <option value="PRO">Pro Plan</option>
+                <option value="FREE">مجاني (جميع المستخدمين)</option>
+                <option value="BASIC">الخطة الأساسية</option>
+                <option value="PREMIUM">الخطة المميزة</option>
+                <option value="PRO">الخطة الاحترافية</option>
               </select>
             </div>
           </div>
 
           {/* Brewing Parameters */}
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Brewing Parameters</h4>
+            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">معايير التحضير</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div>
-                <label className={labelClass}>Temperature</label>
+                <label className={labelClass}>درجة الحرارة</label>
                 <input
                   type="text"
                   value={brewParams.temperature}
@@ -494,7 +494,7 @@ export default function AdminRecipesPage() {
                 />
               </div>
               <div>
-                <label className={labelClass}>Ratio</label>
+                <label className={labelClass}>النسبة</label>
                 <input
                   type="text"
                   value={brewParams.ratio}
@@ -504,17 +504,17 @@ export default function AdminRecipesPage() {
                 />
               </div>
               <div>
-                <label className={labelClass}>Grind Size</label>
+                <label className={labelClass}>حجم الطحن</label>
                 <input
                   type="text"
                   value={brewParams.grindSize}
                   onChange={(e) => setBrewParams({ ...brewParams, grindSize: e.target.value })}
                   className={inputClass}
-                  placeholder="Medium-Fine"
+                  placeholder="متوسط-ناعم"
                 />
               </div>
               <div>
-                <label className={labelClass}>Timer (sec)</label>
+                <label className={labelClass}>المؤقت (ثانية)</label>
                 <input
                   type="number"
                   value={brewParams.brewTimeSec}
@@ -528,13 +528,13 @@ export default function AdminRecipesPage() {
           {/* Ingredients */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Ingredients</h4>
+              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">المكونات</h4>
               <button
                 type="button"
                 onClick={() => setIngredients([...ingredients, { name: "", baseAmount: 0, unit: "g" }])}
                 className="text-xs text-[#25f459] font-medium hover:underline"
               >
-                + Add
+                + إضافة
               </button>
             </div>
             <div className="space-y-3">
@@ -548,7 +548,7 @@ export default function AdminRecipesPage() {
                         onClick={() => setIngredients(ingredients.filter((_, j) => j !== i))}
                         className="text-red-500 text-xs hover:text-red-700 font-medium"
                       >
-                        Remove
+                        إزالة
                       </button>
                     )}
                   </div>
@@ -562,7 +562,7 @@ export default function AdminRecipesPage() {
                         setIngredients(copy);
                       }}
                       className={inputClass}
-                      placeholder="Ingredient name"
+                      placeholder="اسم المكون"
                     />
                     <input
                       type="number"
@@ -573,7 +573,7 @@ export default function AdminRecipesPage() {
                         setIngredients(copy);
                       }}
                       className={inputClass}
-                      placeholder="Amount"
+                      placeholder="الكمية"
                     />
                     <select
                       value={ing.unit}
@@ -597,13 +597,13 @@ export default function AdminRecipesPage() {
           {/* Steps */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Steps</h4>
+              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">الخطوات</h4>
               <button
                 type="button"
                 onClick={() => setSteps([...steps, { title: "", description: "" }])}
                 className="text-xs text-[#25f459] font-medium hover:underline"
               >
-                + Add Step
+                + إضافة خطوة
               </button>
             </div>
             <div className="space-y-3">
@@ -622,7 +622,7 @@ export default function AdminRecipesPage() {
                         setSteps(copy);
                       }}
                       className={inputClass}
-                      placeholder="Step title"
+                      placeholder="عنوان الخطوة"
                     />
                     <textarea
                       value={step.description}
@@ -632,7 +632,7 @@ export default function AdminRecipesPage() {
                         setSteps(copy);
                       }}
                       className={inputClass + " min-h-[50px]"}
-                      placeholder="Step description"
+                      placeholder="وصف الخطوة"
                       rows={2}
                     />
                   </div>
@@ -656,14 +656,14 @@ export default function AdminRecipesPage() {
               disabled={saving}
               className="px-6 py-2.5 rounded-lg bg-[#25f459] text-black font-medium text-sm disabled:opacity-50 hover:bg-[#25f459]/80 transition-colors"
             >
-              {saving ? "Saving..." : editingId ? "Update Recipe" : "Create Recipe"}
+              {saving ? "جاري الحفظ..." : editingId ? "تحديث الوصفة" : "إنشاء الوصفة"}
             </button>
             <button
               type="button"
               onClick={() => { setShowForm(false); resetForm(); }}
               className="px-6 py-2.5 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
-              Cancel
+              إلغاء
             </button>
           </div>
         </form>
@@ -673,7 +673,7 @@ export default function AdminRecipesPage() {
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Search recipes..."
+          placeholder="البحث عن وصفات..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full max-w-md px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
@@ -682,21 +682,21 @@ export default function AdminRecipesPage() {
 
       {/* Recipe Table */}
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       ) : recipes.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">No recipes found.</p>
+        <p className="text-gray-500 dark:text-gray-400">لا توجد وصفات.</p>
       ) : (
         <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Title</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Author</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Category</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Featured</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Verified</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Premium</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Actions</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">العنوان</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المؤلف</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">القسم</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">مميزة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">موثقة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المستوى</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -747,10 +747,10 @@ export default function AdminRecipesPage() {
                           : "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
                       }`}
                     >
-                      <option value="FREE">Free</option>
-                      <option value="BASIC">Basic</option>
-                      <option value="PREMIUM">Premium</option>
-                      <option value="PRO">Pro</option>
+                      <option value="FREE">مجاني</option>
+                      <option value="BASIC">أساسي</option>
+                      <option value="PREMIUM">مميز</option>
+                      <option value="PRO">احترافي</option>
                     </select>
                   </td>
                   <td className="p-4">
@@ -759,13 +759,13 @@ export default function AdminRecipesPage() {
                         onClick={() => openEdit(recipe.id)}
                         className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium"
                       >
-                        Edit
+                        تعديل
                       </button>
                       <button
                         onClick={() => deleteRecipe(recipe.id)}
                         className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium"
                       >
-                        Delete
+                        حذف
                       </button>
                     </div>
                   </td>

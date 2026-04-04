@@ -68,7 +68,7 @@ export default function AdminPromotionsPage() {
   };
 
   const deletePromo = async (id: string) => {
-    if (!confirm("Delete this promotion request?")) return;
+    if (!confirm("حذف طلب الترويج هذا؟")) return;
     const res = await fetch(`/api/promotions/${id}`, { method: "DELETE" });
     if (res.ok) fetchPromos();
   };
@@ -93,9 +93,24 @@ export default function AdminPromotionsPage() {
   };
 
   const placementLabel: Record<string, string> = {
-    HOME_TOP: "Home Page",
-    EXPLORE_TOP: "Explore Page",
-    BOTH: "Home + Explore",
+    HOME_TOP: "الصفحة الرئيسية",
+    EXPLORE_TOP: "صفحة الاستكشاف",
+    BOTH: "الرئيسية + الاستكشاف",
+  };
+
+  const statusLabel: Record<string, string> = {
+    PENDING: "قيد المراجعة",
+    APPROVED: "موافق عليه",
+    REJECTED: "مرفوض",
+    EXPIRED: "منتهي",
+  };
+
+  const filterLabel: Record<string, string> = {
+    ALL: "الكل",
+    PENDING: "قيد المراجعة",
+    APPROVED: "موافق عليه",
+    REJECTED: "مرفوض",
+    EXPIRED: "منتهي",
   };
 
   const pendingCount = promos.filter((p) => p.status === "PENDING").length;
@@ -113,15 +128,15 @@ export default function AdminPromotionsPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-            Promotion Requests
+            طلبات الترويج
             {pendingCount > 0 && (
               <span className="bg-yellow-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                {pendingCount} pending
+                {pendingCount} معلق
               </span>
             )}
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Review and manage roaster promotion requests
+            مراجعة وإدارة طلبات ترويج المحامص
           </p>
         </div>
       </div>
@@ -138,7 +153,7 @@ export default function AdminPromotionsPage() {
                 : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750"
             }`}
           >
-            {s === "ALL" ? `All (${promos.length})` : `${s.charAt(0) + s.slice(1).toLowerCase()} (${promos.filter((p) => p.status === s).length})`}
+            {s === "ALL" ? `الكل (${promos.length})` : `${filterLabel[s]} (${promos.filter((p) => p.status === s).length})`}
           </button>
         ))}
       </div>
@@ -146,8 +161,8 @@ export default function AdminPromotionsPage() {
       {filtered.length === 0 ? (
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
           <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">campaign</span>
-          <p className="text-gray-500 dark:text-gray-400 font-medium">No promotion requests</p>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">Roasters can request promotions from their brand page</p>
+          <p className="text-gray-500 dark:text-gray-400 font-medium">لا توجد طلبات ترويج</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">يمكن للمحامص طلب الترويج من صفحة علامتهم التجارية</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -166,7 +181,7 @@ export default function AdminPromotionsPage() {
                     <div className="flex items-center gap-3 mb-1">
                       <h3 className="font-bold text-gray-900 dark:text-white text-lg">{p.company.name}</h3>
                       <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${statusColor[p.status]}`}>
-                        {p.status}
+                        {statusLabel[p.status] || p.status}
                       </span>
                     </div>
                     <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
@@ -176,7 +191,7 @@ export default function AdminPromotionsPage() {
                       </span>
                       <span className="flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">person</span>
-                        {p.requester.name || "Unknown"}
+                        {p.requester.name || "غير معروف"}
                       </span>
                       <span className="flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">schedule</span>
@@ -185,7 +200,7 @@ export default function AdminPromotionsPage() {
                       {p.priority > 0 && (
                         <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
                           <span className="material-symbols-outlined text-base">priority_high</span>
-                          Priority: {p.priority}
+                          الأولوية: {p.priority}
                         </span>
                       )}
                     </div>
@@ -195,7 +210,7 @@ export default function AdminPromotionsPage() {
                       </p>
                     )}
                     {p.imageUrl && (
-                      <img src={p.imageUrl} alt="Promo banner" className="mt-3 rounded-lg max-h-32 object-cover" />
+                      <img src={p.imageUrl} alt="بانر الترويج" className="mt-3 rounded-lg max-h-32 object-cover" />
                     )}
                   </div>
                 </div>
@@ -204,7 +219,7 @@ export default function AdminPromotionsPage() {
                 {editingId === p.id && (
                   <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">Priority (higher = shown first)</label>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">الأولوية (الأعلى = يظهر أولاً)</label>
                       <input
                         type="number"
                         value={editForm.priority}
@@ -213,17 +228,17 @@ export default function AdminPromotionsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">Admin Notes</label>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">ملاحظات الإدارة</label>
                       <input
                         type="text"
                         value={editForm.adminNotes}
                         onChange={(e) => setEditForm({ ...editForm, adminNotes: e.target.value })}
-                        placeholder="Internal notes..."
+                        placeholder="ملاحظات داخلية..."
                         className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">Start Date</label>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">تاريخ البدء</label>
                       <input
                         type="date"
                         value={editForm.startDate}
@@ -232,7 +247,7 @@ export default function AdminPromotionsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">End Date</label>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">تاريخ الانتهاء</label>
                       <input
                         type="date"
                         value={editForm.endDate}
@@ -245,13 +260,13 @@ export default function AdminPromotionsPage() {
                         onClick={() => saveEdit(p.id)}
                         className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700"
                       >
-                        Save Changes
+                        حفظ التغييرات
                       </button>
                       <button
                         onClick={() => setEditingId(null)}
                         className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium"
                       >
-                        Cancel
+                        إلغاء
                       </button>
                     </div>
                   </div>
@@ -267,14 +282,14 @@ export default function AdminPromotionsPage() {
                       className="flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700"
                     >
                       <span className="material-symbols-outlined text-base">check_circle</span>
-                      Approve
+                      موافقة
                     </button>
                     <button
                       onClick={() => updateStatus(p.id, "REJECTED")}
                       className="flex items-center gap-1.5 px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700"
                     >
                       <span className="material-symbols-outlined text-base">cancel</span>
-                      Reject
+                      رفض
                     </button>
                   </>
                 )}
@@ -284,7 +299,7 @@ export default function AdminPromotionsPage() {
                     className="flex items-center gap-1.5 px-4 py-2 bg-gray-600 text-white rounded-lg text-sm font-medium hover:bg-gray-700"
                   >
                     <span className="material-symbols-outlined text-base">timer_off</span>
-                    Expire
+                    إنهاء
                   </button>
                 )}
                 {p.status === "REJECTED" && (
@@ -293,7 +308,7 @@ export default function AdminPromotionsPage() {
                     className="flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700"
                   >
                     <span className="material-symbols-outlined text-base">check_circle</span>
-                    Approve
+                    موافقة
                   </button>
                 )}
                 <button
@@ -301,14 +316,14 @@ export default function AdminPromotionsPage() {
                   className="flex items-center gap-1.5 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50"
                 >
                   <span className="material-symbols-outlined text-base">tune</span>
-                  {editingId === p.id ? "Close" : "Configure"}
+                  {editingId === p.id ? "إغلاق" : "إعدادات"}
                 </button>
                 <button
                   onClick={() => deletePromo(p.id)}
                   className="flex items-center gap-1.5 px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-sm font-medium ml-auto"
                 >
                   <span className="material-symbols-outlined text-base">delete</span>
-                  Delete
+                  حذف
                 </button>
               </div>
             </div>

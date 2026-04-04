@@ -27,8 +27,8 @@ export default function AdminUsersPage() {
       const data = await res.json();
       setUsers(data.users || []);
       setTotal(data.total || 0);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // fetch failed
     } finally {
       setLoading(false);
     }
@@ -49,8 +49,8 @@ export default function AdminUsersPage() {
         const updated = await res.json();
         setUsers((prev) => prev.map((u) => (u.id === updated.id ? updated : u)));
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // update failed
     }
   }
 
@@ -58,12 +58,12 @@ export default function AdminUsersPage() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Users</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">المستخدمون</h2>
 
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Search users..."
+          placeholder="البحث عن مستخدمين..."
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -74,24 +74,24 @@ export default function AdminUsersPage() {
       </div>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       ) : (
         <>
           <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-800">
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Name</th>
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Email</th>
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Role</th>
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Status</th>
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Joined</th>
+                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الاسم</th>
+                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">البريد الإلكتروني</th>
+                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الدور</th>
+                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الحالة</th>
+                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">تاريخ الانضمام</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
-                    <td className="p-4 text-gray-900 dark:text-white">{user.name || "Unnamed"}</td>
+                    <td className="p-4 text-gray-900 dark:text-white">{user.name || "بدون اسم"}</td>
                     <td className="p-4 text-gray-600 dark:text-gray-400">{user.email || "—"}</td>
                     <td className="p-4">
                       <select
@@ -119,7 +119,7 @@ export default function AdminUsersPage() {
                             : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                         }`}
                       >
-                        {user.status}
+                        {user.status === "ACTIVE" ? "نشط" : "معلّق"}
                       </button>
                     </td>
                     <td className="p-4 text-gray-500 dark:text-gray-400 text-xs">
@@ -133,7 +133,7 @@ export default function AdminUsersPage() {
 
           <div className="flex items-center justify-between mt-4">
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Page {page} of {totalPages || 1} ({total} users)
+              صفحة {page} من {totalPages || 1} ({total} مستخدم)
             </p>
             <div className="flex gap-2">
               <button
@@ -141,14 +141,14 @@ export default function AdminUsersPage() {
                 onClick={() => setPage((p) => p - 1)}
                 className="px-3 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm disabled:opacity-50 text-gray-700 dark:text-gray-300"
               >
-                Previous
+                السابق
               </button>
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
                 className="px-3 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm disabled:opacity-50 text-gray-700 dark:text-gray-300"
               >
-                Next
+                التالي
               </button>
             </div>
           </div>

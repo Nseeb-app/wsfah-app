@@ -11,6 +11,12 @@ interface Brand {
 }
 
 const TABS = ["ALL", "PENDING", "APPROVED", "REJECTED"];
+const TAB_LABELS: Record<string, string> = {
+  ALL: "الكل",
+  PENDING: "قيد المراجعة",
+  APPROVED: "موافق عليها",
+  REJECTED: "مرفوضة",
+};
 
 export default function AdminBrandsPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -24,8 +30,8 @@ export default function AdminBrandsPage() {
       const res = await fetch(url);
       const data = await res.json();
       setBrands(data.companies || []);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // fetch failed
     } finally {
       setLoading(false);
     }
@@ -45,14 +51,20 @@ export default function AdminBrandsPage() {
       if (res.ok) {
         setBrands((prev) => prev.map((b) => (b.id === companyId ? { ...b, status } : b)));
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // update failed
     }
   }
 
+  const STATUS_LABELS: Record<string, string> = {
+    APPROVED: "موافق عليها",
+    REJECTED: "مرفوضة",
+    PENDING: "قيد المراجعة",
+  };
+
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Brands</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">العلامات التجارية</h2>
 
       <div className="flex gap-2 mb-6">
         {TABS.map((tab) => (
@@ -65,25 +77,25 @@ export default function AdminBrandsPage() {
                 : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
-            {tab}
+            {TAB_LABELS[tab] || tab}
           </button>
         ))}
       </div>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       ) : brands.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">No brands found.</p>
+        <p className="text-gray-500 dark:text-gray-400">لا توجد علامات تجارية.</p>
       ) : (
         <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Company</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Type</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Owner</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Status</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Actions</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الشركة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">النوع</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المالك</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الحالة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -104,7 +116,7 @@ export default function AdminBrandsPage() {
                           : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
                       }`}
                     >
-                      {brand.status}
+                      {STATUS_LABELS[brand.status] || brand.status}
                     </span>
                   </td>
                   <td className="p-4 flex gap-2">
@@ -113,7 +125,7 @@ export default function AdminBrandsPage() {
                         onClick={() => updateStatus(brand.id, "APPROVED")}
                         className="px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-white text-xs font-medium"
                       >
-                        Approve
+                        موافقة
                       </button>
                     )}
                     {brand.status !== "REJECTED" && (
@@ -121,7 +133,7 @@ export default function AdminBrandsPage() {
                         onClick={() => updateStatus(brand.id, "REJECTED")}
                         className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium"
                       >
-                        Reject
+                        رفض
                       </button>
                     )}
                   </td>

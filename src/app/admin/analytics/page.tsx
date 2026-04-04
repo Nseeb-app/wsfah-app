@@ -28,11 +28,11 @@ export default function AdminAnalyticsPage() {
   }, []);
 
   if (loading) {
-    return <p className="text-gray-500 dark:text-gray-400">Loading analytics...</p>;
+    return <p className="text-gray-500 dark:text-gray-400">جاري تحميل التحليلات...</p>;
   }
 
   if (!data) {
-    return <p className="text-red-500">Failed to load analytics.</p>;
+    return <p className="text-red-500">فشل تحميل التحليلات.</p>;
   }
 
   const maxUsers = Math.max(...data.usersPerWeek.map((w) => w.count), 1);
@@ -40,23 +40,23 @@ export default function AdminAnalyticsPage() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Analytics</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">التحليلات</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-          <p className="text-sm text-gray-500 dark:text-gray-400">Total Likes</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">إجمالي الإعجابات</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
             {data.totalLikes.toLocaleString()}
           </p>
         </div>
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-          <p className="text-sm text-gray-500 dark:text-gray-400">Total Comments</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">إجمالي التعليقات</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
             {data.totalComments.toLocaleString()}
           </p>
         </div>
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-          <p className="text-sm text-gray-500 dark:text-gray-400">Total Follows</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">إجمالي المتابعات</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
             {data.totalFollows.toLocaleString()}
           </p>
@@ -67,7 +67,7 @@ export default function AdminAnalyticsPage() {
         {/* Users per week chart */}
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            New Users Per Week
+            المستخدمون الجدد أسبوعياً
           </h3>
           <div className="flex items-end gap-2 h-48">
             {data.usersPerWeek.map((week) => (
@@ -88,7 +88,7 @@ export default function AdminAnalyticsPage() {
         {/* Recipes per week chart */}
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            New Recipes Per Week
+            الوصفات الجديدة أسبوعياً
           </h3>
           <div className="flex items-end gap-2 h-48">
             {data.recipesPerWeek.map((week) => (
@@ -110,12 +110,12 @@ export default function AdminAnalyticsPage() {
       {/* Weekly tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Users Table</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">جدول المستخدمين</h3>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left py-2 text-gray-500 dark:text-gray-400">Week</th>
-                <th className="text-right py-2 text-gray-500 dark:text-gray-400">New Users</th>
+                <th className="text-left py-2 text-gray-500 dark:text-gray-400">الأسبوع</th>
+                <th className="text-right py-2 text-gray-500 dark:text-gray-400">مستخدمون جدد</th>
               </tr>
             </thead>
             <tbody>
@@ -130,12 +130,12 @@ export default function AdminAnalyticsPage() {
         </div>
 
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recipes Table</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">جدول الوصفات</h3>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left py-2 text-gray-500 dark:text-gray-400">Week</th>
-                <th className="text-right py-2 text-gray-500 dark:text-gray-400">New Recipes</th>
+                <th className="text-left py-2 text-gray-500 dark:text-gray-400">الأسبوع</th>
+                <th className="text-right py-2 text-gray-500 dark:text-gray-400">وصفات جديدة</th>
               </tr>
             </thead>
             <tbody>

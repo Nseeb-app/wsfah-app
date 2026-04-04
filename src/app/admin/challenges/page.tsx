@@ -94,7 +94,7 @@ export default function AdminChallengesPage() {
   }
 
   async function deleteChallenge(id: string) {
-    if (!confirm("Delete this challenge?")) return;
+    if (!confirm("حذف هذا التحدي؟")) return;
     const res = await fetch(`/api/admin/challenges?id=${id}`, { method: "DELETE" });
     if (res.ok) setChallenges((prev) => prev.filter((c) => c.id !== id));
   }
@@ -108,13 +108,13 @@ export default function AdminChallengesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Challenges</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">التحديات</h2>
         <button
           onClick={() => { resetForm(); setShowForm(true); }}
           className="px-4 py-2 bg-[#25f459] text-black rounded-lg text-sm font-bold hover:bg-[#20d64e] transition-colors flex items-center gap-2"
         >
           <span className="material-symbols-outlined text-lg">add</span>
-          New Challenge
+          تحدي جديد
         </button>
       </div>
 
@@ -124,7 +124,7 @@ export default function AdminChallengesPage() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                {editId ? "Edit Challenge" : "New Challenge"}
+                {editId ? "تعديل التحدي" : "تحدي جديد"}
               </h3>
               <button onClick={resetForm} className="size-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center">
                 <span className="material-symbols-outlined">close</span>
@@ -132,46 +132,46 @@ export default function AdminChallengesPage() {
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">العنوان</label>
                 <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الوصف</label>
                 <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white resize-none" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Icon (Material)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الأيقونة (Material)</label>
                   <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-2xl text-[#25f459]">{form.icon}</span>
                     <input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} className="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Reward Points</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">نقاط المكافأة</label>
                   <input type="number" value={form.rewardPoints} onChange={(e) => setForm({ ...form, rewardPoints: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Max Progress</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الحد الأقصى للتقدم</label>
                   <input type="number" value={form.maxProgress} onChange={(e) => setForm({ ...form, maxProgress: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rank</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الرتبة</label>
                   <select value={form.rank} onChange={(e) => setForm({ ...form, rank: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white">
                     {RANKS.map((r) => <option key={r} value={r}>{r}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الفئة</label>
                   <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white">
                     {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
               </div>
               <button onClick={handleSubmit} className="w-full py-3 bg-[#25f459] text-black rounded-xl font-bold text-sm hover:bg-[#20d64e] transition-colors">
-                {editId ? "Update Challenge" : "Create Challenge"}
+                {editId ? "تحديث التحدي" : "إنشاء التحدي"}
               </button>
             </div>
           </div>
@@ -180,22 +180,22 @@ export default function AdminChallengesPage() {
 
       {/* Table */}
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       ) : challenges.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">No challenges yet.</p>
+        <p className="text-gray-500 dark:text-gray-400">لا توجد تحديات بعد.</p>
       ) : (
         <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Challenge</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Rank</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Category</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Points</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Progress</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Joined</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Status</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Actions</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">التحدي</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الرتبة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الفئة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">النقاط</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">التقدم</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المشاركون</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الحالة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -217,7 +217,7 @@ export default function AdminChallengesPage() {
                   </td>
                   <td className="p-4 text-gray-600 dark:text-gray-400">{c.category}</td>
                   <td className="p-4 text-gray-900 dark:text-white font-medium">{c.rewardPoints}</td>
-                  <td className="p-4 text-gray-600 dark:text-gray-400">{c.maxProgress} steps</td>
+                  <td className="p-4 text-gray-600 dark:text-gray-400">{c.maxProgress} خطوة</td>
                   <td className="p-4 text-gray-600 dark:text-gray-400">{c._count.users}</td>
                   <td className="p-4">
                     <button
@@ -228,16 +228,16 @@ export default function AdminChallengesPage() {
                           : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                       }`}
                     >
-                      {c.isActive ? "Active" : "Inactive"}
+                      {c.isActive ? "نشط" : "غير نشط"}
                     </button>
                   </td>
                   <td className="p-4">
                     <div className="flex gap-2">
                       <button onClick={() => startEdit(c)} className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium">
-                        Edit
+                        تعديل
                       </button>
                       <button onClick={() => deleteChallenge(c.id)} className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium">
-                        Delete
+                        حذف
                       </button>
                     </div>
                   </td>

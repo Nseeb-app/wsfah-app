@@ -84,7 +84,7 @@ export default function AdminRewardsPage() {
   }
 
   async function deleteReward(id: string) {
-    if (!confirm("Delete this reward?")) return;
+    if (!confirm("حذف هذه المكافأة؟")) return;
     const res = await fetch(`/api/admin/rewards?id=${id}`, { method: "DELETE" });
     if (res.ok) setRewards((prev) => prev.filter((r) => r.id !== id));
   }
@@ -92,13 +92,13 @@ export default function AdminRewardsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Rewards</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">المكافآت</h2>
         <button
           onClick={() => { resetForm(); setShowForm(true); }}
           className="px-4 py-2 bg-[#25f459] text-black rounded-lg text-sm font-bold hover:bg-[#20d64e] transition-colors flex items-center gap-2"
         >
           <span className="material-symbols-outlined text-lg">add</span>
-          New Reward
+          مكافأة جديدة
         </button>
       </div>
 
@@ -108,7 +108,7 @@ export default function AdminRewardsPage() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-lg">
             <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                {editId ? "Edit Reward" : "New Reward"}
+                {editId ? "تعديل المكافأة" : "مكافأة جديدة"}
               </h3>
               <button onClick={resetForm} className="size-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center">
                 <span className="material-symbols-outlined">close</span>
@@ -116,27 +116,27 @@ export default function AdminRewardsPage() {
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">العنوان</label>
                 <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الفئة</label>
                   <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white">
                     {REWARD_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Points Cost</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">تكلفة النقاط</label>
                   <input type="number" value={form.pointsCost} onChange={(e) => setForm({ ...form, pointsCost: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image URL (optional)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">رابط الصورة (اختياري)</label>
                 <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://..." className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
               </div>
               <button onClick={handleSubmit} className="w-full py-3 bg-[#25f459] text-black rounded-xl font-bold text-sm hover:bg-[#20d64e] transition-colors">
-                {editId ? "Update Reward" : "Create Reward"}
+                {editId ? "تحديث المكافأة" : "إنشاء المكافأة"}
               </button>
             </div>
           </div>
@@ -145,20 +145,20 @@ export default function AdminRewardsPage() {
 
       {/* Table */}
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       ) : rewards.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">No rewards yet.</p>
+        <p className="text-gray-500 dark:text-gray-400">لا توجد مكافآت بعد.</p>
       ) : (
         <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Reward</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Category</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Points Cost</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Redeemed</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Status</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">Actions</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المكافأة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الفئة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">تكلفة النقاط</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">مرات الاستبدال</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الحالة</th>
+                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -177,8 +177,8 @@ export default function AdminRewardsPage() {
                     </div>
                   </td>
                   <td className="p-4 text-gray-600 dark:text-gray-400">{r.category}</td>
-                  <td className="p-4 text-gray-900 dark:text-white font-medium">{r.pointsCost} pts</td>
-                  <td className="p-4 text-gray-600 dark:text-gray-400">{r._count.redemptions}x</td>
+                  <td className="p-4 text-gray-900 dark:text-white font-medium">{r.pointsCost} نقطة</td>
+                  <td className="p-4 text-gray-600 dark:text-gray-400">{r._count.redemptions} مرة</td>
                   <td className="p-4">
                     <button
                       onClick={() => toggleEnabled(r.id, r.isEnabled)}
@@ -188,16 +188,16 @@ export default function AdminRewardsPage() {
                           : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                       }`}
                     >
-                      {r.isEnabled ? "Enabled" : "Disabled"}
+                      {r.isEnabled ? "مفعّلة" : "معطّلة"}
                     </button>
                   </td>
                   <td className="p-4">
                     <div className="flex gap-2">
                       <button onClick={() => startEdit(r)} className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium">
-                        Edit
+                        تعديل
                       </button>
                       <button onClick={() => deleteReward(r.id)} className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium">
-                        Delete
+                        حذف
                       </button>
                     </div>
                   </td>

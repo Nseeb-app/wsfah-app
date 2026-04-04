@@ -12,11 +12,11 @@ interface AdPlacement {
 }
 
 const DEFAULT_PLACEMENTS: AdPlacement[] = [
-  { id: "1", name: "Home - After Categories", slot: "home-mid", page: "Home", format: "horizontal", enabled: true },
-  { id: "2", name: "Feed - Between Activities", slot: "feed-0", page: "Feed", format: "horizontal", enabled: true },
-  { id: "3", name: "Explore - Top Banner", slot: "explore-top", page: "Explore", format: "horizontal", enabled: true },
-  { id: "4", name: "Recipe - Between Sections", slot: "recipe-mid", page: "Recipe Detail", format: "horizontal", enabled: true },
-  { id: "5", name: "Recipe - Above Comments", slot: "recipe-bottom", page: "Recipe Detail", format: "rectangle", enabled: true },
+  { id: "1", name: "الرئيسية - بعد الأقسام", slot: "home-mid", page: "الرئيسية", format: "horizontal", enabled: true },
+  { id: "2", name: "التغذية - بين الأنشطة", slot: "feed-0", page: "التغذية", format: "horizontal", enabled: true },
+  { id: "3", name: "الاستكشاف - بانر علوي", slot: "explore-top", page: "الاستكشاف", format: "horizontal", enabled: true },
+  { id: "4", name: "الوصفة - بين الأقسام", slot: "recipe-mid", page: "تفاصيل الوصفة", format: "horizontal", enabled: true },
+  { id: "5", name: "الوصفة - فوق التعليقات", slot: "recipe-bottom", page: "تفاصيل الوصفة", format: "rectangle", enabled: true },
 ];
 
 export default function AdminAdsPage() {
@@ -42,9 +42,9 @@ export default function AdminAdsPage() {
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Ad Management</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">إدارة الإعلانات</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Configure Google AdSense placements across the app
+            إعداد مواضع Google AdSense في التطبيق
           </p>
         </div>
         <button
@@ -52,7 +52,7 @@ export default function AdminAdsPage() {
           className="px-5 py-2.5 bg-green-600 text-white rounded-lg font-semibold text-sm hover:bg-green-700 transition-colors flex items-center gap-2"
         >
           <span className="material-symbols-outlined text-lg">save</span>
-          {saved ? "Saved!" : "Save Changes"}
+          {saved ? "تم الحفظ!" : "حفظ التغييرات"}
         </button>
       </div>
 
@@ -65,7 +65,7 @@ export default function AdminAdsPage() {
         <div className="grid gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Publisher ID (NEXT_PUBLIC_ADSENSE_ID)
+              معرّف الناشر (NEXT_PUBLIC_ADSENSE_ID)
             </label>
             <input
               type="text"
@@ -75,7 +75,7 @@ export default function AdminAdsPage() {
               className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
             />
             <p className="text-xs text-gray-400 mt-1">
-              Set in your .env.local file as NEXT_PUBLIC_ADSENSE_ID
+              قم بتعيينه في ملف .env.local باسم NEXT_PUBLIC_ADSENSE_ID
             </p>
           </div>
         </div>
@@ -88,30 +88,30 @@ export default function AdminAdsPage() {
             <div className="size-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
               <span className="material-symbols-outlined text-green-600 dark:text-green-400">monetization_on</span>
             </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Est. Revenue</span>
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">الإيرادات المقدرة</span>
           </div>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">$0.00</p>
-          <p className="text-xs text-gray-400 mt-1">Connect AdSense to see data</p>
+          <p className="text-xs text-gray-400 mt-1">اربط AdSense لرؤية البيانات</p>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <div className="flex items-center gap-3 mb-2">
             <div className="size-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
               <span className="material-symbols-outlined text-blue-600 dark:text-blue-400">visibility</span>
             </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Impressions</span>
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">مرات الظهور</span>
           </div>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">0</p>
-          <p className="text-xs text-gray-400 mt-1">Total ad impressions today</p>
+          <p className="text-xs text-gray-400 mt-1">إجمالي مرات ظهور الإعلانات اليوم</p>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <div className="flex items-center gap-3 mb-2">
             <div className="size-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
               <span className="material-symbols-outlined text-purple-600 dark:text-purple-400">ads_click</span>
             </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Active Slots</span>
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">المواضع النشطة</span>
           </div>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">{enabledCount}/{placements.length}</p>
-          <p className="text-xs text-gray-400 mt-1">Ad placements enabled</p>
+          <p className="text-xs text-gray-400 mt-1">مواضع الإعلانات المفعّلة</p>
         </div>
       </div>
 
@@ -120,11 +120,11 @@ export default function AdminAdsPage() {
         <div className="flex items-start gap-3">
           <span className="material-symbols-outlined text-amber-600 dark:text-amber-400 mt-0.5">info</span>
           <div>
-            <h3 className="font-bold text-sm text-amber-800 dark:text-amber-300">Ad Visibility Rules</h3>
+            <h3 className="font-bold text-sm text-amber-800 dark:text-amber-300">قواعد ظهور الإعلانات</h3>
             <ul className="text-xs text-amber-700 dark:text-amber-400 mt-2 space-y-1">
-              <li><strong>Free users:</strong> See all enabled ads</li>
-              <li><strong>Basic subscribers:</strong> No ads (ad-free experience)</li>
-              <li><strong>Premium subscribers:</strong> No ads (ad-free experience)</li>
+              <li><strong>المستخدمون المجانيون:</strong> يرون جميع الإعلانات المفعّلة</li>
+              <li><strong>مشتركو الخطة الأساسية:</strong> بدون إعلانات (تجربة خالية من الإعلانات)</li>
+              <li><strong>مشتركو الخطة المميزة:</strong> بدون إعلانات (تجربة خالية من الإعلانات)</li>
             </ul>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function AdminAdsPage() {
       {/* Ad Placements */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="font-bold text-lg">Ad Placements</h2>
+          <h2 className="font-bold text-lg">مواضع الإعلانات</h2>
         </div>
         <div className="divide-y divide-gray-100 dark:divide-gray-700">
           {placements.map((placement) => (
@@ -159,10 +159,10 @@ export default function AdminAdsPage() {
                       {placement.page}
                     </span>
                     <span className="text-xs text-gray-400">
-                      Slot: {placement.slot}
+                      الموضع: {placement.slot}
                     </span>
                     <span className="text-xs text-gray-400">
-                      Format: {placement.format}
+                      الشكل: {placement.format}
                     </span>
                   </div>
                 </div>
@@ -188,14 +188,14 @@ export default function AdminAdsPage() {
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mt-6">
         <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
           <span className="material-symbols-outlined text-gray-400">integration_instructions</span>
-          Setup Guide
+          دليل الإعداد
         </h2>
         <ol className="text-sm text-gray-600 dark:text-gray-400 space-y-3 list-decimal list-inside">
-          <li>Create a Google AdSense account at <strong>adsense.google.com</strong></li>
-          <li>Get your Publisher ID (starts with <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs">ca-pub-</code>)</li>
-          <li>Add <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs">NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXX</code> to your <strong>.env.local</strong></li>
-          <li>Create ad units in AdSense and replace slot IDs in the placements above</li>
-          <li>Deploy and wait for AdSense approval (usually 1-2 weeks)</li>
+          <li>أنشئ حساب Google AdSense على <strong>adsense.google.com</strong></li>
+          <li>احصل على معرّف الناشر (يبدأ بـ <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs">ca-pub-</code>)</li>
+          <li>أضف <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs">NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXX</code> إلى ملف <strong>.env.local</strong></li>
+          <li>أنشئ وحدات إعلانية في AdSense واستبدل معرّفات المواضع أعلاه</li>
+          <li>انشر التطبيق وانتظر موافقة AdSense (عادة 1-2 أسبوع)</li>
         </ol>
       </div>
     </div>
