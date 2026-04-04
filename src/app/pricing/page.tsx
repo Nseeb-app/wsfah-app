@@ -1,10 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import MaterialIcon from "@/components/MaterialIcon";
 import BottomNav from "@/components/BottomNav";
+
+export default function PricingPageWrapper() {
+  return (
+    <Suspense>
+      <PricingPage />
+    </Suspense>
+  );
+}
 
 type Interval = "monthly" | "yearly";
 
@@ -107,7 +115,7 @@ const ROASTER_PLANS = [
   },
 ];
 
-export default function PricingPage() {
+function PricingPage() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
   const [tab, setTab] = useState<"users" | "roasters">("users");
