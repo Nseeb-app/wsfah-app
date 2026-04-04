@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MaterialIcon from "./MaterialIcon";
+import { UserPricingToggle, RoasterPricingToggle } from "./PricingToggle";
 
 const features = [
   {
@@ -46,103 +47,6 @@ const features = [
     icon: "collections",
     title: "المجموعات والمعرض",
     desc: "نظّم الوصفات في مجموعات، شارك صور التحضير، وتصفّح معرضاً جميلاً من التحضيرات.",
-  },
-];
-
-const userPlans = [
-  {
-    name: "مجاني",
-    price: "0 SAR",
-    period: "للأبد",
-    desc: "كل ما تحتاجه لتبدأ تحضيراً أفضل",
-    features: [
-      "تصفّح جميع الوصفات",
-      "مؤقت التحضير والوضع الموجّه",
-      "حاسبة نسبة التحضير",
-      "إنشاء حتى 3 وصفات",
-      "إعجاب وحفظ حتى 20 وصفة",
-      "بحث أساسي ولوحة المتصدرين",
-    ],
-    cta: "ابدأ الآن",
-    href: "/signup",
-    highlighted: false,
-  },
-  {
-    name: "احترافي",
-    price: "4.99 SAR",
-    period: "/شهرياً",
-    desc: "للمحضّرين الجادين الذين يريدون التجربة الكاملة",
-    features: [
-      "كل شيء في المجاني",
-      "وصفات وحفظ بلا حدود",
-      "دفتر تحضير مع تحليلات",
-      "وسم عجلة النكهات",
-      "ملفات تحضير مخصصة",
-      "وصول للوصفات بدون إنترنت",
-      "نسخ وإعادة مزج الوصفات",
-      "المجموعات والمجموعات والرسائل",
-    ],
-    cta: "ابدأ الفترة التجريبية",
-    href: "/pricing",
-    highlighted: true,
-  },
-];
-
-const roasterPlans = [
-  {
-    name: "المحمصة - أساسي",
-    price: "39 SAR",
-    period: "/شهرياً",
-    desc: "اعرض علامتك التجارية أمام آلاف المحضّرين",
-    features: [
-      "ملف محمصة موثّق وشارة",
-      "كتالوج منتجات (حتى 50 منتج)",
-      "تقييمات ومراجعات العملاء",
-      "تحليلات أساسية للعلامة التجارية",
-      "ربط الوصفات بمنتجاتك",
-      "صفحة مجموعة مجتمعية",
-    ],
-    cta: "ابدأ الفترة التجريبية",
-    href: "/pricing",
-    highlighted: false,
-  },
-  {
-    name: "المحمصة - احترافي",
-    price: "79 SAR",
-    period: "/شهرياً",
-    desc: "وسّع جمهورك وحقق مبيعات فعلية",
-    features: [
-      "كل شيء في المحمصة - أساسي",
-      "كتالوج منتجات بلا حدود",
-      "وصفات مروّجة في الخلاصة",
-      "تحليلات ورؤى متقدمة",
-      "أداة مقارنة التحضير",
-      "سجل إصدارات الوصفات",
-      "استضافة وترويج الفعاليات",
-      "أولوية الظهور في البحث",
-    ],
-    cta: "ابدأ الفترة التجريبية",
-    href: "/pricing",
-    highlighted: true,
-  },
-  {
-    name: "الشركات",
-    price: "مخصص",
-    period: "",
-    desc: "للمحمصات الكبيرة والسلاسل والموزعين",
-    features: [
-      "كل شيء في المحمصة - احترافي",
-      "إدارة مواقع متعددة",
-      "وصول API وتكاملات",
-      "مدير حساب مخصص",
-      "هوية مخصصة وصفحة هبوط",
-      "استيراد منتجات بالجملة",
-      "حسابات أعضاء الفريق",
-      "أدلة تحضير بعلامتك التجارية",
-    ],
-    cta: "تواصل مع المبيعات",
-    href: "/pricing",
-    highlighted: false,
   },
 ];
 
@@ -297,54 +201,7 @@ export default function LandingPage() {
               ابدأ مجاناً. قم بالترقية عندما تكون جاهزاً للمزيد.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {userPlans.map((plan) => (
-              <div
-                key={plan.name}
-                className={`rounded-2xl p-8 border transition-all ${
-                  plan.highlighted
-                    ? "bg-espresso text-oat-milk border-primary shadow-2xl scale-[1.02] relative"
-                    : "bg-white border-espresso/5 hover:border-primary/20 hover:shadow-lg"
-                }`}
-              >
-                {plan.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-espresso text-[10px] font-extrabold px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
-                    الأكثر شعبية
-                  </div>
-                )}
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold mb-1">{plan.name}</h3>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-extrabold">{plan.price}</span>
-                    <span className={`text-sm font-semibold ${plan.highlighted ? "opacity-60" : "opacity-40"}`}>{plan.period}</span>
-                  </div>
-                  <p className={`text-sm mt-2 font-medium ${plan.highlighted ? "opacity-70" : "opacity-50"}`}>{plan.desc}</p>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm font-medium">
-                      <MaterialIcon
-                        icon="check_circle"
-                        className={`text-lg flex-shrink-0 ${plan.highlighted ? "text-primary" : "text-primary/70"}`}
-                        filled
-                      />
-                      <span className={plan.highlighted ? "opacity-90" : "opacity-60"}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href={plan.href}
-                  className={`block w-full text-center py-3.5 rounded-xl font-bold text-sm transition-colors ${
-                    plan.highlighted
-                      ? "bg-primary text-espresso hover:bg-primary/90 shadow-lg"
-                      : "bg-espresso/5 text-espresso hover:bg-primary hover:text-espresso"
-                  }`}
-                >
-                  {plan.cta}
-                </Link>
-              </div>
-            ))}
-          </div>
+          <UserPricingToggle />
         </div>
       </section>
 
@@ -363,56 +220,7 @@ export default function LandingPage() {
               اوصل لعشّاق القهوة والشاي المتحمسين. اعرض منتجاتك، ابنِ مجتمعاً، وحقق مبيعات.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {roasterPlans.map((plan) => (
-              <div
-                key={plan.name}
-                className={`rounded-2xl p-8 border transition-all ${
-                  plan.highlighted
-                    ? "bg-espresso text-oat-milk border-brand-gold shadow-2xl scale-[1.02] relative"
-                    : "bg-white border-espresso/5 hover:border-brand-gold/20 hover:shadow-lg"
-                }`}
-              >
-                {plan.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-gold text-espresso text-[10px] font-extrabold px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
-                    أفضل قيمة
-                  </div>
-                )}
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold mb-1">{plan.name}</h3>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-extrabold">{plan.price}</span>
-                    {plan.period && (
-                      <span className={`text-sm font-semibold ${plan.highlighted ? "opacity-60" : "opacity-40"}`}>{plan.period}</span>
-                    )}
-                  </div>
-                  <p className={`text-sm mt-2 font-medium ${plan.highlighted ? "opacity-70" : "opacity-50"}`}>{plan.desc}</p>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm font-medium">
-                      <MaterialIcon
-                        icon="check_circle"
-                        className={`text-lg flex-shrink-0 ${plan.highlighted ? "text-brand-gold" : "text-brand-gold/70"}`}
-                        filled
-                      />
-                      <span className={plan.highlighted ? "opacity-90" : "opacity-60"}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href={plan.href}
-                  className={`block w-full text-center py-3.5 rounded-xl font-bold text-sm transition-colors ${
-                    plan.highlighted
-                      ? "bg-brand-gold text-espresso hover:bg-brand-gold/90 shadow-lg"
-                      : "bg-espresso/5 text-espresso hover:bg-brand-gold hover:text-espresso"
-                  }`}
-                >
-                  {plan.cta}
-                </Link>
-              </div>
-            ))}
-          </div>
+          <RoasterPricingToggle />
         </div>
       </section>
 
