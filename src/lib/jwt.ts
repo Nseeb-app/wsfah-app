@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from "jose";
 
 const secret = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || "fallback-dev-secret-change-in-production"
+  process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET
 );
 
 export async function signMobileToken(payload: { id: string; role: string }) {
