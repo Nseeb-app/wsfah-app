@@ -4,7 +4,7 @@ function getKeys() {
   const apiKey = process.env.STREAM_API_KEY;
   const apiSecret = process.env.STREAM_API_SECRET;
   const xApiKey = process.env.STREAM_X_API_KEY;
-  if (!xApiKey) throw new Error("STREAM_X_API_KEY is not set");
+  if (!xApiKey && !apiKey) throw new Error("STREAM_X_API_KEY or STREAM_API_KEY must be set");
   return { apiKey, apiSecret, xApiKey };
 }
 
@@ -17,7 +17,7 @@ async function streamFetch<T = any>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": xApiKey,
+      ...(xApiKey ? { "x-api-key": xApiKey } : {}),
       ...(apiKey ? { "api-key": apiKey } : {}),
       ...(apiSecret ? { "api-secret": apiSecret } : {}),
       ...options.headers,
@@ -28,7 +28,7 @@ async function streamFetch<T = any>(
 
   if (!res.ok) {
     throw new Error(
-      data.message || `StreamPay API error: ${res.status}`
+      data.message || data.detail || `StreamPay API error: ${res.status}`
     );
   }
 
@@ -45,7 +45,7 @@ export async function createProduct(params: {
   type: "ONE_OFF" | "RECURRING" | "METERED";
   interval?: "day" | "week" | "month" | "year";
 }) {
-  return streamFetch("/v2/products", {
+  return streamFetch("/api/v2/products", {
     method: "POST",
     body: JSON.stringify(params),
   });
@@ -53,13 +53,17 @@ export async function createProduct(params: {
 
 export async function listProducts(params?: {
   type?: string;
-  status?: string;
+  active?: boolean;
   currency?: string;
 }) {
   const query = new URLSearchParams(
-    Object.entries(params || {}).filter(([, v]) => v)
+    Object.entries(params || {}).filter(([, v]) => v !== undefined) as [string, string][]
   ).toString();
-  return streamFetch(`/v2/products${query ? `?${query}` : ""}`);
+  return streamFetch(`/api/v2/products${query ? `?${query}` : ""}`);
+}
+
+export async function getProduct(id: string) {
+  return streamFetch(`/api/v2/products/${id}`);
 }
 
 // ─── Payment Links (Checkout) ───
@@ -72,80 +76,120 @@ export async function createPaymentLink(params: {
     quantity: number;
     coupons?: string[];
   }>;
-  customer_id?: string;
+  consumer_id?: string;
   success_url?: string;
   cancel_url?: string;
   metadata?: Record<string, string>;
 }) {
-  return streamFetch("/v2/payment_links", {
+  return streamFetch("/api/v2/payment_links", {
     method: "POST",
     body: JSON.stringify(params),
   });
 }
 
 export async function getPaymentLink(id: string) {
-  return streamFetch(`/v2/payment_links/${id}`);
+  return streamFetch(`/api/v2/payment_links/${id}`);
 }
 
-// ─── Customers ───
+export async function listPaymentLinks() {
+  return streamFetch("/api/v2/payment_links");
+}
 
-export async function createCustomer(params: {
+// ─── Consumers ───
+
+export async function createConsumer(params: {
   name: string;
   email?: string;
   phone?: string;
   language?: string;
 }) {
-  return streamFetch("/v2/customers", {
+  return streamFetch("/api/v2/consumers", {
     method: "POST",
     body: JSON.stringify(params),
   });
 }
 
-export async function getCustomer(id: string) {
-  return streamFetch(`/v2/customers/${id}`);
+export async function getConsumer(id: string) {
+  return streamFetch(`/api/v2/consumers/${id}`);
 }
 
-export async function listCustomers() {
-  return streamFetch("/v2/customers");
+export async function listConsumers() {
+  return streamFetch("/api/v2/consumers");
+}
+
+export async function updateConsumer(
+  id: string,
+  params: { name?: string; email?: string; phone?: string }
+) {
+  return streamFetch(`/api/v2/consumers/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(params),
+  });
 }
 
 // ─── Subscriptions ───
 
+export async function createSubscription(params: {
+  items: Array<{ product_id: string; quantity: number }>;
+  consumer_id: string;
+  description?: string;
+  coupons?: string[];
+}) {
+  return streamFetch("/api/v2/subscriptions", {
+    method: "POST",
+    body: JSON.stringify(params),
+  });
+}
+
 export async function getSubscription(id: string) {
-  return streamFetch(`/v2/subscriptions/${id}`);
+  return streamFetch(`/api/v2/subscriptions/${id}`);
 }
 
 export async function listSubscriptions(params?: {
-  customer_id?: string;
-  status?: string;
+  organization_consumer_id?: string;
+  statuses?: string[];
+  product_ids?: string[];
 }) {
-  const query = new URLSearchParams(
-    Object.entries(params || {}).filter(([, v]) => v)
-  ).toString();
-  return streamFetch(`/v2/subscriptions${query ? `?${query}` : ""}`);
+  const query = new URLSearchParams();
+  if (params?.organization_consumer_id) query.set("organization_consumer_id", params.organization_consumer_id);
+  if (params?.statuses) params.statuses.forEach((s) => query.append("statuses", s));
+  if (params?.product_ids) params.product_ids.forEach((p) => query.append("product_ids", p));
+  const qs = query.toString();
+  return streamFetch(`/api/v2/subscriptions${qs ? `?${qs}` : ""}`);
+}
+
+export async function cancelSubscription(
+  id: string,
+  params?: { cancel_ongoing_invoices?: boolean }
+) {
+  return streamFetch(`/api/v2/subscriptions/${id}/cancel`, {
+    method: "POST",
+    body: JSON.stringify(params || {}),
+  });
 }
 
 // ─── Payments ───
 
 export async function getPayment(id: string) {
-  return streamFetch(`/v2/payments/${id}`);
+  return streamFetch(`/api/v2/payments/${id}`);
 }
 
 export async function listPayments(params?: {
-  status?: string;
-  invoice_id?: string;
+  statuses?: string[];
+  invoice_id?: string[];
 }) {
-  const query = new URLSearchParams(
-    Object.entries(params || {}).filter(([, v]) => v)
-  ).toString();
-  return streamFetch(`/v2/payments${query ? `?${query}` : ""}`);
+  const query = new URLSearchParams();
+  if (params?.statuses) params.statuses.forEach((s) => query.append("statuses", s));
+  if (params?.invoice_id) params.invoice_id.forEach((i) => query.append("invoice_id", i));
+  const qs = query.toString();
+  return streamFetch(`/api/v2/payments${qs ? `?${qs}` : ""}`);
 }
 
 export async function refundPayment(
   id: string,
-  params: { amount?: number; reason?: string }
+  params: { reason?: string; allow_refund_multiple_related_payments?: boolean }
 ) {
-  return streamFetch(`/v2/payments/${id}/refund`, {
+  return streamFetch(`/api/v2/payments/${id}/refund`, {
     method: "POST",
     body: JSON.stringify(params),
   });
@@ -154,11 +198,24 @@ export async function refundPayment(
 // ─── Invoices ───
 
 export async function getInvoice(id: string) {
-  return streamFetch(`/v2/invoices/${id}`);
+  return streamFetch(`/api/v2/invoices/${id}`);
+}
+
+export async function listInvoices(params?: {
+  statuses?: string[];
+  subscription_id?: string;
+  organization_consumer_id?: string;
+}) {
+  const query = new URLSearchParams();
+  if (params?.statuses) params.statuses.forEach((s) => query.append("statuses", s));
+  if (params?.subscription_id) query.set("subscription_id", params.subscription_id);
+  if (params?.organization_consumer_id) query.set("organization_consumer_id", params.organization_consumer_id);
+  const qs = query.toString();
+  return streamFetch(`/api/v2/invoices${qs ? `?${qs}` : ""}`);
 }
 
 // ─── Account ───
 
 export async function getMe() {
-  return streamFetch("/v2/me");
+  return streamFetch("/api/v2/me");
 }

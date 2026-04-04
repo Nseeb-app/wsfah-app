@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { createPaymentLink, createCustomer } from "@/lib/streampay";
+import { createPaymentLink, createConsumer } from "@/lib/streampay";
 
 // Maps our plan slugs to StreamPay product IDs (set in env)
 function getProductId(planSlug: string): string | null {
@@ -61,8 +61,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Create or find StreamPay customer
-    const customer = await createCustomer({
+    // Create StreamPay consumer
+    const consumer = await createConsumer({
       name: user.name || "مستخدم وصفة",
       email: user.email || undefined,
       phone: user.phone || undefined,
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
       name: `اشتراك ${planSlug}`,
       description: `اشتراك في خطة ${planSlug}`,
       items: [{ product_id: productId, quantity: 1 }],
-      customer_id: customer.id,
+      consumer_id: consumer.id,
       success_url: `${origin}/pricing?status=success&plan=${planSlug}`,
       cancel_url: `${origin}/pricing?status=cancelled`,
       metadata: {
