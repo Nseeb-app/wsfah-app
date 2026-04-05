@@ -119,9 +119,9 @@ export async function POST(req: Request) {
     validatedBrandId = company.id;
   }
 
+  // Support Arabic + Latin characters in slug
   const slug = title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
     .replace(/(^-|-$)/g, "")
     + "-" + Date.now().toString(36);
 

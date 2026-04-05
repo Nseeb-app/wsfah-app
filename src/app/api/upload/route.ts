@@ -102,8 +102,18 @@ const MIME_TO_EXT: Record<string, string> = {
 };
 
 export async function POST(req: Request) {
+  // Support both NextAuth session and mobile JWT
   const session = await auth();
-  if (!session?.user?.id) {
+  let userId = session?.user?.id;
+
+  if (!userId) {
+    // Try mobile JWT
+    const { getAuthUser } = await import("@/lib/auth-mobile");
+    const mobileUser = await getAuthUser(req);
+    userId = mobileUser?.id;
+  }
+
+  if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -167,7 +177,7 @@ export async function POST(req: Request) {
   const url = `${CDN_URL}/${key}`;
 
   // Audit log
-  logAudit(session.user.id, AUDIT.FILE_UPLOAD, "file", key, {
+  logAudit(userId, AUDIT.FILE_UPLOAD, "file", key, {
     originalName: file.name,
     mimeType: file.type,
     size: file.size,
