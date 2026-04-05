@@ -31,6 +31,9 @@ export default function RootLayout({
     <html lang="ar" dir="rtl" translate="no" suppressHydrationWarning>
       <head>
         <meta name="google" content="notranslate" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <meta name="theme-color" content="#0f1714" />
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
