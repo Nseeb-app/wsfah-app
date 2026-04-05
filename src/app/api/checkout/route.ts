@@ -18,13 +18,18 @@ function getProductId(planSlug: string): string | null {
   return map[planSlug] || null;
 }
 
+// Get base plan name (strip yearly suffix)
+function getBasePlan(slug: string): string {
+  return slug.replace("-yearly", "");
+}
+
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
   }
 
-  const { planSlug, companyId } = await req.json();
+  const { planSlug, companyId, startTrial } = await req.json();
 
   if (!planSlug) {
     return NextResponse.json({ error: "يرجى تحديد الخطة" }, { status: 400 });
@@ -58,15 +63,86 @@ export async function POST(req: NextRequest) {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { id: true, name: true, email: true, phone: true },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      trialUsed: true,
+      trialEndsAt: true,
+      subscriptionTier: true,
+    },
   });
 
   if (!user) {
     return NextResponse.json({ error: "المستخدم غير موجود" }, { status: 404 });
   }
 
+  // ─── Free Trial Flow ───
+  if (startTrial) {
+    // Prevent trial abuse: check if user already used trial
+    if (user.trialUsed) {
+      return NextResponse.json(
+        { error: "لقد استخدمت الفترة التجريبية المجانية مسبقاً" },
+        { status: 403 }
+      );
+    }
+
+    // Prevent trial if already on a paid plan
+    if (user.subscriptionTier !== "free") {
+      return NextResponse.json(
+        { error: "أنت مشترك بالفعل في خطة مدفوعة" },
+        { status: 400 }
+      );
+    }
+
+    // Activate 14-day trial
+    const trialEnd = new Date();
+    trialEnd.setDate(trialEnd.getDate() + 14);
+
+    const basePlan = getBasePlan(planSlug);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        subscriptionTier: basePlan === "pro" ? "pro" : "free",
+        trialUsed: true,
+        trialEndsAt: trialEnd,
+        trialPlanSlug: planSlug,
+      },
+    });
+
+    // For roaster plans, also update company
+    if (isRoasterPlan && companyId) {
+      const tier = basePlan === "roaster-pro" ? "pro" : "basic";
+      await prisma.company.update({
+        where: { id: companyId },
+        data: {
+          subscriptionTier: tier,
+          subscriptionExpiresAt: trialEnd,
+        },
+      });
+    }
+
+    await prisma.auditLog.create({
+      data: {
+        userId: user.id,
+        action: "TRIAL_STARTED",
+        entity: "subscription",
+        entityId: user.id,
+        metadata: JSON.stringify({
+          plan: planSlug,
+          trialEndsAt: trialEnd.toISOString(),
+        }),
+      },
+    });
+
+    // Still need payment info - create payment link with trial_period
+    // StreamPay will collect card but not charge until trial ends
+  }
+
   try {
-    // Try to create StreamPay consumer (may fail in sandbox mode)
+    // Try to create StreamPay consumer
     let consumerId: string | undefined;
     try {
       const consumer = await createConsumer({
@@ -77,7 +153,7 @@ export async function POST(req: NextRequest) {
       });
       consumerId = consumer.id;
     } catch {
-      // Sandbox mode restricts consumer creation - proceed without
+      // Sandbox mode restricts consumer creation
     }
 
     const origin = req.nextUrl.origin;
@@ -85,14 +161,17 @@ export async function POST(req: NextRequest) {
     // Create payment link
     const paymentLink = await createPaymentLink({
       name: `اشتراك ${planSlug}`,
-      description: `اشتراك في خطة ${planSlug}`,
+      description: startTrial
+        ? `فترة تجريبية ١٤ يوم - ${planSlug}`
+        : `اشتراك في خطة ${planSlug}`,
       items: [{ product_id: productId, quantity: 1 }],
       ...(consumerId ? { consumer_id: consumerId } : {}),
-      success_url: `${origin}/pricing?status=success&plan=${planSlug}`,
+      success_url: `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`,
       cancel_url: `${origin}/pricing?status=cancelled`,
       metadata: {
         user_id: session.user.id,
         plan_slug: planSlug,
+        is_trial: startTrial ? "true" : "false",
         ...(companyId ? { company_id: companyId } : {}),
       },
     });

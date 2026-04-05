@@ -14,6 +14,9 @@ export async function GET() {
     select: {
       id: true,
       subscriptionTier: true,
+      trialUsed: true,
+      trialEndsAt: true,
+      trialPlanSlug: true,
       companies: {
         select: {
           id: true,
@@ -39,6 +42,10 @@ export async function GET() {
     user: {
       tier: user.subscriptionTier,
       isProUser: user.subscriptionTier === "pro",
+      trialUsed: user.trialUsed,
+      trialEndsAt: user.trialEndsAt,
+      trialPlanSlug: user.trialPlanSlug,
+      isOnTrial: user.trialEndsAt ? new Date(user.trialEndsAt) > new Date() : false,
     },
     companies: user.companies.map((c) => ({
       id: c.id,
