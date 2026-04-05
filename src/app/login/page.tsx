@@ -255,8 +255,13 @@ export default function LoginPage() {
           المتابعة مع Google
         </button>
 
+        {/* Forgot password */}
+        <Link href="/forgot-password" className="block text-center text-sm text-slate-400 dark:text-white/40 mt-4 hover:text-[#25f459]">
+          نسيت كلمة المرور؟
+        </Link>
+
         {/* Sign up link */}
-        <p className="text-center text-sm text-slate-500 dark:text-white/50 mt-6">
+        <p className="text-center text-sm text-slate-500 dark:text-white/50 mt-4">
           ليس لديك حساب؟{" "}
           <Link href="/signup" className="text-[#25f459] font-semibold">
             إنشاء حساب

@@ -5,6 +5,8 @@ import { parseBody, registerSchema } from "@/lib/validation";
 import { logAudit, AUDIT } from "@/lib/audit";
 import { rateLimitAuth } from "@/lib/rate-limit";
 import { signMobileToken } from "@/lib/jwt";
+import { sendWelcomeEmail, sendVerificationEmail } from "@/lib/email";
+import { randomUUID } from "crypto";
 
 export async function POST(req: Request) {
   try {
@@ -54,6 +56,23 @@ export async function POST(req: Request) {
     });
 
     logAudit(user.id, AUDIT.REGISTER, "user", user.id, { email, phone }, ip);
+
+    // Send welcome + verification emails (non-blocking)
+    if (email) {
+      const userName = name || email.split("@")[0];
+      sendWelcomeEmail(email, userName).catch(() => {});
+
+      const verifyToken = randomUUID();
+      prisma.verificationToken.create({
+        data: {
+          identifier: email,
+          token: verifyToken,
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24h
+        },
+      }).then(() => {
+        sendVerificationEmail(email, userName, verifyToken).catch(() => {});
+      }).catch(() => {});
+    }
 
     // Return JWT token for mobile app auto-login
     const token = await signMobileToken({ id: user.id, role: user.role });

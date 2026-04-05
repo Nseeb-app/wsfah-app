@@ -15,6 +15,9 @@ const desktopAllowed = [
   "/terms",
   "/admin",
   "/desktop-only",
+  "/forgot-password",
+  "/reset-password",
+  "/verify-email",
 ];
 
 function isMobile(ua: string): boolean {
