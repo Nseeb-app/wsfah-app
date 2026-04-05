@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { getAuthUser } from "@/lib/auth-mobile";
 
 export async function GET(req: Request) {
-  const session = await auth();
+  const user = await getAuthUser(req);
   const { searchParams } = new URL(req.url);
   const rank = searchParams.get("rank");
   const category = searchParams.get("category");
@@ -16,10 +16,10 @@ export async function GET(req: Request) {
       ...(category ? { category } : {}),
       ...(tier ? { requiredTier: tier } : {}),
     },
-    include: session?.user?.id
+    include: user?.id
       ? {
           users: {
-            where: { userId: session.user.id },
+            where: { userId: user.id },
           },
         }
       : undefined,

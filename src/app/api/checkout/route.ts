@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { getAuthUser } from "@/lib/auth-mobile";
 import { prisma } from "@/lib/prisma";
 import { createPaymentLink, createConsumer } from "@/lib/streampay";
 
@@ -24,8 +24,8 @@ function getBasePlan(slug: string): string {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const authUser = await getAuthUser(req);
+  if (!authUser) {
     return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
   }
 
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       where: { id: companyId },
       select: { ownerId: true },
     });
-    if (!company || company.ownerId !== session.user.id) {
+    if (!company || company.ownerId !== authUser.id) {
       return NextResponse.json(
         { error: "غير مصرح لك بإدارة هذه العلامة التجارية" },
         { status: 403 }
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
   }
 
   const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
+    where: { id: authUser.id },
     select: {
       id: true,
       name: true,
@@ -169,7 +169,7 @@ export async function POST(req: NextRequest) {
       success_url: `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`,
       cancel_url: `${origin}/pricing?status=cancelled`,
       metadata: {
-        user_id: session.user.id,
+        user_id: authUser.id,
         plan_slug: planSlug,
         is_trial: startTrial ? "true" : "false",
         ...(companyId ? { company_id: companyId } : {}),

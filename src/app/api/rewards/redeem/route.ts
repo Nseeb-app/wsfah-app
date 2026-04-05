@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { getAuthUser } from "@/lib/auth-mobile";
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const user = await getAuthUser(req);
+  if (!user) {
+    return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
   }
 
   const { rewardId } = await req.json();
@@ -18,11 +18,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Reward not available" }, { status: 404 });
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
     select: { points: true },
   });
-  if (!user || user.points < reward.pointsCost) {
+  if (!dbUser || dbUser.points < reward.pointsCost) {
     return NextResponse.json({ error: "Insufficient points" }, { status: 400 });
   }
 
@@ -30,13 +30,13 @@ export async function POST(req: Request) {
   const [redemption] = await prisma.$transaction([
     prisma.redemption.create({
       data: {
-        userId: session.user.id,
+        userId: user.id,
         rewardId: reward.id,
         points: reward.pointsCost,
       },
     }),
     prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: user.id },
       data: { points: { decrement: reward.pointsCost } },
     }),
   ]);
@@ -44,6 +44,6 @@ export async function POST(req: Request) {
   return NextResponse.json({
     success: true,
     redemption,
-    remainingPoints: user.points - reward.pointsCost,
+    remainingPoints: dbUser.points - reward.pointsCost,
   });
 }
