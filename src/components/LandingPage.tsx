@@ -281,9 +281,9 @@ export default function LandingPage() {
             <div>
               <h4 className="font-bold text-sm mb-4 uppercase tracking-wider opacity-60">قانوني</h4>
               <div className="space-y-2">
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">سياسة الخصوصية</a>
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">شروط الخدمة</a>
-                <a href="#" className="block text-sm opacity-50 hover:opacity-100 font-medium">سياسة ملفات تعريف الارتباط</a>
+                <a href="/privacy" className="block text-sm opacity-50 hover:opacity-100 font-medium">سياسة الخصوصية</a>
+                <a href="/terms" className="block text-sm opacity-50 hover:opacity-100 font-medium">شروط الخدمة</a>
+                <a href="/refund-policy" className="block text-sm opacity-50 hover:opacity-100 font-medium">سياسة الاسترداد</a>
               </div>
             </div>
           </div>
