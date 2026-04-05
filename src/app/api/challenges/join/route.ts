@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { getAuthUser } from "@/lib/auth-mobile";
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getAuthUser(req);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -23,18 +23,18 @@ export async function POST(req: Request) {
 
   // Check tier requirement
   if (challenge.requiredTier === "pro") {
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
       select: { subscriptionTier: true },
     });
-    if ((user?.subscriptionTier || "").toLowerCase() !== "pro") {
+    if ((dbUser?.subscriptionTier || "").toLowerCase() !== "pro") {
       return NextResponse.json({ error: "Pro subscription required" }, { status: 403 });
     }
   }
 
   // Check if already joined
   const existing = await prisma.userChallenge.findUnique({
-    where: { userId_challengeId: { userId: session.user.id, challengeId } },
+    where: { userId_challengeId: { userId: user.id, challengeId } },
   });
   if (existing) {
     return NextResponse.json({ error: "Already joined" }, { status: 409 });
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
   const userChallenge = await prisma.userChallenge.create({
     data: {
-      userId: session.user.id,
+      userId: user.id,
       challengeId,
     },
   });
