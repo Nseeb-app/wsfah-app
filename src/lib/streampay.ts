@@ -77,6 +77,12 @@ export async function createPaymentLink(params: {
   cancel_url?: string;
   metadata?: Record<string, string>;
 }) {
+  // Validate product_id is set before calling API
+  for (const item of params.items) {
+    if (!item.product_id) {
+      throw new Error("product_id is required — check STREAM_PRODUCT_* env vars");
+    }
+  }
   return streamFetch("/api/v2/payment_links", {
     method: "POST",
     body: JSON.stringify(params),

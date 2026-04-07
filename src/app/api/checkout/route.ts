@@ -35,9 +35,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "يرجى تحديد الخطة" }, { status: 400 });
   }
 
+  // Validate StreamPay API key is configured
+  if (!process.env.STREAM_X_API_KEY) {
+    console.error("STREAM_X_API_KEY is not configured");
+    return NextResponse.json(
+      { error: "خدمة الدفع غير مهيأة — يرجى التواصل مع الدعم" },
+      { status: 500 }
+    );
+  }
+
   const productId = getProductId(planSlug);
   if (!productId) {
-    return NextResponse.json({ error: "خطة غير صالحة" }, { status: 400 });
+    console.error(`Missing STREAM_PRODUCT env var for plan: ${planSlug}`);
+    return NextResponse.json(
+      { error: "خطة غير صالحة — معرف المنتج غير مهيأ" },
+      { status: 400 }
+    );
   }
 
   // Check if this is a roaster plan and validate company ownership
@@ -152,8 +165,9 @@ export async function POST(req: NextRequest) {
         language: "ar",
       });
       consumerId = consumer.id;
-    } catch {
-      // Sandbox mode restricts consumer creation
+    } catch (err) {
+      console.error("StreamPay consumer creation failed:", err);
+      // Continue without consumer — sandbox may restrict this
     }
 
     const origin = req.nextUrl.origin;
@@ -177,10 +191,11 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: paymentLink.url, id: paymentLink.id });
-  } catch (error: any) {
-    console.error("StreamPay checkout error:", error);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "فشل إنشاء رابط الدفع";
+    console.error("StreamPay checkout error:", message);
     return NextResponse.json(
-      { error: error.message || "فشل إنشاء رابط الدفع" },
+      { error: "فشل إنشاء رابط الدفع — يرجى المحاولة لاحقاً" },
       { status: 500 }
     );
   }

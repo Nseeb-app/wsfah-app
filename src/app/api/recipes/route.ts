@@ -5,11 +5,14 @@ import { parseBody, recipeCreateSchema } from "@/lib/validation";
 import { logAudit, AUDIT } from "@/lib/audit";
 import { recordActivity } from "@/lib/activity";
 import { getUserTier, canCreateCount, tierBlockedResponse } from "@/lib/features";
+import { trackChallengeProgress } from "@/lib/challenges";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const search = (searchParams.get("search") || "").slice(0, 200);
   const category = (searchParams.get("category") || "").slice(0, 100);
+  const difficulty = (searchParams.get("difficulty") || "").slice(0, 50);
+  const source = (searchParams.get("source") || "").slice(0, 20);
   const authorId = searchParams.get("authorId") || "";
   const liked = searchParams.get("liked") || "";
   const saved = searchParams.get("saved") || "";
@@ -63,6 +66,8 @@ export async function GET(req: Request) {
     where: {
       ...(search ? { title: { contains: search } } : {}),
       ...(category ? { category } : {}),
+      ...(difficulty ? { difficulty } : {}),
+      ...(source ? { source } : {}),
       ...(authorId ? { authorId } : {}),
     },
     include: {
@@ -155,6 +160,9 @@ export async function POST(req: Request) {
 
   // Record activity
   recordActivity(user.id, "RECIPE_CREATE", recipe.id, "recipe", { title });
+
+  // Track challenge progress (Brewing category)
+  trackChallengeProgress(user.id, "Brewing");
 
   return NextResponse.json(recipe, { status: 201 });
 }

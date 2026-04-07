@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAuthUser } from "@/lib/auth-mobile";
 import { recordActivity } from "@/lib/activity";
+import { trackChallengeProgress } from "@/lib/challenges";
 
 export async function GET(
   req: Request,
@@ -73,6 +74,9 @@ export async function POST(
 
     // Record activity
     recordActivity(user.id, "LIKE", recipe.id, "recipe", { title: recipe.title });
+
+    // Track challenge progress (Social category)
+    trackChallengeProgress(user.id, "Social");
 
     return NextResponse.json({ liked: true });
   }

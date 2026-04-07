@@ -38,9 +38,24 @@ function SearchContent() {
 
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [activeDifficulty, setActiveDifficulty] = useState("الكل");
+  const [activeSource, setActiveSource] = useState("الكل");
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const difficultyOptions = [
+    { label: "الكل", value: "الكل" },
+    { label: "مبتدئ", value: "Beginner" },
+    { label: "متوسط", value: "Intermediate" },
+    { label: "متقدم", value: "Advanced" },
+  ];
+
+  const sourceOptions = [
+    { label: "الكل", value: "الكل" },
+    { label: "مجتمع", value: "COMMUNITY" },
+    { label: "علامة تجارية", value: "BRAND" },
+  ];
 
   // Sync activeCategory when URL param changes
   useEffect(() => {
@@ -60,6 +75,8 @@ function SearchContent() {
     const params = new URLSearchParams();
     if (query) params.set("search", query);
     if (activeCategory !== "الكل") params.set("category", activeCategory);
+    if (activeDifficulty !== "الكل") params.set("difficulty", activeDifficulty);
+    if (activeSource !== "الكل") params.set("source", activeSource);
 
     fetch(`/api/recipes?${params}`)
       .then((r) => r.json())
@@ -68,7 +85,7 @@ function SearchContent() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [query, activeCategory]);
+  }, [query, activeCategory, activeDifficulty, activeSource]);
 
   const allCategories = ["الكل", ...categories.map((c) => c.name)];
 
@@ -114,6 +131,42 @@ function SearchContent() {
               }`}
             >
               {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Difficulty filter */}
+        <div className="flex overflow-x-auto gap-2 mb-3 no-scrollbar">
+          <span className="shrink-0 text-[10px] font-bold text-espresso/40 uppercase self-center ml-1">المستوى</span>
+          {difficultyOptions.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setActiveDifficulty(opt.value)}
+              className={`shrink-0 px-3 py-1.5 rounded-full text-[10px] font-bold transition-colors ${
+                activeDifficulty === opt.value
+                  ? "bg-espresso text-white"
+                  : "bg-white border border-espresso/10 text-espresso/60"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Source filter */}
+        <div className="flex overflow-x-auto gap-2 mb-6 no-scrollbar">
+          <span className="shrink-0 text-[10px] font-bold text-espresso/40 uppercase self-center ml-1">المصدر</span>
+          {sourceOptions.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setActiveSource(opt.value)}
+              className={`shrink-0 px-3 py-1.5 rounded-full text-[10px] font-bold transition-colors ${
+                activeSource === opt.value
+                  ? "bg-espresso text-white"
+                  : "bg-white border border-espresso/10 text-espresso/60"
+              }`}
+            >
+              {opt.label}
             </button>
           ))}
         </div>

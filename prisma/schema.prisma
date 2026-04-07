@@ -330,8 +330,9 @@ model UserChallenge {
   id              String @id @default(cuid())
   userId          String
   challengeId     String
-  currentProgress Int    @default(0)
-  status          String @default("ACTIVE")
+  currentProgress Int       @default(0)
+  status          String    @default("ACTIVE")
+  completedAt     DateTime?
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)

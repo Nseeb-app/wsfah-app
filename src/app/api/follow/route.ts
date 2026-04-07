@@ -4,6 +4,7 @@ import { getAuthUser } from "@/lib/auth-mobile";
 import { parseBody, followSchema } from "@/lib/validation";
 import { logAudit, AUDIT } from "@/lib/audit";
 import { recordActivity } from "@/lib/activity";
+import { trackChallengeProgress } from "@/lib/challenges";
 
 export async function POST(req: Request) {
   const user = await getAuthUser(req);
@@ -39,6 +40,10 @@ export async function POST(req: Request) {
     await prisma.user.update({ where: { id: userId }, data: { followers: { increment: 1 } } });
     await prisma.user.update({ where: { id: user.id }, data: { following: { increment: 1 } } });
     logAudit(user.id, AUDIT.FOLLOW, "user", userId);
+
+    // Track challenge progress (Social category)
+    trackChallengeProgress(user.id, "Social");
+
     return NextResponse.json({ following: true });
   }
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import MaterialIcon from "@/components/MaterialIcon";
 import BottomNav from "@/components/BottomNav";
 import BrewMethodPicker from "@/components/BrewMethodPicker";
+import UpgradeModal from "@/components/UpgradeModal";
 
 interface Category {
   id: string;
@@ -79,6 +80,8 @@ export default function CreatePage() {
   const [publishing, setPublishing] = useState(false);
   const [published, setPublished] = useState(false);
   const [error, setError] = useState("");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
 
   // Brand / role state
@@ -219,6 +222,11 @@ export default function CreatePage() {
 
       if (!res.ok) {
         const data = await res.json();
+        if (res.status === 403 && data.upgradeRequired) {
+          setUpgradeFeature(data.feature || "");
+          setShowUpgradeModal(true);
+          return;
+        }
         throw new Error(data.error || "Failed to publish");
       }
 
@@ -276,6 +284,12 @@ export default function CreatePage() {
           <p className="text-sm font-medium text-red-600">{error}</p>
         </div>
       )}
+
+      <UpgradeModal
+        open={showUpgradeModal}
+        feature={upgradeFeature}
+        onClose={() => setShowUpgradeModal(false)}
+      />
 
       <main className="flex-1 px-6 py-6 pb-28 space-y-6">
         {/* Photo Upload */}
