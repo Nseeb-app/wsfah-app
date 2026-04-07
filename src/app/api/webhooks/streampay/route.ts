@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
 }
 
 async function handlePaymentSuccess(data: any) {
-  const metadata = data.metadata || {};
+  const metadata = data.custom_metadata || data.metadata || {};
   const userId = metadata.user_id;
   const planSlug = metadata.plan_slug;
   const companyId = metadata.company_id;
@@ -109,7 +109,7 @@ async function handlePaymentSuccess(data: any) {
 }
 
 async function handleSubscriptionCreated(data: any) {
-  const metadata = data.metadata || {};
+  const metadata = data.custom_metadata || data.metadata || {};
   const userId = metadata.user_id;
 
   if (userId) {
@@ -129,7 +129,7 @@ async function handleSubscriptionCreated(data: any) {
 }
 
 async function handleSubscriptionEnded(data: any) {
-  const metadata = data.metadata || {};
+  const metadata = data.custom_metadata || data.metadata || {};
   const userId = metadata.user_id;
   const planSlug = metadata.plan_slug;
   const companyId = metadata.company_id;
@@ -166,7 +166,7 @@ async function handleSubscriptionEnded(data: any) {
 }
 
 async function handleRenewalSuccess(data: any) {
-  const metadata = data.metadata || {};
+  const metadata = data.custom_metadata || data.metadata || {};
   const userId = metadata.user_id;
   const companyId = metadata.company_id;
 
@@ -195,7 +195,7 @@ async function handleRenewalSuccess(data: any) {
 }
 
 async function handleRenewalFailed(data: any) {
-  const metadata = data.metadata || {};
+  const metadata = data.custom_metadata || data.metadata || {};
   const userId = metadata.user_id;
 
   if (userId) {
@@ -215,7 +215,7 @@ async function handleRenewalFailed(data: any) {
 }
 
 async function handlePaymentFailed(data: any) {
-  const metadata = data.metadata || {};
+  const metadata = data.custom_metadata || data.metadata || {};
   const userId = metadata.user_id;
 
   if (userId) {
@@ -235,7 +235,7 @@ async function handlePaymentFailed(data: any) {
 }
 
 async function handleRefund(data: any) {
-  const metadata = data.metadata || {};
+  const metadata = data.custom_metadata || data.metadata || {};
   const userId = metadata.user_id;
   const planSlug = metadata.plan_slug;
   const companyId = metadata.company_id;

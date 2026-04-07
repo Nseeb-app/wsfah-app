@@ -72,10 +72,10 @@ export async function createPaymentLink(params: {
     quantity: number;
     coupons?: string[];
   }>;
-  consumer_id?: string;
-  success_url?: string;
-  cancel_url?: string;
-  metadata?: Record<string, string>;
+  organization_consumer_id?: string;
+  success_redirect_url?: string;
+  failure_redirect_url?: string;
+  custom_metadata?: Record<string, string>;
 }) {
   // Validate product_id is set before calling API
   for (const item of params.items) {

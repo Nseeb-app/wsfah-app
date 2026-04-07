@@ -179,10 +179,10 @@ export async function POST(req: NextRequest) {
         ? `فترة تجريبية ١٤ يوم - ${planSlug}`
         : `اشتراك في خطة ${planSlug}`,
       items: [{ product_id: productId, quantity: 1 }],
-      ...(consumerId ? { consumer_id: consumerId } : {}),
-      success_url: `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`,
-      cancel_url: `${origin}/pricing?status=cancelled`,
-      metadata: {
+      ...(consumerId ? { organization_consumer_id: consumerId } : {}),
+      success_redirect_url: `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`,
+      failure_redirect_url: `${origin}/pricing?status=cancelled`,
+      custom_metadata: {
         user_id: authUser.id,
         plan_slug: planSlug,
         is_trial: startTrial ? "true" : "false",
