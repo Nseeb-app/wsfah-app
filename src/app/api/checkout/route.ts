@@ -171,15 +171,10 @@ export async function POST(req: NextRequest) {
     }
 
     const origin = req.nextUrl.origin;
-    const isMobile = req.headers.get("authorization")?.startsWith("Bearer ");
 
-    // Mobile uses deep link scheme, web uses origin URL
-    const successUrl = isMobile
-      ? `wsfa://pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`
-      : `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`;
-    const cancelUrl = isMobile
-      ? `wsfa://pricing?status=cancelled`
-      : `${origin}/pricing?status=cancelled`;
+    // Always use web URLs for redirect — mobile verifies via /api/checkout/verify after browser closes
+    const successUrl = `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`;
+    const cancelUrl = `${origin}/pricing?status=cancelled`;
 
     // Create payment link
     const paymentLink = await createPaymentLink({
