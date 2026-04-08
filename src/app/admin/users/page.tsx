@@ -12,6 +12,7 @@ interface User {
 }
 
 const ROLES = ["USER", "CREATOR", "BRAND_ADMIN", "SUPERADMIN"];
+const ROLE_LABELS: Record<string, string> = { USER: "مستخدم", CREATOR: "منشئ", BRAND_ADMIN: "مدير علامة", SUPERADMIN: "مدير عام" };
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -34,9 +35,7 @@ export default function AdminUsersPage() {
     }
   }, [page, search]);
 
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+  useEffect(() => { fetchUsers(); }, [fetchUsers]);
 
   async function updateUser(userId: string, updates: { role?: string; status?: string }) {
     try {
@@ -49,9 +48,7 @@ export default function AdminUsersPage() {
         const updated = await res.json();
         setUsers((prev) => prev.map((u) => (u.id === updated.id ? updated : u)));
       }
-    } catch {
-      // update failed
-    }
+    } catch {}
   }
 
   const totalPages = Math.ceil(total / 20);
@@ -65,11 +62,8 @@ export default function AdminUsersPage() {
           type="text"
           placeholder="البحث عن مستخدمين..."
           value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          className="w-full max-w-md px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          className="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none text-sm"
         />
       </div>
 
@@ -77,21 +71,60 @@ export default function AdminUsersPage() {
         <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
       ) : (
         <>
-          <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
-            <table className="w-full text-sm min-w-[600px]">
+          {/* Mobile: Card layout */}
+          <div className="lg:hidden space-y-3">
+            {users.map((user) => (
+              <div key={user.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold text-gray-900 dark:text-white">{user.name || "بدون اسم"}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{user.email || "—"}</p>
+                  </div>
+                  <button
+                    onClick={() => updateUser(user.id, { status: user.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE" })}
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      user.status === "ACTIVE"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                    }`}
+                  >
+                    {user.status === "ACTIVE" ? "نشط" : "معلّق"}
+                  </button>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <select
+                    value={user.role}
+                    onChange={(e) => updateUser(user.id, { role: e.target.value })}
+                    className="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs"
+                  >
+                    {ROLES.map((r) => (
+                      <option key={r} value={r}>{ROLE_LABELS[r] || r}</option>
+                    ))}
+                  </select>
+                  <span className="text-[10px] text-gray-400 shrink-0">
+                    {new Date(user.createdAt).toLocaleDateString("ar-SA")}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: Table layout */}
+          <div className="hidden lg:block overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+            <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-800">
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الاسم</th>
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">البريد الإلكتروني</th>
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الدور</th>
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الحالة</th>
-                  <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">تاريخ الانضمام</th>
+                  <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">الاسم</th>
+                  <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">البريد الإلكتروني</th>
+                  <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">الدور</th>
+                  <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">الحالة</th>
+                  <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">تاريخ الانضمام</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
-                    <td className="p-4 text-gray-900 dark:text-white">{user.name || "بدون اسم"}</td>
+                    <td className="p-4 text-gray-900 dark:text-white font-medium">{user.name || "بدون اسم"}</td>
                     <td className="p-4 text-gray-600 dark:text-gray-400">{user.email || "—"}</td>
                     <td className="p-4">
                       <select
@@ -99,20 +132,12 @@ export default function AdminUsersPage() {
                         onChange={(e) => updateUser(user.id, { role: e.target.value })}
                         className="px-2 py-1 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs"
                       >
-                        {ROLES.map((r) => (
-                          <option key={r} value={r}>
-                            {r}
-                          </option>
-                        ))}
+                        {ROLES.map((r) => (<option key={r} value={r}>{ROLE_LABELS[r] || r}</option>))}
                       </select>
                     </td>
                     <td className="p-4">
                       <button
-                        onClick={() =>
-                          updateUser(user.id, {
-                            status: user.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE",
-                          })
-                        }
+                        onClick={() => updateUser(user.id, { status: user.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE" })}
                         className={`px-3 py-1 rounded-full text-xs font-medium ${
                           user.status === "ACTIVE"
                             ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
@@ -123,7 +148,7 @@ export default function AdminUsersPage() {
                       </button>
                     </td>
                     <td className="p-4 text-gray-500 dark:text-gray-400 text-xs">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {new Date(user.createdAt).toLocaleDateString("ar-SA")}
                     </td>
                   </tr>
                 ))}
@@ -131,23 +156,18 @@ export default function AdminUsersPage() {
             </table>
           </div>
 
-          <div className="flex items-center justify-between mt-4">
+          {/* Pagination */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               صفحة {page} من {totalPages || 1} ({total} مستخدم)
             </p>
             <div className="flex gap-2">
-              <button
-                disabled={page <= 1}
-                onClick={() => setPage((p) => p - 1)}
-                className="px-3 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm disabled:opacity-50 text-gray-700 dark:text-gray-300"
-              >
+              <button disabled={page <= 1} onClick={() => setPage((p) => p - 1)}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm disabled:opacity-50 text-gray-700 dark:text-gray-300">
                 السابق
               </button>
-              <button
-                disabled={page >= totalPages}
-                onClick={() => setPage((p) => p + 1)}
-                className="px-3 py-1 rounded border border-gray-300 dark:border-gray-700 text-sm disabled:opacity-50 text-gray-700 dark:text-gray-300"
-              >
+              <button disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm disabled:opacity-50 text-gray-700 dark:text-gray-300">
                 التالي
               </button>
             </div>

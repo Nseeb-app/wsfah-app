@@ -686,17 +686,67 @@ export default function AdminRecipesPage() {
       ) : recipes.length === 0 ? (
         <p className="text-gray-500 dark:text-gray-400">لا توجد وصفات.</p>
       ) : (
-        <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
-          <table className="w-full text-sm min-w-[600px]">
+        <>
+        {/* Mobile: Card layout */}
+        <div className="lg:hidden space-y-3">
+          {recipes.map((recipe) => (
+            <div key={recipe.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 space-y-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-gray-900 dark:text-white truncate">{recipe.title}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{recipe.author?.name || "—"} · {recipe.category}</p>
+                </div>
+                <select
+                  value={recipe.accessTier}
+                  onChange={(e) => updateAccessTier(recipe.id, e.target.value)}
+                  className="shrink-0 px-2 py-1 rounded text-[10px] font-bold border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                >
+                  <option value="FREE">مجاني</option>
+                  <option value="BASIC">أساسي</option>
+                  <option value="PREMIUM">مميز</option>
+                  <option value="PRO">احترافي</option>
+                </select>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                  <button
+                    onClick={() => toggleField(recipe.id, "isFeatured", !recipe.isFeatured)}
+                    className={`w-9 h-5 rounded-full relative transition-colors ${recipe.isFeatured ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"}`}
+                  >
+                    <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${recipe.isFeatured ? "left-[18px]" : "left-0.5"}`} />
+                  </button>
+                  مميزة
+                </label>
+                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                  <button
+                    onClick={() => toggleField(recipe.id, "isVerified", !recipe.isVerified)}
+                    className={`w-9 h-5 rounded-full relative transition-colors ${recipe.isVerified ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"}`}
+                  >
+                    <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${recipe.isVerified ? "left-[18px]" : "left-0.5"}`} />
+                  </button>
+                  موثقة
+                </label>
+                <div className="flex gap-2 mr-auto">
+                  <button onClick={() => openEdit(recipe.id)} className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium">تعديل</button>
+                  <button onClick={() => deleteRecipe(recipe.id)} className="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-medium">حذف</button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: Table layout */}
+        <div className="hidden lg:block overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+          <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">العنوان</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المؤلف</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">القسم</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">مميزة</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">موثقة</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المستوى</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">إجراءات</th>
+                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">العنوان</th>
+                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">المؤلف</th>
+                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">القسم</th>
+                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">مميزة</th>
+                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">موثقة</th>
+                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">المستوى</th>
+                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -706,47 +756,20 @@ export default function AdminRecipesPage() {
                   <td className="p-4 text-gray-600 dark:text-gray-400">{recipe.author?.name || "—"}</td>
                   <td className="p-4 text-gray-600 dark:text-gray-400">{recipe.category}</td>
                   <td className="p-4">
-                    <button
-                      onClick={() => toggleField(recipe.id, "isFeatured", !recipe.isFeatured)}
-                      className={`w-10 h-5 rounded-full relative transition-colors ${
-                        recipe.isFeatured ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"
-                      }`}
-                    >
-                      <span
-                        className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
-                          recipe.isFeatured ? "left-5" : "left-0.5"
-                        }`}
-                      />
+                    <button onClick={() => toggleField(recipe.id, "isFeatured", !recipe.isFeatured)}
+                      className={`w-10 h-5 rounded-full relative transition-colors ${recipe.isFeatured ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"}`}>
+                      <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${recipe.isFeatured ? "left-5" : "left-0.5"}`} />
                     </button>
                   </td>
                   <td className="p-4">
-                    <button
-                      onClick={() => toggleField(recipe.id, "isVerified", !recipe.isVerified)}
-                      className={`w-10 h-5 rounded-full relative transition-colors ${
-                        recipe.isVerified ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"
-                      }`}
-                    >
-                      <span
-                        className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
-                          recipe.isVerified ? "left-5" : "left-0.5"
-                        }`}
-                      />
+                    <button onClick={() => toggleField(recipe.id, "isVerified", !recipe.isVerified)}
+                      className={`w-10 h-5 rounded-full relative transition-colors ${recipe.isVerified ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"}`}>
+                      <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${recipe.isVerified ? "left-5" : "left-0.5"}`} />
                     </button>
                   </td>
                   <td className="p-4">
-                    <select
-                      value={recipe.accessTier}
-                      onChange={(e) => updateAccessTier(recipe.id, e.target.value)}
-                      className={`px-2 py-1 rounded text-xs font-medium border ${
-                        recipe.accessTier === "FREE"
-                          ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
-                          : recipe.accessTier === "PREMIUM"
-                          ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800"
-                          : recipe.accessTier === "PRO"
-                          ? "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800"
-                          : "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
-                      }`}
-                    >
+                    <select value={recipe.accessTier} onChange={(e) => updateAccessTier(recipe.id, e.target.value)}
+                      className="px-2 py-1 rounded text-xs font-medium border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                       <option value="FREE">مجاني</option>
                       <option value="BASIC">أساسي</option>
                       <option value="PREMIUM">مميز</option>
@@ -755,18 +778,8 @@ export default function AdminRecipesPage() {
                   </td>
                   <td className="p-4">
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => openEdit(recipe.id)}
-                        className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium"
-                      >
-                        تعديل
-                      </button>
-                      <button
-                        onClick={() => deleteRecipe(recipe.id)}
-                        className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium"
-                      >
-                        حذف
-                      </button>
+                      <button onClick={() => openEdit(recipe.id)} className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium">تعديل</button>
+                      <button onClick={() => deleteRecipe(recipe.id)} className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium">حذف</button>
                     </div>
                   </td>
                 </tr>
@@ -774,6 +787,7 @@ export default function AdminRecipesPage() {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );

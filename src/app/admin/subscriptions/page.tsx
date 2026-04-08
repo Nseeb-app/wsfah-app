@@ -232,7 +232,7 @@ export default function AdminSubscriptionsPage() {
       <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">إدارة خطط الاشتراك وأسعار الترويج</p>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl mb-6 w-fit">
+      <div className="flex flex-wrap gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl mb-6">
         <button
           onClick={() => setTab("subscribers")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
@@ -283,114 +283,92 @@ export default function AdminSubscriptionsPage() {
             </select>
           </div>
 
-          {/* Users Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-6 overflow-x-auto">
-            <table className="w-full min-w-[700px]">
-              <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700 text-right">
-                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستخدم</th>
-                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">البريد</th>
-                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستوى</th>
-                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">بداية الاشتراك</th>
-                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">نهاية الاشتراك</th>
-                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">إجراءات</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                {subscribers.map((u) => {
-                  const isExpired = u.subscriptionExpiresAt && new Date(u.subscriptionExpiresAt) < new Date();
-                  const isOnTrial = u.trialEndsAt && new Date(u.trialEndsAt) > new Date();
-                  return (
-                    <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-750">
-                      <td className="px-5 py-4 text-sm font-semibold text-gray-900 dark:text-white">
-                        {u.name || "—"}
-                      </td>
-                      <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400 dir-ltr">
-                        {u.email}
-                      </td>
-                      <td className="px-5 py-4">
-                        <span className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${
-                          u.subscriptionTier === "pro"
-                            ? isExpired ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                            : u.subscriptionTier === "premium" ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
-                            : "bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
-                        }`}>
-                          {u.subscriptionTier === "pro" ? (isExpired ? "منتهي" : "احترافي") : u.subscriptionTier === "premium" ? "مميز" : "مجاني"}
-                          {isOnTrial && " (تجربة)"}
+          {/* Subscribers list */}
+          <div className="space-y-3 mb-6">
+            {subscribers.map((u) => {
+              const isExpired = u.subscriptionExpiresAt && new Date(u.subscriptionExpiresAt) < new Date();
+              const isOnTrial = u.trialEndsAt && new Date(u.trialEndsAt) > new Date();
+              return (
+                <div key={u.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-3">
+                  {/* Row 1: Name + tier badge */}
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="font-bold text-sm text-gray-900 dark:text-white truncate">{u.name || "—"}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{u.email}</p>
+                    </div>
+                    <span className={`shrink-0 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${
+                      u.subscriptionTier === "pro"
+                        ? isExpired ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                        : u.subscriptionTier === "premium" ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
+                        : "bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
+                    }`}>
+                      {u.subscriptionTier === "pro" ? (isExpired ? "منتهي" : "احترافي") : u.subscriptionTier === "premium" ? "مميز" : "مجاني"}
+                      {isOnTrial && " (تجربة)"}
+                    </span>
+                  </div>
+
+                  {/* Row 2: Dates */}
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span>بداية: {u.subscriptionStartsAt ? new Date(u.subscriptionStartsAt).toLocaleDateString("ar-SA") : "—"}</span>
+                    <span>
+                      نهاية: {u.subscriptionExpiresAt ? (
+                        <span className={isExpired ? "text-red-500 font-medium" : ""}>
+                          {new Date(u.subscriptionExpiresAt).toLocaleDateString("ar-SA")}
+                          {isExpired && " (منتهي)"}
                         </span>
-                      </td>
-                      <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">
-                        {u.subscriptionStartsAt
-                          ? new Date(u.subscriptionStartsAt).toLocaleDateString("ar-SA")
-                          : "—"}
-                      </td>
-                      <td className="px-5 py-4 text-sm">
-                        {u.subscriptionExpiresAt ? (
-                          <span className={isExpired ? "text-red-500 font-medium" : "text-gray-600 dark:text-gray-400"}>
-                            {new Date(u.subscriptionExpiresAt).toLocaleDateString("ar-SA")}
-                            {isExpired && " (منتهي)"}
-                          </span>
-                        ) : u.subscriptionTier !== "free" ? (
-                          <span className="text-green-600 text-xs font-medium">غير محدد</span>
-                        ) : (
-                          <span className="text-gray-400 text-xs">—</span>
-                        )}
-                      </td>
-                      <td className="px-5 py-4">
-                        <div className="flex items-center gap-2">
-                          <select
-                            value={u.subscriptionTier}
-                            onChange={(e) => updateUserTier(u.id, e.target.value)}
-                            disabled={updatingUser === u.id}
-                            className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm disabled:opacity-50"
-                          >
-                            <option value="free">مجاني</option>
-                            <option value="pro">احترافي</option>
-                            <option value="premium">مميز</option>
-                          </select>
-                          {extendingUser === u.id ? (
-                            <div className="flex items-center gap-1">
-                              <input
-                                type="number"
-                                value={extendDays}
-                                onChange={(e) => setExtendDays(e.target.value)}
-                                className="w-16 px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-center"
-                                placeholder="30"
-                                min="1"
-                              />
-                              <span className="text-xs text-gray-500">يوم</span>
-                              <button
-                                onClick={() => extendSubscription(u.id)}
-                                disabled={updatingUser === u.id}
-                                className="px-2 py-1.5 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700 disabled:opacity-50"
-                              >
-                                تمديد
-                              </button>
-                              <button
-                                onClick={() => setExtendingUser(null)}
-                                className="px-2 py-1.5 bg-gray-200 dark:bg-gray-600 rounded-lg text-xs"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          ) : (
-                            <button
-                              onClick={() => { setExtendingUser(u.id); setExtendDays("30"); }}
-                              className="p-1.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600"
-                              title="تمديد الاشتراك"
-                            >
-                              <span className="material-symbols-outlined text-lg">event_repeat</span>
-                            </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                      ) : u.subscriptionTier !== "free" ? (
+                        <span className="text-green-600 font-medium">غير محدد</span>
+                      ) : "—"}
+                    </span>
+                  </div>
+
+                  {/* Row 3: Actions */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <select
+                      value={u.subscriptionTier}
+                      onChange={(e) => updateUserTier(u.id, e.target.value)}
+                      disabled={updatingUser === u.id}
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm disabled:opacity-50"
+                    >
+                      <option value="free">مجاني</option>
+                      <option value="pro">احترافي</option>
+                      <option value="premium">مميز</option>
+                    </select>
+                    {extendingUser === u.id ? (
+                      <div className="flex flex-wrap items-center gap-1">
+                        <input
+                          type="number"
+                          value={extendDays}
+                          onChange={(e) => setExtendDays(e.target.value)}
+                          className="w-14 px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-center"
+                          placeholder="30"
+                          min="1"
+                        />
+                        <span className="text-xs text-gray-500">يوم</span>
+                        <button
+                          onClick={() => extendSubscription(u.id)}
+                          disabled={updatingUser === u.id}
+                          className="px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700 disabled:opacity-50"
+                        >
+                          تمديد
+                        </button>
+                        <button onClick={() => setExtendingUser(null)} className="px-2 py-1.5 bg-gray-200 dark:bg-gray-600 rounded-lg text-xs">✕</button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => { setExtendingUser(u.id); setExtendDays("30"); }}
+                        className="px-3 py-1.5 rounded-lg border border-blue-200 dark:border-blue-800 text-blue-600 text-xs font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 flex items-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-sm">event_repeat</span>
+                        تمديد
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
             {subscribers.length === 0 && (
-              <div className="p-12 text-center">
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
                 <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">group</span>
                 <p className="text-gray-500 font-medium">لا يوجد مشتركين</p>
               </div>
@@ -399,38 +377,26 @@ export default function AdminSubscriptionsPage() {
 
           {/* Companies with subscriptions */}
           {subCompanies.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden overflow-x-auto">
-              <div className="px-5 py-3 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="font-bold text-sm text-gray-900 dark:text-white">اشتراكات العلامات التجارية</h3>
+            <div>
+              <h3 className="font-bold text-sm text-gray-900 dark:text-white mb-3">اشتراكات العلامات التجارية</h3>
+              <div className="space-y-3">
+                {subCompanies.map((c) => (
+                  <div key={c.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 flex flex-wrap items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-bold text-sm text-gray-900 dark:text-white">{c.name}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{c.owner?.email}</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                        {c.subscriptionTier}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {c.subscriptionExpiresAt ? new Date(c.subscriptionExpiresAt).toLocaleDateString("ar-SA") : "غير محدد"}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700 text-right">
-                    <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">العلامة التجارية</th>
-                    <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المالك</th>
-                    <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستوى</th>
-                    <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">ينتهي في</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                  {subCompanies.map((c) => (
-                    <tr key={c.id} className="hover:bg-gray-50 dark:hover:bg-gray-750">
-                      <td className="px-5 py-4 text-sm font-semibold text-gray-900 dark:text-white">{c.name}</td>
-                      <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">{c.owner?.email}</td>
-                      <td className="px-5 py-4">
-                        <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
-                          {c.subscriptionTier}
-                        </span>
-                      </td>
-                      <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">
-                        {c.subscriptionExpiresAt
-                          ? new Date(c.subscriptionExpiresAt).toLocaleDateString("ar-SA")
-                          : "غير محدد"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
           )}
         </>
