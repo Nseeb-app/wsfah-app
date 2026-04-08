@@ -7,6 +7,7 @@ const authRoutes = ["/login", "/signup"];
 // Pages that should work on all devices (desktop + mobile)
 const desktopAllowed = [
   "/",
+  "/home",
   "/login",
   "/signup",
   "/pricing",
