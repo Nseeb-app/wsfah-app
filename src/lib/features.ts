@@ -66,22 +66,13 @@ export function hasFeature(tier: string, feature: "collections" | "messages" | "
 export async function getUserTier(userId: string): Promise<string> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { subscriptionTier: true, trialEndsAt: true, subscriptionExpiresAt: true },
+    select: { subscriptionTier: true, trialEndsAt: true },
   });
-  let personalTier = user?.subscriptionTier || "FREE";
+  const personalTier = user?.subscriptionTier || "FREE";
 
-  // Check if trial has expired - auto-downgrade
-  // BUT only if there's no valid paid subscription or admin-set expiry
-  if (user?.trialEndsAt && new Date(user.trialEndsAt) < new Date()) {
-    const hasValidSubscription = user.subscriptionExpiresAt && new Date(user.subscriptionExpiresAt) > new Date();
-    if (personalTier.toUpperCase() !== "FREE" && !hasValidSubscription) {
-      await prisma.user.update({
-        where: { id: userId },
-        data: { subscriptionTier: "free", trialEndsAt: null },
-      });
-      personalTier = "FREE";
-    }
-  }
+  // Trust the database value — no auto-downgrade.
+  // Trial expiry and subscription management are handled by
+  // webhooks, /api/checkout/verify, and admin actions.
 
   // If already Pro or higher, no need to check roaster membership
   if (personalTier.toUpperCase() !== "FREE") return personalTier;

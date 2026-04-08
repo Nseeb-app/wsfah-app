@@ -284,8 +284,8 @@ export default function AdminSubscriptionsPage() {
           </div>
 
           {/* Users Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
-            <table className="w-full">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-6 overflow-x-auto">
+            <table className="w-full min-w-[700px]">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-700 text-right">
                   <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستخدم</th>
@@ -399,7 +399,7 @@ export default function AdminSubscriptionsPage() {
 
           {/* Companies with subscriptions */}
           {subCompanies.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden overflow-x-auto">
               <div className="px-5 py-3 border-b border-gray-200 dark:border-gray-700">
                 <h3 className="font-bold text-sm text-gray-900 dark:text-white">اشتراكات العلامات التجارية</h3>
               </div>
@@ -711,8 +711,8 @@ export default function AdminSubscriptionsPage() {
               <p className="text-sm text-gray-400 mt-1">أنشئ باقات تسعير للمحامص</p>
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <table className="w-full">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden overflow-x-auto">
+              <table className="w-full min-w-[600px]">
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-gray-700 text-left">
                     <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">الباقة</th>
