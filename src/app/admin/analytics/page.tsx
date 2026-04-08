@@ -43,19 +43,19 @@ export default function AdminAnalyticsPage() {
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">التحليلات</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 overflow-x-auto">
           <p className="text-sm text-gray-500 dark:text-gray-400">إجمالي الإعجابات</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
             {data.totalLikes.toLocaleString()}
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 overflow-x-auto">
           <p className="text-sm text-gray-500 dark:text-gray-400">إجمالي التعليقات</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
             {data.totalComments.toLocaleString()}
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 overflow-x-auto">
           <p className="text-sm text-gray-500 dark:text-gray-400">إجمالي المتابعات</p>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">
             {data.totalFollows.toLocaleString()}
@@ -65,7 +65,7 @@ export default function AdminAnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Users per week chart */}
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 overflow-x-auto">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             المستخدمون الجدد أسبوعياً
           </h3>
@@ -86,7 +86,7 @@ export default function AdminAnalyticsPage() {
         </div>
 
         {/* Recipes per week chart */}
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 overflow-x-auto">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             الوصفات الجديدة أسبوعياً
           </h3>
@@ -109,9 +109,9 @@ export default function AdminAnalyticsPage() {
 
       {/* Weekly tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 overflow-x-auto">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">جدول المستخدمين</h3>
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
                 <th className="text-left py-2 text-gray-500 dark:text-gray-400">الأسبوع</th>
@@ -129,9 +129,9 @@ export default function AdminAnalyticsPage() {
           </table>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 overflow-x-auto">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">جدول الوصفات</h3>
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
                 <th className="text-left py-2 text-gray-500 dark:text-gray-400">الأسبوع</th>

@@ -184,7 +184,7 @@ export default function AdminPromotionsPage() {
                         {statusLabel[p.status] || p.status}
                       </span>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-gray-500 dark:text-gray-400">
                       <span className="flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">location_on</span>
                         {placementLabel[p.placement] || p.placement}

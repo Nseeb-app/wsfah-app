@@ -119,7 +119,7 @@ export default function AdminRewardsPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">العنوان</label>
                 <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الفئة</label>
                   <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white">
@@ -150,7 +150,7 @@ export default function AdminRewardsPage() {
         <p className="text-gray-500 dark:text-gray-400">لا توجد مكافآت بعد.</p>
       ) : (
         <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
                 <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المكافأة</th>

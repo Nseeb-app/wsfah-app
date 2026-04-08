@@ -687,7 +687,7 @@ export default function AdminRecipesPage() {
         <p className="text-gray-500 dark:text-gray-400">لا توجد وصفات.</p>
       ) : (
         <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
                 <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">العنوان</th>

@@ -139,7 +139,7 @@ export default function AdminChallengesPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الوصف</label>
                 <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white resize-none" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الأيقونة (Material)</label>
                   <div className="flex items-center gap-2">
@@ -152,7 +152,7 @@ export default function AdminChallengesPage() {
                   <input type="number" value={form.rewardPoints} onChange={(e) => setForm({ ...form, rewardPoints: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الحد الأقصى للتقدم</label>
                   <input type="number" value={form.maxProgress} onChange={(e) => setForm({ ...form, maxProgress: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white" />
@@ -185,7 +185,7 @@ export default function AdminChallengesPage() {
         <p className="text-gray-500 dark:text-gray-400">لا توجد تحديات بعد.</p>
       ) : (
         <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-800">
                 <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">التحدي</th>
