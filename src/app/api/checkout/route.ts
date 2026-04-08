@@ -171,6 +171,15 @@ export async function POST(req: NextRequest) {
     }
 
     const origin = req.nextUrl.origin;
+    const isMobile = req.headers.get("authorization")?.startsWith("Bearer ");
+
+    // Mobile uses deep link scheme, web uses origin URL
+    const successUrl = isMobile
+      ? `wsfa://pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`
+      : `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`;
+    const cancelUrl = isMobile
+      ? `wsfa://pricing?status=cancelled`
+      : `${origin}/pricing?status=cancelled`;
 
     // Create payment link
     const paymentLink = await createPaymentLink({
@@ -180,8 +189,8 @@ export async function POST(req: NextRequest) {
         : `اشتراك في خطة ${planSlug}`,
       items: [{ product_id: productId, quantity: 1 }],
       ...(consumerId ? { organization_consumer_id: consumerId } : {}),
-      success_redirect_url: `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`,
-      failure_redirect_url: `${origin}/pricing?status=cancelled`,
+      success_redirect_url: successUrl,
+      failure_redirect_url: cancelUrl,
       custom_metadata: {
         user_id: authUser.id,
         plan_slug: planSlug,
