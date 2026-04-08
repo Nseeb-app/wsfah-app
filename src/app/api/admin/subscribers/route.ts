@@ -70,6 +70,8 @@ export async function PATCH(req: Request) {
   // Update tier
   if (subscriptionTier) {
     data.subscriptionTier = subscriptionTier;
+    // Clear trial expiry so getUserTier doesn't auto-downgrade admin changes
+    data.trialEndsAt = null;
     if (subscriptionTier !== "free") {
       // Set start date if upgrading from free
       const user = await prisma.user.findUnique({

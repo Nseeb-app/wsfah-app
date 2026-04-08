@@ -49,14 +49,27 @@ export async function POST(req: NextRequest) {
     }
 
     // Activate subscription
+    const isTrial = metadata.is_trial === "true";
     const isYearly = planSlug.endsWith("-yearly");
-    const expiresAt = new Date();
-    expiresAt.setMonth(expiresAt.getMonth() + (isYearly ? 12 : 1));
+    const now = new Date();
+    const expiresAt = new Date(now);
+    if (isTrial) {
+      expiresAt.setDate(expiresAt.getDate() + 14); // 14-day trial
+    } else {
+      expiresAt.setMonth(expiresAt.getMonth() + (isYearly ? 12 : 1));
+    }
 
     if (planSlug === "pro" || planSlug === "pro-yearly") {
       await prisma.user.update({
         where: { id: userId },
-        data: { subscriptionTier: "pro" },
+        data: {
+          subscriptionTier: "pro",
+          subscriptionStartsAt: now,
+          subscriptionExpiresAt: expiresAt,
+          trialUsed: true,
+          trialEndsAt: isTrial ? expiresAt : null,
+          trialPlanSlug: isTrial ? planSlug : null,
+        },
       });
     } else if (planSlug.startsWith("roaster") && companyId) {
       const tier = planSlug.includes("roaster-pro") ? "pro" : "basic";

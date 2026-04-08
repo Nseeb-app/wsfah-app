@@ -76,6 +76,7 @@ export async function createPaymentLink(params: {
   success_redirect_url?: string;
   failure_redirect_url?: string;
   custom_metadata?: Record<string, string>;
+  trial_period_days?: number;
 }) {
   // Validate product_id is set before calling API
   for (const item of params.items) {

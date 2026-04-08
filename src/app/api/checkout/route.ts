@@ -176,20 +176,24 @@ export async function POST(req: NextRequest) {
     const successUrl = `${origin}/pricing?status=success&plan=${planSlug}${startTrial ? "&trial=true" : ""}`;
     const cancelUrl = `${origin}/pricing?status=cancelled`;
 
-    // Create payment link
+    // Check if user is eligible for trial (hasn't used one before)
+    const offerTrial = !user.trialUsed;
+
+    // Create payment link — always offer 14-day trial for first-time subscribers
     const paymentLink = await createPaymentLink({
       name: `اشتراك ${planSlug}`,
-      description: startTrial
-        ? `فترة تجريبية ١٤ يوم - ${planSlug}`
+      description: offerTrial
+        ? `فترة تجريبية ١٤ يوم مجانية ثم اشتراك ${planSlug}`
         : `اشتراك في خطة ${planSlug}`,
       items: [{ product_id: productId, quantity: 1 }],
       ...(consumerId ? { organization_consumer_id: consumerId } : {}),
+      ...(offerTrial ? { trial_period_days: 14 } : {}),
       success_redirect_url: successUrl,
       failure_redirect_url: cancelUrl,
       custom_metadata: {
         user_id: authUser.id,
         plan_slug: planSlug,
-        is_trial: startTrial ? "true" : "false",
+        is_trial: offerTrial ? "true" : "false",
         ...(companyId ? { company_id: companyId } : {}),
       },
     });

@@ -66,13 +66,15 @@ export function hasFeature(tier: string, feature: "collections" | "messages" | "
 export async function getUserTier(userId: string): Promise<string> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { subscriptionTier: true, trialEndsAt: true },
+    select: { subscriptionTier: true, trialEndsAt: true, subscriptionExpiresAt: true },
   });
   let personalTier = user?.subscriptionTier || "FREE";
 
   // Check if trial has expired - auto-downgrade
+  // BUT only if there's no valid paid subscription or admin-set expiry
   if (user?.trialEndsAt && new Date(user.trialEndsAt) < new Date()) {
-    if (personalTier.toUpperCase() !== "FREE") {
+    const hasValidSubscription = user.subscriptionExpiresAt && new Date(user.subscriptionExpiresAt) > new Date();
+    if (personalTier.toUpperCase() !== "FREE" && !hasValidSubscription) {
       await prisma.user.update({
         where: { id: userId },
         data: { subscriptionTier: "free", trialEndsAt: null },
