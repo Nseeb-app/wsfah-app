@@ -27,14 +27,38 @@ interface PromoPricing {
   sortOrder: number;
 }
 
+interface Subscriber {
+  id: string;
+  name: string | null;
+  email: string | null;
+  subscriptionTier: string;
+  trialUsed: boolean;
+  trialEndsAt: string | null;
+  trialPlanSlug: string | null;
+  createdAt: string;
+}
+
+interface SubCompany {
+  id: string;
+  name: string;
+  subscriptionTier: string;
+  subscriptionExpiresAt: string | null;
+  owner: { id: string; name: string | null; email: string | null };
+}
+
 const emptyPlan = { name: "", slug: "", price: "", currency: "USD", interval: "monthly", description: "", features: "", sortOrder: 0 };
 const emptyPromo = { name: "", placement: "HOME_TOP", duration: "7", price: "", currency: "USD", discount: "0", sortOrder: 0 };
 
 export default function AdminSubscriptionsPage() {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [promos, setPromos] = useState<PromoPricing[]>([]);
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  const [subCompanies, setSubCompanies] = useState<SubCompany[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<"plans" | "promos">("plans");
+  const [tab, setTab] = useState<"subscribers" | "plans" | "promos">("subscribers");
+  const [subSearch, setSubSearch] = useState("");
+  const [subFilter, setSubFilter] = useState("");
+  const [updatingUser, setUpdatingUser] = useState<string | null>(null);
 
   // Plan form
   const [planForm, setPlanForm] = useState(emptyPlan);
@@ -47,16 +71,33 @@ export default function AdminSubscriptionsPage() {
   const [promoSaving, setPromoSaving] = useState(false);
 
   const fetchData = useCallback(async () => {
-    const [plansRes, promosRes] = await Promise.all([
+    const [plansRes, promosRes, subsRes] = await Promise.all([
       fetch("/api/admin/subscriptions"),
       fetch("/api/admin/promotion-pricing"),
+      fetch(`/api/admin/subscribers?search=${encodeURIComponent(subSearch)}&tier=${subFilter}`),
     ]);
     if (plansRes.ok) setPlans(await plansRes.json());
     if (promosRes.ok) setPromos(await promosRes.json());
+    if (subsRes.ok) {
+      const data = await subsRes.json();
+      setSubscribers(data.users || []);
+      setSubCompanies(data.companies || []);
+    }
     setLoading(false);
-  }, []);
+  }, [subSearch, subFilter]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
+
+  const updateUserTier = async (userId: string, tier: string) => {
+    setUpdatingUser(userId);
+    const res = await fetch("/api/admin/subscribers", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, subscriptionTier: tier }),
+    });
+    if (res.ok) fetchData();
+    setUpdatingUser(null);
+  };
 
   // Plan CRUD
   const savePlan = async () => {
@@ -173,6 +214,14 @@ export default function AdminSubscriptionsPage() {
       {/* Tabs */}
       <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl mb-6 w-fit">
         <button
+          onClick={() => setTab("subscribers")}
+          className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
+            tab === "subscribers" ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 dark:text-gray-400"
+          }`}
+        >
+          المشتركين ({subscribers.filter(u => u.subscriptionTier !== "free").length})
+        </button>
+        <button
           onClick={() => setTab("plans")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
             tab === "plans" ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 dark:text-gray-400"
@@ -189,6 +238,137 @@ export default function AdminSubscriptionsPage() {
           أسعار الترويج ({promos.length})
         </button>
       </div>
+
+      {/* ─── Subscribers Tab ─── */}
+      {tab === "subscribers" && (
+        <>
+          {/* Search & Filter */}
+          <div className="flex flex-wrap gap-3 mb-6">
+            <input
+              type="text"
+              value={subSearch}
+              onChange={(e) => setSubSearch(e.target.value)}
+              placeholder="بحث بالاسم أو البريد..."
+              className="flex-1 min-w-[200px] px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+            />
+            <select
+              value={subFilter}
+              onChange={(e) => setSubFilter(e.target.value)}
+              className="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+            >
+              <option value="">جميع المستويات</option>
+              <option value="free">مجاني</option>
+              <option value="pro">احترافي</option>
+              <option value="premium">مميز</option>
+            </select>
+          </div>
+
+          {/* Users Table */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200 dark:border-gray-700 text-right">
+                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستخدم</th>
+                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">البريد</th>
+                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستوى</th>
+                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">تجربة مجانية</th>
+                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                {subscribers.map((u) => {
+                  const isOnTrial = u.trialEndsAt && new Date(u.trialEndsAt) > new Date();
+                  return (
+                    <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-750">
+                      <td className="px-5 py-4 text-sm font-semibold text-gray-900 dark:text-white">
+                        {u.name || "—"}
+                      </td>
+                      <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400 dir-ltr">
+                        {u.email}
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${
+                          u.subscriptionTier === "pro" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                            : u.subscriptionTier === "premium" ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
+                            : "bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
+                        }`}>
+                          {u.subscriptionTier === "pro" ? "احترافي" : u.subscriptionTier === "premium" ? "مميز" : "مجاني"}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-sm">
+                        {isOnTrial ? (
+                          <span className="text-amber-600 dark:text-amber-400 font-medium">
+                            تجربة حتى {new Date(u.trialEndsAt!).toLocaleDateString("ar-SA")}
+                          </span>
+                        ) : u.trialUsed ? (
+                          <span className="text-gray-400 text-xs">مستخدمة</span>
+                        ) : (
+                          <span className="text-gray-400 text-xs">—</span>
+                        )}
+                      </td>
+                      <td className="px-5 py-4">
+                        <select
+                          value={u.subscriptionTier}
+                          onChange={(e) => updateUserTier(u.id, e.target.value)}
+                          disabled={updatingUser === u.id}
+                          className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm disabled:opacity-50"
+                        >
+                          <option value="free">مجاني</option>
+                          <option value="pro">احترافي</option>
+                          <option value="premium">مميز</option>
+                        </select>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            {subscribers.length === 0 && (
+              <div className="p-12 text-center">
+                <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">group</span>
+                <p className="text-gray-500 font-medium">لا يوجد مشتركين</p>
+              </div>
+            )}
+          </div>
+
+          {/* Companies with subscriptions */}
+          {subCompanies.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="px-5 py-3 border-b border-gray-200 dark:border-gray-700">
+                <h3 className="font-bold text-sm text-gray-900 dark:text-white">اشتراكات العلامات التجارية</h3>
+              </div>
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-gray-700 text-right">
+                    <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">العلامة التجارية</th>
+                    <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المالك</th>
+                    <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستوى</th>
+                    <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">ينتهي في</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                  {subCompanies.map((c) => (
+                    <tr key={c.id} className="hover:bg-gray-50 dark:hover:bg-gray-750">
+                      <td className="px-5 py-4 text-sm font-semibold text-gray-900 dark:text-white">{c.name}</td>
+                      <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">{c.owner?.email}</td>
+                      <td className="px-5 py-4">
+                        <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                          {c.subscriptionTier}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">
+                        {c.subscriptionExpiresAt
+                          ? new Date(c.subscriptionExpiresAt).toLocaleDateString("ar-SA")
+                          : "غير محدد"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      )}
 
       {/* ─── Subscription Plans Tab ─── */}
       {tab === "plans" && (
