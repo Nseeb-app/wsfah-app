@@ -41,23 +41,24 @@ export async function PATCH(req: Request) {
   if (error) return error;
 
   const body = await req.json();
-  const { userId, role, status } = body;
+  const { userId, role, status, subscriptionTier } = body;
 
   if (!userId) {
     return NextResponse.json({ error: "userId required" }, { status: 400 });
   }
 
-  const data: Record<string, string> = {};
+  const data: Record<string, unknown> = {};
   if (role) data.role = role;
   if (status) data.status = status;
+  if (subscriptionTier) data.subscriptionTier = subscriptionTier;
 
   const updated = await prisma.user.update({
     where: { id: userId },
     data,
-    select: { id: true, name: true, email: true, role: true, status: true, createdAt: true },
+    select: { id: true, name: true, email: true, role: true, status: true, subscriptionTier: true, createdAt: true },
   });
 
-  await logAudit(session!.user!.id!, "ADMIN_USER_UPDATE", "User", userId, { role, status });
+  await logAudit(session!.user!.id!, "ADMIN_USER_UPDATE", "User", userId, { role, status, subscriptionTier });
 
   return NextResponse.json(updated);
 }
