@@ -32,6 +32,8 @@ interface Subscriber {
   name: string | null;
   email: string | null;
   subscriptionTier: string;
+  subscriptionStartsAt: string | null;
+  subscriptionExpiresAt: string | null;
   trialUsed: boolean;
   trialEndsAt: string | null;
   trialPlanSlug: string | null;
@@ -59,6 +61,8 @@ export default function AdminSubscriptionsPage() {
   const [subSearch, setSubSearch] = useState("");
   const [subFilter, setSubFilter] = useState("");
   const [updatingUser, setUpdatingUser] = useState<string | null>(null);
+  const [extendingUser, setExtendingUser] = useState<string | null>(null);
+  const [extendDays, setExtendDays] = useState("30");
 
   // Plan form
   const [planForm, setPlanForm] = useState(emptyPlan);
@@ -96,6 +100,22 @@ export default function AdminSubscriptionsPage() {
       body: JSON.stringify({ userId, subscriptionTier: tier }),
     });
     if (res.ok) fetchData();
+    setUpdatingUser(null);
+  };
+
+  const extendSubscription = async (userId: string) => {
+    const days = parseInt(extendDays);
+    if (!days || days <= 0) return;
+    setUpdatingUser(userId);
+    const res = await fetch("/api/admin/subscribers", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, extendDays: days }),
+    });
+    if (res.ok) {
+      setExtendingUser(null);
+      fetchData();
+    }
     setUpdatingUser(null);
   };
 
@@ -271,12 +291,14 @@ export default function AdminSubscriptionsPage() {
                   <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستخدم</th>
                   <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">البريد</th>
                   <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المستوى</th>
-                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">تجربة مجانية</th>
+                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">بداية الاشتراك</th>
+                  <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">نهاية الاشتراك</th>
                   <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">إجراءات</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {subscribers.map((u) => {
+                  const isExpired = u.subscriptionExpiresAt && new Date(u.subscriptionExpiresAt) < new Date();
                   const isOnTrial = u.trialEndsAt && new Date(u.trialEndsAt) > new Date();
                   return (
                     <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-750">
@@ -288,35 +310,79 @@ export default function AdminSubscriptionsPage() {
                       </td>
                       <td className="px-5 py-4">
                         <span className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${
-                          u.subscriptionTier === "pro" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                          u.subscriptionTier === "pro"
+                            ? isExpired ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
                             : u.subscriptionTier === "premium" ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
                             : "bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
                         }`}>
-                          {u.subscriptionTier === "pro" ? "احترافي" : u.subscriptionTier === "premium" ? "مميز" : "مجاني"}
+                          {u.subscriptionTier === "pro" ? (isExpired ? "منتهي" : "احترافي") : u.subscriptionTier === "premium" ? "مميز" : "مجاني"}
+                          {isOnTrial && " (تجربة)"}
                         </span>
                       </td>
+                      <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">
+                        {u.subscriptionStartsAt
+                          ? new Date(u.subscriptionStartsAt).toLocaleDateString("ar-SA")
+                          : "—"}
+                      </td>
                       <td className="px-5 py-4 text-sm">
-                        {isOnTrial ? (
-                          <span className="text-amber-600 dark:text-amber-400 font-medium">
-                            تجربة حتى {new Date(u.trialEndsAt!).toLocaleDateString("ar-SA")}
+                        {u.subscriptionExpiresAt ? (
+                          <span className={isExpired ? "text-red-500 font-medium" : "text-gray-600 dark:text-gray-400"}>
+                            {new Date(u.subscriptionExpiresAt).toLocaleDateString("ar-SA")}
+                            {isExpired && " (منتهي)"}
                           </span>
-                        ) : u.trialUsed ? (
-                          <span className="text-gray-400 text-xs">مستخدمة</span>
+                        ) : u.subscriptionTier !== "free" ? (
+                          <span className="text-green-600 text-xs font-medium">غير محدد</span>
                         ) : (
                           <span className="text-gray-400 text-xs">—</span>
                         )}
                       </td>
                       <td className="px-5 py-4">
-                        <select
-                          value={u.subscriptionTier}
-                          onChange={(e) => updateUserTier(u.id, e.target.value)}
-                          disabled={updatingUser === u.id}
-                          className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm disabled:opacity-50"
-                        >
-                          <option value="free">مجاني</option>
-                          <option value="pro">احترافي</option>
-                          <option value="premium">مميز</option>
-                        </select>
+                        <div className="flex items-center gap-2">
+                          <select
+                            value={u.subscriptionTier}
+                            onChange={(e) => updateUserTier(u.id, e.target.value)}
+                            disabled={updatingUser === u.id}
+                            className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm disabled:opacity-50"
+                          >
+                            <option value="free">مجاني</option>
+                            <option value="pro">احترافي</option>
+                            <option value="premium">مميز</option>
+                          </select>
+                          {extendingUser === u.id ? (
+                            <div className="flex items-center gap-1">
+                              <input
+                                type="number"
+                                value={extendDays}
+                                onChange={(e) => setExtendDays(e.target.value)}
+                                className="w-16 px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-center"
+                                placeholder="30"
+                                min="1"
+                              />
+                              <span className="text-xs text-gray-500">يوم</span>
+                              <button
+                                onClick={() => extendSubscription(u.id)}
+                                disabled={updatingUser === u.id}
+                                className="px-2 py-1.5 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700 disabled:opacity-50"
+                              >
+                                تمديد
+                              </button>
+                              <button
+                                onClick={() => setExtendingUser(null)}
+                                className="px-2 py-1.5 bg-gray-200 dark:bg-gray-600 rounded-lg text-xs"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => { setExtendingUser(u.id); setExtendDays("30"); }}
+                              className="p-1.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600"
+                              title="تمديد الاشتراك"
+                            >
+                              <span className="material-symbols-outlined text-lg">event_repeat</span>
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   );

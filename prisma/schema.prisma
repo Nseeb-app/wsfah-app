@@ -24,7 +24,9 @@ model User {
   followers     Int       @default(0)
   following     Int       @default(0)
   avgRating     Float     @default(0)
-  subscriptionTier String  @default("free") // free, pro
+  subscriptionTier      String    @default("free") // free, pro
+  subscriptionStartsAt  DateTime? // when subscription started
+  subscriptionExpiresAt DateTime? // when subscription expires
   trialUsed        Boolean  @default(false) // prevents repeat free trials
   trialEndsAt      DateTime? // when 14-day trial expires
   trialPlanSlug    String?  // which plan they trialed
