@@ -101,7 +101,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
-            className="w-full px-4 py-3 rounded-lg border-2 border-dashed border-espresso/10 dark:border-white/10 bg-gray-50 dark:bg-gray-800/50 text-espresso/40 dark:text-oat-milk/40 text-sm hover:border-[#25f459]/50 hover:bg-[#25f459]/5 transition-colors disabled:opacity-50"
+            className="w-full px-4 py-3 rounded-lg border-2 border-dashed border-espresso/10 dark:border-white/10 bg-[#ffffff05] text-espresso/40 dark:text-oat-milk/40 text-sm hover:border-[#25f459]/50 hover:bg-[#25f459]/5 transition-colors disabled:opacity-50"
           >
             {uploading ? "جاري الرفع..." : value ? "تغيير الصورة" : "اضغط لرفع صورة"}
           </button>
@@ -359,7 +359,7 @@ export default function AdminRecipesPage() {
             }`}
           />
         </button>
-        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+        <span className="text-sm text-[#F2E8DFcc]">{label}</span>
       </label>
     );
   }
@@ -465,7 +465,7 @@ export default function AdminRecipesPage() {
             <Toggle checked={form.isFeatured} onChange={(v) => setForm({ ...form, isFeatured: v })} label="مميزة" />
             <Toggle checked={form.isVerified} onChange={(v) => setForm({ ...form, isVerified: v })} label="موثقة" />
             <div className="flex items-center gap-2">
-              <label className="text-sm text-gray-700 dark:text-gray-300">الوصول:</label>
+              <label className="text-sm text-[#F2E8DFcc]">الوصول:</label>
               <select
                 value={form.accessTier}
                 onChange={(e) => setForm({ ...form, accessTier: e.target.value })}
@@ -539,7 +539,7 @@ export default function AdminRecipesPage() {
             </div>
             <div className="space-y-3">
               {ingredients.map((ing, i) => (
-                <div key={i} className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 border border-espresso/5 dark:border-white/5">
+                <div key={i} className="bg-[#ffffff05] rounded-lg p-3 border border-espresso/5 dark:border-white/5">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-bold text-espresso/30 dark:text-oat-milk/30">#{i + 1}</span>
                     {ingredients.length > 1 && (
@@ -661,7 +661,7 @@ export default function AdminRecipesPage() {
             <button
               type="button"
               onClick={() => { setShowForm(false); resetForm(); }}
-              className="px-6 py-2.5 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              className="px-6 py-2.5 rounded-lg bg-gray-200 dark:bg-gray-700 text-[#F2E8DFcc] font-medium text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
               إلغاء
             </button>

@@ -121,7 +121,7 @@ export default function AdminAnalyticsPage() {
             <tbody>
               {data.usersPerWeek.map((w) => (
                 <tr key={w.week} className="border-b border-espresso/5 dark:border-white/5 last:border-0">
-                  <td className="py-2 text-gray-700 dark:text-gray-300">{w.week}</td>
+                  <td className="py-2 text-[#F2E8DFcc]">{w.week}</td>
                   <td className="py-2 text-right text-espresso dark:text-oat-milk font-medium">{w.count}</td>
                 </tr>
               ))}
@@ -141,7 +141,7 @@ export default function AdminAnalyticsPage() {
             <tbody>
               {data.recipesPerWeek.map((w) => (
                 <tr key={w.week} className="border-b border-espresso/5 dark:border-white/5 last:border-0">
-                  <td className="py-2 text-gray-700 dark:text-gray-300">{w.week}</td>
+                  <td className="py-2 text-[#F2E8DFcc]">{w.week}</td>
                   <td className="py-2 text-right text-espresso dark:text-oat-milk font-medium">{w.count}</td>
                 </tr>
               ))}

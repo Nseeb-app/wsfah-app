@@ -300,7 +300,7 @@ export default function AdminSubscriptionsPage() {
                       u.subscriptionTier === "pro"
                         ? isExpired ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
                         : u.subscriptionTier === "premium" ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
-                        : "bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
+                        : "bg-[#F2E8DF10] text-[#F2E8DF60]"
                     }`}>
                       {u.subscriptionTier === "pro" ? (isExpired ? "منتهي" : "احترافي") : u.subscriptionTier === "premium" ? "مميز" : "مجاني"}
                       {isOnTrial && " (تجربة)"}
@@ -344,7 +344,7 @@ export default function AdminSubscriptionsPage() {
                           placeholder="30"
                           min="1"
                         />
-                        <span className="text-xs text-gray-500">يوم</span>
+                        <span className="text-xs text-[#F2E8DF80]">يوم</span>
                         <button
                           onClick={() => extendSubscription(u.id)}
                           disabled={updatingUser === u.id}
@@ -352,7 +352,7 @@ export default function AdminSubscriptionsPage() {
                         >
                           تمديد
                         </button>
-                        <button onClick={() => setExtendingUser(null)} className="px-2 py-1.5 bg-gray-200 dark:bg-gray-600 rounded-lg text-xs">✕</button>
+                        <button onClick={() => setExtendingUser(null)} className="px-2 py-1.5 bg-gray-200 dark:bg-[#ffffff15] rounded-lg text-xs">✕</button>
                       </div>
                     ) : (
                       <button
@@ -369,8 +369,8 @@ export default function AdminSubscriptionsPage() {
             })}
             {subscribers.length === 0 && (
               <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-12 text-center">
-                <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">group</span>
-                <p className="text-gray-500 font-medium">لا يوجد مشتركين</p>
+                <span className="material-symbols-outlined text-5xl text-[#F2E8DF30] mb-3 block">group</span>
+                <p className="text-[#F2E8DF80] font-medium">لا يوجد مشتركين</p>
               </div>
             )}
           </div>
@@ -390,7 +390,7 @@ export default function AdminSubscriptionsPage() {
                       <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
                         {c.subscriptionTier}
                       </span>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-[#F2E8DF80]">
                         {c.subscriptionExpiresAt ? new Date(c.subscriptionExpiresAt).toLocaleDateString("ar-SA") : "غير محدد"}
                       </span>
                     </div>
@@ -413,7 +413,7 @@ export default function AdminSubscriptionsPage() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">اسم الخطة</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">اسم الخطة</label>
                 <input
                   type="text"
                   value={planForm.name}
@@ -423,7 +423,7 @@ export default function AdminSubscriptionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">المعرّف</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">المعرّف</label>
                 <input
                   type="text"
                   value={planForm.slug}
@@ -433,7 +433,7 @@ export default function AdminSubscriptionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">السعر</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">السعر</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -457,7 +457,7 @@ export default function AdminSubscriptionsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">الفترة</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">الفترة</label>
                 <select
                   value={planForm.interval}
                   onChange={(e) => setPlanForm({ ...planForm, interval: e.target.value })}
@@ -468,7 +468,7 @@ export default function AdminSubscriptionsPage() {
                 </select>
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-xs font-medium text-gray-500 mb-1">الوصف</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">الوصف</label>
                 <input
                   type="text"
                   value={planForm.description}
@@ -478,7 +478,7 @@ export default function AdminSubscriptionsPage() {
                 />
               </div>
               <div className="sm:col-span-2 lg:col-span-3">
-                <label className="block text-xs font-medium text-gray-500 mb-1">المميزات (واحدة في كل سطر)</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">المميزات (واحدة في كل سطر)</label>
                 <textarea
                   value={planForm.features}
                   onChange={(e) => setPlanForm({ ...planForm, features: e.target.value })}
@@ -511,9 +511,9 @@ export default function AdminSubscriptionsPage() {
           {/* Plans List */}
           {plans.length === 0 ? (
             <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-12 text-center">
-              <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">credit_card</span>
-              <p className="text-gray-500 font-medium">لا توجد خطط اشتراك بعد</p>
-              <p className="text-sm text-gray-400 mt-1">أنشئ أول خطة أعلاه</p>
+              <span className="material-symbols-outlined text-5xl text-[#F2E8DF30] mb-3 block">credit_card</span>
+              <p className="text-[#F2E8DF80] font-medium">لا توجد خطط اشتراك بعد</p>
+              <p className="text-sm text-[#F2E8DF50] mt-1">أنشئ أول خطة أعلاه</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -525,7 +525,7 @@ export default function AdminSubscriptionsPage() {
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="font-bold text-lg text-espresso dark:text-oat-milk">{p.name}</h3>
                       <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                        p.isActive ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" : "bg-gray-100 text-gray-500"
+                        p.isActive ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" : "bg-[#F2E8DF10] text-[#F2E8DF60]"
                       }`}>
                         {p.isActive ? "نشطة" : "غير نشطة"}
                       </span>
@@ -534,7 +534,7 @@ export default function AdminSubscriptionsPage() {
                       <span className="text-3xl font-extrabold text-espresso dark:text-oat-milk">
                         {p.currency === "USD" ? "$" : p.currency === "EUR" ? "€" : p.currency === "GBP" ? "£" : ""}{p.price}
                       </span>
-                      <span className="text-sm text-gray-400">/{p.interval === "yearly" ? "سنة" : "شهر"}</span>
+                      <span className="text-sm text-[#F2E8DF60]">/{p.interval === "yearly" ? "سنة" : "شهر"}</span>
                     </div>
                     {p.description && (
                       <p className="text-sm text-espresso/40 dark:text-oat-milk/40 mb-3">{p.description}</p>
@@ -542,14 +542,14 @@ export default function AdminSubscriptionsPage() {
                     {p.features && (
                       <ul className="space-y-1.5 mb-4">
                         {p.features.split("\n").filter(Boolean).map((f, i) => (
-                          <li key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                          <li key={i} className="flex items-center gap-2 text-sm text-[#F2E8DFaa]">
                             <span className="material-symbols-outlined text-green-500 text-base">check_circle</span>
                             {f}
                           </li>
                         ))}
                       </ul>
                     )}
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider">المعرّف: {p.slug}</p>
+                    <p className="text-[10px] text-[#F2E8DF50] uppercase tracking-wider">المعرّف: {p.slug}</p>
                   </div>
                   <div className="flex border-t border-espresso/5 dark:border-white/5">
                     <button onClick={() => editPlan(p)} className="flex-1 py-3 text-sm font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 flex items-center justify-center gap-1">
@@ -581,7 +581,7 @@ export default function AdminSubscriptionsPage() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">اسم الباقة</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">اسم الباقة</label>
                 <input
                   type="text"
                   value={promoForm.name}
@@ -591,7 +591,7 @@ export default function AdminSubscriptionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">الموضع</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">الموضع</label>
                 <select
                   value={promoForm.placement}
                   onChange={(e) => setPromoForm({ ...promoForm, placement: e.target.value })}
@@ -603,7 +603,7 @@ export default function AdminSubscriptionsPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">المدة (أيام)</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">المدة (أيام)</label>
                 <input
                   type="number"
                   value={promoForm.duration}
@@ -613,7 +613,7 @@ export default function AdminSubscriptionsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">السعر</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">السعر</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -637,7 +637,7 @@ export default function AdminSubscriptionsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">الخصم (%)</label>
+                <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">الخصم (%)</label>
                 <input
                   type="number"
                   min="0"
@@ -672,9 +672,9 @@ export default function AdminSubscriptionsPage() {
           {/* Pricing List */}
           {promos.length === 0 ? (
             <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-12 text-center">
-              <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">sell</span>
-              <p className="text-gray-500 font-medium">لا توجد أسعار ترويج بعد</p>
-              <p className="text-sm text-gray-400 mt-1">أنشئ باقات تسعير للمحامص</p>
+              <span className="material-symbols-outlined text-5xl text-[#F2E8DF30] mb-3 block">sell</span>
+              <p className="text-[#F2E8DF80] font-medium">لا توجد أسعار ترويج بعد</p>
+              <p className="text-sm text-[#F2E8DF50] mt-1">أنشئ باقات تسعير للمحامص</p>
             </div>
           ) : (
             <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 overflow-hidden overflow-x-auto">
@@ -705,7 +705,7 @@ export default function AdminSubscriptionsPage() {
                               -{p.discount}%
                             </span>
                           ) : (
-                            <span className="text-xs text-gray-400">—</span>
+                            <span className="text-xs text-[#F2E8DF60]">—</span>
                           )}
                         </td>
                         <td className="px-5 py-4 text-sm font-bold text-green-600 dark:text-green-400">${final.toFixed(2)}</td>

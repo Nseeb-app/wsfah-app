@@ -110,29 +110,29 @@ export default function AdminRewardsPage() {
               <h3 className="text-lg font-bold text-espresso dark:text-oat-milk">
                 {editId ? "تعديل المكافأة" : "مكافأة جديدة"}
               </h3>
-              <button onClick={resetForm} className="size-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center">
+              <button onClick={resetForm} className="size-10 rounded-full hover:bg-[#ffffff08] flex items-center justify-center">
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">العنوان</label>
+                <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">العنوان</label>
                 <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الفئة</label>
+                  <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الفئة</label>
                   <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk">
                     {REWARD_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">تكلفة النقاط</label>
+                  <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">تكلفة النقاط</label>
                   <input type="number" value={form.pointsCost} onChange={(e) => setForm({ ...form, pointsCost: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">رابط الصورة (اختياري)</label>
+                <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">رابط الصورة (اختياري)</label>
                 <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://..." className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
               </div>
               <button onClick={handleSubmit} className="w-full py-3 bg-[#25f459] text-black rounded-2xl font-bold text-sm hover:bg-[#20d64e] transition-colors">

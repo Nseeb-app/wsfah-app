@@ -64,7 +64,7 @@ export default function AdminAdsPage() {
         </h2>
         <div className="grid gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">
               معرّف الناشر (NEXT_PUBLIC_ADSENSE_ID)
             </label>
             <input
@@ -74,7 +74,7 @@ export default function AdminAdsPage() {
               placeholder="ca-pub-XXXXXXXXXXXXXXXX"
               className="w-full px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
             />
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-[#F2E8DF50] mt-1">
               قم بتعيينه في ملف .env.local باسم NEXT_PUBLIC_ADSENSE_ID
             </p>
           </div>
@@ -91,7 +91,7 @@ export default function AdminAdsPage() {
             <span className="text-sm font-medium text-espresso/40 dark:text-oat-milk/40">الإيرادات المقدرة</span>
           </div>
           <p className="text-2xl font-bold text-espresso dark:text-oat-milk">$0.00</p>
-          <p className="text-xs text-gray-400 mt-1">اربط AdSense لرؤية البيانات</p>
+          <p className="text-xs text-[#F2E8DF50] mt-1">اربط AdSense لرؤية البيانات</p>
         </div>
         <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-5">
           <div className="flex items-center gap-3 mb-2">
@@ -101,7 +101,7 @@ export default function AdminAdsPage() {
             <span className="text-sm font-medium text-espresso/40 dark:text-oat-milk/40">مرات الظهور</span>
           </div>
           <p className="text-2xl font-bold text-espresso dark:text-oat-milk">0</p>
-          <p className="text-xs text-gray-400 mt-1">إجمالي مرات ظهور الإعلانات اليوم</p>
+          <p className="text-xs text-[#F2E8DF50] mt-1">إجمالي مرات ظهور الإعلانات اليوم</p>
         </div>
         <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-5">
           <div className="flex items-center gap-3 mb-2">
@@ -111,7 +111,7 @@ export default function AdminAdsPage() {
             <span className="text-sm font-medium text-espresso/40 dark:text-oat-milk/40">المواضع النشطة</span>
           </div>
           <p className="text-2xl font-bold text-espresso dark:text-oat-milk">{enabledCount}/{placements.length}</p>
-          <p className="text-xs text-gray-400 mt-1">مواضع الإعلانات المفعّلة</p>
+          <p className="text-xs text-[#F2E8DF50] mt-1">مواضع الإعلانات المفعّلة</p>
         </div>
       </div>
 
@@ -135,7 +135,7 @@ export default function AdminAdsPage() {
         <div className="px-6 py-4 border-b border-espresso/5 dark:border-white/5">
           <h2 className="font-bold text-lg">مواضع الإعلانات</h2>
         </div>
-        <div className="divide-y divide-gray-100 dark:divide-gray-700">
+        <div className="divide-y divide-[#F2E8DF08]">
           {placements.map((placement) => (
             <div key={placement.id} className="flex items-center justify-between px-6 py-4 hover:bg-espresso/[0.02] dark:hover:bg-white/[0.02]">
               <div className="flex items-center gap-4">
@@ -158,10 +158,10 @@ export default function AdminAdsPage() {
                     <span className="text-xs text-gray-400 bg-espresso/5 dark:bg-white/5 px-2 py-0.5 rounded">
                       {placement.page}
                     </span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-[#F2E8DF60]">
                       الموضع: {placement.slot}
                     </span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-[#F2E8DF60]">
                       الشكل: {placement.format}
                     </span>
                   </div>
@@ -187,7 +187,7 @@ export default function AdminAdsPage() {
       {/* Integration Guide */}
       <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-6 mt-6">
         <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
-          <span className="material-symbols-outlined text-gray-400">integration_instructions</span>
+          <span className="material-symbols-outlined text-[#F2E8DF60]">integration_instructions</span>
           دليل الإعداد
         </h2>
         <ol className="text-sm text-espresso/60 dark:text-oat-milk/60 space-y-3 list-decimal list-inside">

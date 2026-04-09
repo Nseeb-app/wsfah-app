@@ -126,45 +126,45 @@ export default function AdminChallengesPage() {
               <h3 className="text-lg font-bold text-espresso dark:text-oat-milk">
                 {editId ? "تعديل التحدي" : "تحدي جديد"}
               </h3>
-              <button onClick={resetForm} className="size-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center">
+              <button onClick={resetForm} className="size-10 rounded-full hover:bg-[#ffffff08] flex items-center justify-center">
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">العنوان</label>
+                <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">العنوان</label>
                 <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الوصف</label>
+                <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الوصف</label>
                 <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk resize-none" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الأيقونة (Material)</label>
+                  <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الأيقونة (Material)</label>
                   <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-2xl text-[#25f459]">{form.icon}</span>
                     <input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} className="flex-1 px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">نقاط المكافأة</label>
+                  <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">نقاط المكافأة</label>
                   <input type="number" value={form.rewardPoints} onChange={(e) => setForm({ ...form, rewardPoints: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الحد الأقصى للتقدم</label>
+                  <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الحد الأقصى للتقدم</label>
                   <input type="number" value={form.maxProgress} onChange={(e) => setForm({ ...form, maxProgress: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الرتبة</label>
+                  <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الرتبة</label>
                   <select value={form.rank} onChange={(e) => setForm({ ...form, rank: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk">
                     {RANKS.map((r) => <option key={r} value={r}>{r}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الفئة</label>
+                  <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الفئة</label>
                   <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk">
                     {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>

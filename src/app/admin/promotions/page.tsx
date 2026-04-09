@@ -160,7 +160,7 @@ export default function AdminPromotionsPage() {
 
       {filtered.length === 0 ? (
         <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-12 text-center">
-          <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">campaign</span>
+          <span className="material-symbols-outlined text-5xl text-[#F2E8DF30] mb-3 block">campaign</span>
           <p className="text-espresso/40 dark:text-oat-milk/40 font-medium">لا توجد طلبات ترويج</p>
           <p className="text-sm text-espresso/30 dark:text-oat-milk/30 mt-1">يمكن للمحامص طلب الترويج من صفحة علامتهم التجارية</p>
         </div>
@@ -205,7 +205,7 @@ export default function AdminPromotionsPage() {
                       )}
                     </div>
                     {p.message && (
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 italic">
+                      <p className="text-sm text-[#F2E8DFaa] mt-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 italic">
                         &ldquo;{p.message}&rdquo;
                       </p>
                     )}
@@ -219,7 +219,7 @@ export default function AdminPromotionsPage() {
                 {editingId === p.id && (
                   <div className="mt-4 pt-4 border-t border-espresso/5 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">الأولوية (الأعلى = يظهر أولاً)</label>
+                      <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">الأولوية (الأعلى = يظهر أولاً)</label>
                       <input
                         type="number"
                         value={editForm.priority}
@@ -228,7 +228,7 @@ export default function AdminPromotionsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">ملاحظات الإدارة</label>
+                      <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">ملاحظات الإدارة</label>
                       <input
                         type="text"
                         value={editForm.adminNotes}
@@ -238,7 +238,7 @@ export default function AdminPromotionsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">تاريخ البدء</label>
+                      <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">تاريخ البدء</label>
                       <input
                         type="date"
                         value={editForm.startDate}
@@ -247,7 +247,7 @@ export default function AdminPromotionsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">تاريخ الانتهاء</label>
+                      <label className="block text-xs font-medium text-[#F2E8DF99] mb-1">تاريخ الانتهاء</label>
                       <input
                         type="date"
                         value={editForm.endDate}
@@ -264,7 +264,7 @@ export default function AdminPromotionsPage() {
                       </button>
                       <button
                         onClick={() => setEditingId(null)}
-                        className="px-4 py-2 bg-espresso/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium"
+                        className="px-4 py-2 bg-espresso/5 dark:bg-white/5 text-[#F2E8DFcc] rounded-lg text-sm font-medium"
                       >
                         إلغاء
                       </button>

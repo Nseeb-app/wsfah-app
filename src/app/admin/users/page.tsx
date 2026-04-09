@@ -163,11 +163,11 @@ export default function AdminUsersPage() {
             </p>
             <div className="flex gap-2">
               <button disabled={page <= 1} onClick={() => setPage((p) => p - 1)}
-                className="px-4 py-2 rounded-lg border border-espresso/10 dark:border-white/10 text-sm disabled:opacity-50 text-gray-700 dark:text-gray-300">
+                className="px-4 py-2 rounded-lg border border-espresso/10 dark:border-white/10 text-sm disabled:opacity-50 text-[#F2E8DFcc]">
                 السابق
               </button>
               <button disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}
-                className="px-4 py-2 rounded-lg border border-espresso/10 dark:border-white/10 text-sm disabled:opacity-50 text-gray-700 dark:text-gray-300">
+                className="px-4 py-2 rounded-lg border border-espresso/10 dark:border-white/10 text-sm disabled:opacity-50 text-[#F2E8DFcc]">
                 التالي
               </button>
             </div>

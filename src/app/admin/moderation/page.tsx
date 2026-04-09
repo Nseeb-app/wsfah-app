@@ -71,7 +71,7 @@ export default function AdminModerationPage() {
                     أبلغ بواسطة: {report.reporter?.name || report.reporter?.email || "غير معروف"}
                   </p>
                   {report.details && (
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">{report.details}</p>
+                    <p className="text-sm text-[#F2E8DFcc] mt-2">{report.details}</p>
                   )}
                   <p className="text-xs text-espresso/30 dark:text-oat-milk/30 mt-2">
                     {new Date(report.createdAt).toLocaleString()}
@@ -80,7 +80,7 @@ export default function AdminModerationPage() {
                 <div className="flex gap-2 ml-4">
                   <button
                     onClick={() => handleAction(report.id, "DISMISSED")}
-                    className="px-3 py-1.5 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-xs font-medium"
+                    className="px-3 py-1.5 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-[#F2E8DFcc] text-xs font-medium"
                   >
                     رفض
                   </button>
