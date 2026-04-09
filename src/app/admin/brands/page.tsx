@@ -64,7 +64,7 @@ export default function AdminBrandsPage() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">العلامات التجارية</h2>
+      <h2 className="text-2xl font-bold text-espresso dark:text-oat-milk mb-6">العلامات التجارية</h2>
 
       <div className="flex gap-2 mb-6">
         {TABS.map((tab) => (
@@ -74,7 +74,7 @@ export default function AdminBrandsPage() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               activeTab === tab
                 ? "bg-[#25f459] text-black"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                : "bg-espresso/5 dark:bg-white/5 text-espresso/60 dark:text-oat-milk/60 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             {TAB_LABELS[tab] || tab}
@@ -83,27 +83,27 @@ export default function AdminBrandsPage() {
       </div>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
+        <p className="text-espresso/40 dark:text-oat-milk/40">جاري التحميل...</p>
       ) : brands.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">لا توجد علامات تجارية.</p>
+        <p className="text-espresso/40 dark:text-oat-milk/40">لا توجد علامات تجارية.</p>
       ) : (
-        <div className="overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+        <div className="overflow-x-auto bg-white dark:bg-[#1a2420] border border-espresso/5 dark:border-white/5 rounded-2xl">
           <table className="w-full text-sm min-w-[600px]">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الشركة</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">النوع</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">المالك</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">الحالة</th>
-                <th className="text-left p-4 text-gray-500 dark:text-gray-400 font-medium">إجراءات</th>
+              <tr className="border-b border-espresso/5 dark:border-white/5">
+                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">الشركة</th>
+                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">النوع</th>
+                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">المالك</th>
+                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">الحالة</th>
+                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
               {brands.map((brand) => (
-                <tr key={brand.id} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
-                  <td className="p-4 text-gray-900 dark:text-white font-medium">{brand.name}</td>
-                  <td className="p-4 text-gray-600 dark:text-gray-400">{brand.type}</td>
-                  <td className="p-4 text-gray-600 dark:text-gray-400">
+                <tr key={brand.id} className="border-b border-espresso/5 dark:border-white/5 last:border-0">
+                  <td className="p-4 text-espresso dark:text-oat-milk font-medium">{brand.name}</td>
+                  <td className="p-4 text-espresso/60 dark:text-oat-milk/60">{brand.type}</td>
+                  <td className="p-4 text-espresso/60 dark:text-oat-milk/60">
                     {brand.owner?.name || brand.owner?.email || "—"}
                   </td>
                   <td className="p-4">

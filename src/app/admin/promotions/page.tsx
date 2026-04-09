@@ -127,7 +127,7 @@ export default function AdminPromotionsPage() {
     <div className="max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-espresso dark:text-oat-milk flex items-center gap-3">
             طلبات الترويج
             {pendingCount > 0 && (
               <span className="bg-yellow-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
@@ -135,7 +135,7 @@ export default function AdminPromotionsPage() {
               </span>
             )}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-espresso/40 dark:text-oat-milk/40 mt-1">
             مراجعة وإدارة طلبات ترويج المحامص
           </p>
         </div>
@@ -150,7 +150,7 @@ export default function AdminPromotionsPage() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filter === s
                 ? "bg-green-600 text-white"
-                : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750"
+                : "bg-white dark:bg-[#1a2420] text-espresso/60 dark:text-oat-milk/60 border border-espresso/5 dark:border-white/5 hover:bg-espresso/[0.02] dark:hover:bg-white/[0.02]"
             }`}
           >
             {s === "ALL" ? `الكل (${promos.length})` : `${filterLabel[s]} (${promos.filter((p) => p.status === s).length})`}
@@ -159,32 +159,32 @@ export default function AdminPromotionsPage() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
+        <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-12 text-center">
           <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">campaign</span>
-          <p className="text-gray-500 dark:text-gray-400 font-medium">لا توجد طلبات ترويج</p>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">يمكن للمحامص طلب الترويج من صفحة علامتهم التجارية</p>
+          <p className="text-espresso/40 dark:text-oat-milk/40 font-medium">لا توجد طلبات ترويج</p>
+          <p className="text-sm text-espresso/30 dark:text-oat-milk/30 mt-1">يمكن للمحامص طلب الترويج من صفحة علامتهم التجارية</p>
         </div>
       ) : (
         <div className="space-y-4">
           {filtered.map((p) => (
-            <div key={p.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div key={p.id} className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 overflow-hidden">
               <div className="p-5">
                 <div className="flex items-start gap-4">
                   {/* Brand Logo */}
                   <img
                     src={p.company.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(p.company.name)}&background=25f459&color=fff&size=64`}
                     alt={p.company.name}
-                    className="size-14 rounded-xl object-cover border border-gray-200 dark:border-gray-600 shrink-0"
+                    className="size-14 rounded-2xl object-cover border border-gray-200 dark:border-gray-600 shrink-0"
                   />
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
-                      <h3 className="font-bold text-gray-900 dark:text-white text-lg">{p.company.name}</h3>
+                      <h3 className="font-bold text-espresso dark:text-oat-milk text-lg">{p.company.name}</h3>
                       <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${statusColor[p.status]}`}>
                         {statusLabel[p.status] || p.status}
                       </span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-espresso/40 dark:text-oat-milk/40">
                       <span className="flex items-center gap-1">
                         <span className="material-symbols-outlined text-base">location_on</span>
                         {placementLabel[p.placement] || p.placement}
@@ -217,14 +217,14 @@ export default function AdminPromotionsPage() {
 
                 {/* Edit Form */}
                 {editingId === p.id && (
-                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="mt-4 pt-4 border-t border-espresso/5 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-medium text-gray-500 mb-1">الأولوية (الأعلى = يظهر أولاً)</label>
                       <input
                         type="number"
                         value={editForm.priority}
                         onChange={(e) => setEditForm({ ...editForm, priority: parseInt(e.target.value) || 0 })}
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                       />
                     </div>
                     <div>
@@ -234,7 +234,7 @@ export default function AdminPromotionsPage() {
                         value={editForm.adminNotes}
                         onChange={(e) => setEditForm({ ...editForm, adminNotes: e.target.value })}
                         placeholder="ملاحظات داخلية..."
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                       />
                     </div>
                     <div>
@@ -243,7 +243,7 @@ export default function AdminPromotionsPage() {
                         type="date"
                         value={editForm.startDate}
                         onChange={(e) => setEditForm({ ...editForm, startDate: e.target.value })}
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                       />
                     </div>
                     <div>
@@ -252,7 +252,7 @@ export default function AdminPromotionsPage() {
                         type="date"
                         value={editForm.endDate}
                         onChange={(e) => setEditForm({ ...editForm, endDate: e.target.value })}
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                       />
                     </div>
                     <div className="sm:col-span-2 flex gap-2">
@@ -264,7 +264,7 @@ export default function AdminPromotionsPage() {
                       </button>
                       <button
                         onClick={() => setEditingId(null)}
-                        className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium"
+                        className="px-4 py-2 bg-espresso/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium"
                       >
                         إلغاء
                       </button>
@@ -274,7 +274,7 @@ export default function AdminPromotionsPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 dark:bg-gray-750 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-2 px-5 py-3 bg-gray-50 dark:bg-gray-750 border-t border-espresso/5 dark:border-white/5">
                 {p.status === "PENDING" && (
                   <>
                     <button

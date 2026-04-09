@@ -26,43 +26,47 @@ export default function AdminSidebar() {
   return (
     <>
       {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-espresso/95 backdrop-blur-md border-b border-white/5 px-4 py-3 flex items-center justify-between">
         <button
           onClick={() => setOpen(!open)}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="p-2 rounded-xl hover:bg-white/10 transition-colors"
         >
-          <span className="material-symbols-outlined text-gray-700 dark:text-gray-300">
+          <span className="material-symbols-outlined text-oat-milk">
             {open ? "close" : "menu"}
           </span>
         </button>
-        <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-          WSFA <span className="text-[#25f459]">الإدارة</span>
+        <h1 className="text-lg font-bold text-oat-milk tracking-wide">
+          وصفة <span className="text-primary">الإدارة</span>
         </h1>
-        <Link href="/" className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-          <span className="material-symbols-outlined text-gray-700 dark:text-gray-300">home</span>
+        <Link href="/home" className="p-2 rounded-xl hover:bg-white/10 transition-colors">
+          <span className="material-symbols-outlined text-oat-milk">home</span>
         </Link>
       </div>
 
       {/* Mobile overlay */}
       {open && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
           onClick={() => setOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 w-64 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col z-50 transition-transform lg:translate-x-0 ${
+        className={`fixed left-0 top-0 w-64 h-screen bg-espresso flex flex-col z-50 transition-transform lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="p-6 border-b border-gray-200 dark:border-gray-800">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-            WSFA <span className="text-[#25f459]">الإدارة</span>
+        {/* Logo */}
+        <div className="p-6 border-b border-white/5">
+          <h1 className="text-xl font-extrabold text-oat-milk tracking-wide">
+            وصفة <span className="text-primary">الإدارة</span>
           </h1>
+          <p className="text-[10px] text-oat-milk/40 mt-1 uppercase tracking-widest">Admin Panel</p>
         </div>
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+
+        {/* Nav */}
+        <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => {
             const isActive =
               item.href === "/admin"
@@ -73,22 +77,26 @@ export default function AdminSidebar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                   isActive
-                    ? "bg-[#25f459]/10 text-[#25f459]"
-                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+                    ? "bg-primary/15 text-primary shadow-sm shadow-primary/5"
+                    : "text-oat-milk/60 hover:bg-white/5 hover:text-oat-milk"
                 }`}
               >
-                <span className="material-symbols-outlined text-xl">{item.icon}</span>
+                <span className={`material-symbols-outlined text-xl ${isActive ? "text-primary" : ""}`}>
+                  {item.icon}
+                </span>
                 {item.label}
               </Link>
             );
           })}
         </nav>
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800">
+
+        {/* Footer */}
+        <div className="p-3 border-t border-white/5">
           <Link
-            href="/"
-            className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
+            href="/home"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-oat-milk/40 hover:bg-white/5 hover:text-oat-milk transition-all"
           >
             <span className="material-symbols-outlined text-xl">arrow_back</span>
             العودة للتطبيق

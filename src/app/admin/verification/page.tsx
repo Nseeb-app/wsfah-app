@@ -41,32 +41,32 @@ export default function AdminVerificationPage() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">توثيق العلامات التجارية</h2>
+      <h2 className="text-2xl font-bold text-espresso dark:text-oat-milk mb-6">توثيق العلامات التجارية</h2>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
+        <p className="text-espresso/40 dark:text-oat-milk/40">جاري التحميل...</p>
       ) : applications.length === 0 ? (
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 text-center">
-          <p className="text-gray-500 dark:text-gray-400">لا توجد طلبات توثيق معلقة.</p>
+        <div className="bg-white dark:bg-[#1a2420] border border-espresso/5 dark:border-white/5 rounded-2xl p-8 text-center">
+          <p className="text-espresso/40 dark:text-oat-milk/40">لا توجد طلبات توثيق معلقة.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {applications.map((app) => (
             <div
               key={app.id}
-              className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6"
+              className="bg-white dark:bg-[#1a2420] border border-espresso/5 dark:border-white/5 rounded-2xl p-6"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h3 className="text-lg font-semibold text-espresso dark:text-oat-milk">
                     {app.company.name}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="text-sm text-espresso/60 dark:text-oat-milk/60 mt-1">
                     مقدم الطلب: {app.applicant?.name || app.applicant?.email || "غير معروف"}
                   </p>
                   {app.documents && (
                     <div className="mt-2">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">المستندات:</p>
+                      <p className="text-xs text-espresso/40 dark:text-oat-milk/40 mb-1">المستندات:</p>
                       <div className="flex flex-wrap gap-2">
                         {JSON.parse(app.documents).map((url: string, i: number) => (
                           <a
@@ -82,7 +82,7 @@ export default function AdminVerificationPage() {
                       </div>
                     </div>
                   )}
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                  <p className="text-xs text-espresso/30 dark:text-oat-milk/30 mt-2">
                     تاريخ التقديم: {new Date(app.createdAt).toLocaleDateString()}
                   </p>
                 </div>

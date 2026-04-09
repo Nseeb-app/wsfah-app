@@ -70,7 +70,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
           className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
             mode === "upload"
               ? "bg-[#25f459]/20 text-[#25f459] border border-[#25f459]/30"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-transparent"
+              : "bg-espresso/5 dark:bg-white/5 text-espresso/40 dark:text-oat-milk/40 border border-transparent"
           }`}
         >
           رفع
@@ -81,7 +81,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
           className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
             mode === "url"
               ? "bg-[#25f459]/20 text-[#25f459] border border-[#25f459]/30"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-transparent"
+              : "bg-espresso/5 dark:bg-white/5 text-espresso/40 dark:text-oat-milk/40 border border-transparent"
           }`}
         >
           رابط
@@ -101,7 +101,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
-            className="w-full px-4 py-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 text-sm hover:border-[#25f459]/50 hover:bg-[#25f459]/5 transition-colors disabled:opacity-50"
+            className="w-full px-4 py-3 rounded-lg border-2 border-dashed border-espresso/10 dark:border-white/10 bg-gray-50 dark:bg-gray-800/50 text-espresso/40 dark:text-oat-milk/40 text-sm hover:border-[#25f459]/50 hover:bg-[#25f459]/5 transition-colors disabled:opacity-50"
           >
             {uploading ? "جاري الرفع..." : value ? "تغيير الصورة" : "اضغط لرفع صورة"}
           </button>
@@ -111,7 +111,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
+          className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk text-sm focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
           placeholder="https://example.com/image.jpg"
         />
       )}
@@ -121,7 +121,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
           <img
             src={value}
             alt="معاينة"
-            className="w-full max-w-[200px] h-auto rounded-lg border border-gray-200 dark:border-gray-700"
+            className="w-full max-w-[200px] h-auto rounded-lg border border-espresso/5 dark:border-white/5"
           />
           <button
             type="button"
@@ -340,8 +340,8 @@ export default function AdminRecipesPage() {
   }
 
   const inputClass =
-    "w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none";
-  const labelClass = "block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1";
+    "w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk text-sm focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none";
+  const labelClass = "block text-xs font-medium text-espresso/60 dark:text-oat-milk/60 mb-1";
 
   function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
     return (
@@ -367,7 +367,7 @@ export default function AdminRecipesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">الوصفات</h2>
+        <h2 className="text-2xl font-bold text-espresso dark:text-oat-milk">الوصفات</h2>
         <button
           onClick={() => {
             resetForm();
@@ -381,8 +381,8 @@ export default function AdminRecipesPage() {
 
       {/* Create / Edit Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 mb-6 space-y-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-[#1a2420] border border-espresso/5 dark:border-white/5 rounded-2xl p-6 mb-6 space-y-6">
+          <h3 className="text-lg font-semibold text-espresso dark:text-oat-milk">
             {editingId ? "تعديل الوصفة" : "إنشاء وصفة جديدة"}
           </h3>
 
@@ -469,7 +469,7 @@ export default function AdminRecipesPage() {
               <select
                 value={form.accessTier}
                 onChange={(e) => setForm({ ...form, accessTier: e.target.value })}
-                className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                className="px-3 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk text-sm"
               >
                 <option value="FREE">مجاني (جميع المستخدمين)</option>
                 <option value="BASIC">الخطة الأساسية</option>
@@ -481,7 +481,7 @@ export default function AdminRecipesPage() {
 
           {/* Brewing Parameters */}
           <div>
-            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">معايير التحضير</h4>
+            <h4 className="text-sm font-semibold text-espresso dark:text-oat-milk mb-3">معايير التحضير</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div>
                 <label className={labelClass}>درجة الحرارة</label>
@@ -528,7 +528,7 @@ export default function AdminRecipesPage() {
           {/* Ingredients */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">المكونات</h4>
+              <h4 className="text-sm font-semibold text-espresso dark:text-oat-milk">المكونات</h4>
               <button
                 type="button"
                 onClick={() => setIngredients([...ingredients, { name: "", baseAmount: 0, unit: "g" }])}
@@ -539,9 +539,9 @@ export default function AdminRecipesPage() {
             </div>
             <div className="space-y-3">
               {ingredients.map((ing, i) => (
-                <div key={i} className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
+                <div key={i} className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 border border-espresso/5 dark:border-white/5">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-gray-400 dark:text-gray-500">#{i + 1}</span>
+                    <span className="text-xs font-bold text-espresso/30 dark:text-oat-milk/30">#{i + 1}</span>
                     {ingredients.length > 1 && (
                       <button
                         type="button"
@@ -597,7 +597,7 @@ export default function AdminRecipesPage() {
           {/* Steps */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">الخطوات</h4>
+              <h4 className="text-sm font-semibold text-espresso dark:text-oat-milk">الخطوات</h4>
               <button
                 type="button"
                 onClick={() => setSteps([...steps, { title: "", description: "" }])}
@@ -609,7 +609,7 @@ export default function AdminRecipesPage() {
             <div className="space-y-3">
               {steps.map((step, i) => (
                 <div key={i} className="flex gap-2">
-                  <span className="text-xs font-bold text-gray-400 dark:text-gray-500 pt-2 w-6 shrink-0">
+                  <span className="text-xs font-bold text-espresso/30 dark:text-oat-milk/30 pt-2 w-6 shrink-0">
                     {i + 1}.
                   </span>
                   <div className="flex-1 space-y-1">
@@ -676,30 +676,30 @@ export default function AdminRecipesPage() {
           placeholder="البحث عن وصفات..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-md px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
+          className="w-full max-w-md px-4 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
         />
       </div>
 
       {/* Recipe Table */}
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">جاري التحميل...</p>
+        <p className="text-espresso/40 dark:text-oat-milk/40">جاري التحميل...</p>
       ) : recipes.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">لا توجد وصفات.</p>
+        <p className="text-espresso/40 dark:text-oat-milk/40">لا توجد وصفات.</p>
       ) : (
         <>
         {/* Mobile: Card layout */}
         <div className="lg:hidden space-y-3">
           {recipes.map((recipe) => (
-            <div key={recipe.id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 space-y-3">
+            <div key={recipe.id} className="bg-white dark:bg-[#1a2420] border border-espresso/5 dark:border-white/5 rounded-2xl p-4 space-y-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="font-bold text-sm text-gray-900 dark:text-white truncate">{recipe.title}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{recipe.author?.name || "—"} · {recipe.category}</p>
+                  <p className="font-bold text-sm text-espresso dark:text-oat-milk truncate">{recipe.title}</p>
+                  <p className="text-xs text-espresso/40 dark:text-oat-milk/40">{recipe.author?.name || "—"} · {recipe.category}</p>
                 </div>
                 <select
                   value={recipe.accessTier}
                   onChange={(e) => updateAccessTier(recipe.id, e.target.value)}
-                  className="shrink-0 px-2 py-1 rounded text-[10px] font-bold border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="shrink-0 px-2 py-1 rounded text-[10px] font-bold border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk"
                 >
                   <option value="FREE">مجاني</option>
                   <option value="BASIC">أساسي</option>
@@ -708,7 +708,7 @@ export default function AdminRecipesPage() {
                 </select>
               </div>
               <div className="flex flex-wrap items-center gap-3">
-                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <label className="flex items-center gap-2 text-xs text-espresso/60 dark:text-oat-milk/60">
                   <button
                     onClick={() => toggleField(recipe.id, "isFeatured", !recipe.isFeatured)}
                     className={`w-9 h-5 rounded-full relative transition-colors ${recipe.isFeatured ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"}`}
@@ -717,7 +717,7 @@ export default function AdminRecipesPage() {
                   </button>
                   مميزة
                 </label>
-                <label className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <label className="flex items-center gap-2 text-xs text-espresso/60 dark:text-oat-milk/60">
                   <button
                     onClick={() => toggleField(recipe.id, "isVerified", !recipe.isVerified)}
                     className={`w-9 h-5 rounded-full relative transition-colors ${recipe.isVerified ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"}`}
@@ -736,25 +736,25 @@ export default function AdminRecipesPage() {
         </div>
 
         {/* Desktop: Table layout */}
-        <div className="hidden lg:block overflow-x-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+        <div className="hidden lg:block overflow-x-auto bg-white dark:bg-[#1a2420] border border-espresso/5 dark:border-white/5 rounded-2xl">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">العنوان</th>
-                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">المؤلف</th>
-                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">القسم</th>
-                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">مميزة</th>
-                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">موثقة</th>
-                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">المستوى</th>
-                <th className="text-right p-4 text-gray-500 dark:text-gray-400 font-medium">إجراءات</th>
+              <tr className="border-b border-espresso/5 dark:border-white/5">
+                <th className="text-right p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">العنوان</th>
+                <th className="text-right p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">المؤلف</th>
+                <th className="text-right p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">القسم</th>
+                <th className="text-right p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">مميزة</th>
+                <th className="text-right p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">موثقة</th>
+                <th className="text-right p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">المستوى</th>
+                <th className="text-right p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
               {recipes.map((recipe) => (
-                <tr key={recipe.id} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
-                  <td className="p-4 text-gray-900 dark:text-white font-medium">{recipe.title}</td>
-                  <td className="p-4 text-gray-600 dark:text-gray-400">{recipe.author?.name || "—"}</td>
-                  <td className="p-4 text-gray-600 dark:text-gray-400">{recipe.category}</td>
+                <tr key={recipe.id} className="border-b border-espresso/5 dark:border-white/5 last:border-0">
+                  <td className="p-4 text-espresso dark:text-oat-milk font-medium">{recipe.title}</td>
+                  <td className="p-4 text-espresso/60 dark:text-oat-milk/60">{recipe.author?.name || "—"}</td>
+                  <td className="p-4 text-espresso/60 dark:text-oat-milk/60">{recipe.category}</td>
                   <td className="p-4">
                     <button onClick={() => toggleField(recipe.id, "isFeatured", !recipe.isFeatured)}
                       className={`w-10 h-5 rounded-full relative transition-colors ${recipe.isFeatured ? "bg-[#25f459]" : "bg-gray-300 dark:bg-gray-700"}`}>
@@ -769,7 +769,7 @@ export default function AdminRecipesPage() {
                   </td>
                   <td className="p-4">
                     <select value={recipe.accessTier} onChange={(e) => updateAccessTier(recipe.id, e.target.value)}
-                      className="px-2 py-1 rounded text-xs font-medium border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                      className="px-2 py-1 rounded text-xs font-medium border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk">
                       <option value="FREE">مجاني</option>
                       <option value="BASIC">أساسي</option>
                       <option value="PREMIUM">مميز</option>

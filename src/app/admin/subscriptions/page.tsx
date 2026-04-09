@@ -228,15 +228,15 @@ export default function AdminSubscriptionsPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">الخطط والأسعار</h1>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">إدارة خطط الاشتراك وأسعار الترويج</p>
+      <h1 className="text-2xl font-bold text-espresso dark:text-oat-milk mb-2">الخطط والأسعار</h1>
+      <p className="text-sm text-espresso/40 dark:text-oat-milk/40 mb-6">إدارة خطط الاشتراك وأسعار الترويج</p>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl mb-6">
+      <div className="flex flex-wrap gap-1 bg-espresso/5 dark:bg-white/5 p-1 rounded-2xl mb-6">
         <button
           onClick={() => setTab("subscribers")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-            tab === "subscribers" ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 dark:text-gray-400"
+            tab === "subscribers" ? "bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk shadow-sm" : "text-espresso/40 dark:text-oat-milk/40"
           }`}
         >
           المشتركين ({subscribers.filter(u => u.subscriptionTier !== "free").length})
@@ -244,7 +244,7 @@ export default function AdminSubscriptionsPage() {
         <button
           onClick={() => setTab("plans")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-            tab === "plans" ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 dark:text-gray-400"
+            tab === "plans" ? "bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk shadow-sm" : "text-espresso/40 dark:text-oat-milk/40"
           }`}
         >
           خطط الاشتراك ({plans.length})
@@ -252,7 +252,7 @@ export default function AdminSubscriptionsPage() {
         <button
           onClick={() => setTab("promos")}
           className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-            tab === "promos" ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 dark:text-gray-400"
+            tab === "promos" ? "bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk shadow-sm" : "text-espresso/40 dark:text-oat-milk/40"
           }`}
         >
           أسعار الترويج ({promos.length})
@@ -269,12 +269,12 @@ export default function AdminSubscriptionsPage() {
               value={subSearch}
               onChange={(e) => setSubSearch(e.target.value)}
               placeholder="بحث بالاسم أو البريد..."
-              className="flex-1 min-w-[200px] px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+              className="flex-1 min-w-[200px] px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
             />
             <select
               value={subFilter}
               onChange={(e) => setSubFilter(e.target.value)}
-              className="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+              className="px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
             >
               <option value="">جميع المستويات</option>
               <option value="free">مجاني</option>
@@ -289,12 +289,12 @@ export default function AdminSubscriptionsPage() {
               const isExpired = u.subscriptionExpiresAt && new Date(u.subscriptionExpiresAt) < new Date();
               const isOnTrial = u.trialEndsAt && new Date(u.trialEndsAt) > new Date();
               return (
-                <div key={u.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-3">
+                <div key={u.id} className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-4 space-y-3">
                   {/* Row 1: Name + tier badge */}
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="font-bold text-sm text-gray-900 dark:text-white truncate">{u.name || "—"}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{u.email}</p>
+                      <p className="font-bold text-sm text-espresso dark:text-oat-milk truncate">{u.name || "—"}</p>
+                      <p className="text-xs text-espresso/40 dark:text-oat-milk/40 truncate">{u.email}</p>
                     </div>
                     <span className={`shrink-0 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${
                       u.subscriptionTier === "pro"
@@ -308,7 +308,7 @@ export default function AdminSubscriptionsPage() {
                   </div>
 
                   {/* Row 2: Dates */}
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-espresso/40 dark:text-oat-milk/40">
                     <span>بداية: {u.subscriptionStartsAt ? new Date(u.subscriptionStartsAt).toLocaleDateString("ar-SA") : "—"}</span>
                     <span>
                       نهاية: {u.subscriptionExpiresAt ? (
@@ -328,7 +328,7 @@ export default function AdminSubscriptionsPage() {
                       value={u.subscriptionTier}
                       onChange={(e) => updateUserTier(u.id, e.target.value)}
                       disabled={updatingUser === u.id}
-                      className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm disabled:opacity-50"
+                      className="px-3 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm disabled:opacity-50"
                     >
                       <option value="free">مجاني</option>
                       <option value="pro">احترافي</option>
@@ -340,7 +340,7 @@ export default function AdminSubscriptionsPage() {
                           type="number"
                           value={extendDays}
                           onChange={(e) => setExtendDays(e.target.value)}
-                          className="w-14 px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-center"
+                          className="w-14 px-2 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-center"
                           placeholder="30"
                           min="1"
                         />
@@ -368,7 +368,7 @@ export default function AdminSubscriptionsPage() {
               );
             })}
             {subscribers.length === 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
+              <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-12 text-center">
                 <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">group</span>
                 <p className="text-gray-500 font-medium">لا يوجد مشتركين</p>
               </div>
@@ -378,13 +378,13 @@ export default function AdminSubscriptionsPage() {
           {/* Companies with subscriptions */}
           {subCompanies.length > 0 && (
             <div>
-              <h3 className="font-bold text-sm text-gray-900 dark:text-white mb-3">اشتراكات العلامات التجارية</h3>
+              <h3 className="font-bold text-sm text-espresso dark:text-oat-milk mb-3">اشتراكات العلامات التجارية</h3>
               <div className="space-y-3">
                 {subCompanies.map((c) => (
-                  <div key={c.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 flex flex-wrap items-center justify-between gap-3">
+                  <div key={c.id} className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-4 flex flex-wrap items-center justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="font-bold text-sm text-gray-900 dark:text-white">{c.name}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{c.owner?.email}</p>
+                      <p className="font-bold text-sm text-espresso dark:text-oat-milk">{c.name}</p>
+                      <p className="text-xs text-espresso/40 dark:text-oat-milk/40 truncate">{c.owner?.email}</p>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
@@ -406,7 +406,7 @@ export default function AdminSubscriptionsPage() {
       {tab === "plans" && (
         <>
           {/* Form */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
+          <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-6 mb-6">
             <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
               <span className="material-symbols-outlined text-green-500">{editingPlanId ? "edit" : "add_circle"}</span>
               {editingPlanId ? "تعديل الخطة" : "إنشاء خطة"}
@@ -419,7 +419,7 @@ export default function AdminSubscriptionsPage() {
                   value={planForm.name}
                   onChange={(e) => setPlanForm({ ...planForm, name: e.target.value, slug: planForm.slug || e.target.value.toLowerCase().replace(/\s+/g, "-") })}
                   placeholder="مثال: مميز"
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                 />
               </div>
               <div>
@@ -429,7 +429,7 @@ export default function AdminSubscriptionsPage() {
                   value={planForm.slug}
                   onChange={(e) => setPlanForm({ ...planForm, slug: e.target.value })}
                   placeholder="premium"
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                 />
               </div>
               <div>
@@ -441,12 +441,12 @@ export default function AdminSubscriptionsPage() {
                     value={planForm.price}
                     onChange={(e) => setPlanForm({ ...planForm, price: e.target.value })}
                     placeholder="9.99"
-                    className="flex-1 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                    className="flex-1 px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                   />
                   <select
                     value={planForm.currency}
                     onChange={(e) => setPlanForm({ ...planForm, currency: e.target.value })}
-                    className="px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                    className="px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                   >
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
@@ -461,7 +461,7 @@ export default function AdminSubscriptionsPage() {
                 <select
                   value={planForm.interval}
                   onChange={(e) => setPlanForm({ ...planForm, interval: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                 >
                   <option value="monthly">شهري</option>
                   <option value="yearly">سنوي</option>
@@ -474,7 +474,7 @@ export default function AdminSubscriptionsPage() {
                   value={planForm.description}
                   onChange={(e) => setPlanForm({ ...planForm, description: e.target.value })}
                   placeholder="الأفضل لعشاق القهوة المتحمسين"
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                 />
               </div>
               <div className="sm:col-span-2 lg:col-span-3">
@@ -484,7 +484,7 @@ export default function AdminSubscriptionsPage() {
                   onChange={(e) => setPlanForm({ ...planForm, features: e.target.value })}
                   placeholder={"وصفات غير محدودة\nتجربة بدون إعلانات\nدعم أولوية"}
                   rows={3}
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm resize-none"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm resize-none"
                 />
               </div>
             </div>
@@ -500,7 +500,7 @@ export default function AdminSubscriptionsPage() {
               {editingPlanId && (
                 <button
                   onClick={() => { setEditingPlanId(null); setPlanForm(emptyPlan); }}
-                  className="px-5 py-2.5 bg-gray-100 dark:bg-gray-700 rounded-lg font-semibold text-sm"
+                  className="px-5 py-2.5 bg-espresso/5 dark:bg-white/5 rounded-lg font-semibold text-sm"
                 >
                   إلغاء
                 </button>
@@ -510,7 +510,7 @@ export default function AdminSubscriptionsPage() {
 
           {/* Plans List */}
           {plans.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
+            <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-12 text-center">
               <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">credit_card</span>
               <p className="text-gray-500 font-medium">لا توجد خطط اشتراك بعد</p>
               <p className="text-sm text-gray-400 mt-1">أنشئ أول خطة أعلاه</p>
@@ -518,12 +518,12 @@ export default function AdminSubscriptionsPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {plans.map((p) => (
-                <div key={p.id} className={`bg-white dark:bg-gray-800 rounded-xl border-2 overflow-hidden transition-all ${
-                  p.isActive ? "border-green-200 dark:border-green-800" : "border-gray-200 dark:border-gray-700 opacity-60"
+                <div key={p.id} className={`bg-white dark:bg-[#1a2420] rounded-2xl border-2 overflow-hidden transition-all ${
+                  p.isActive ? "border-green-200 dark:border-green-800" : "border-espresso/5 dark:border-white/5 opacity-60"
                 }`}>
                   <div className="p-5">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-bold text-lg text-gray-900 dark:text-white">{p.name}</h3>
+                      <h3 className="font-bold text-lg text-espresso dark:text-oat-milk">{p.name}</h3>
                       <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
                         p.isActive ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" : "bg-gray-100 text-gray-500"
                       }`}>
@@ -531,13 +531,13 @@ export default function AdminSubscriptionsPage() {
                       </span>
                     </div>
                     <div className="flex items-baseline gap-1 mb-3">
-                      <span className="text-3xl font-extrabold text-gray-900 dark:text-white">
+                      <span className="text-3xl font-extrabold text-espresso dark:text-oat-milk">
                         {p.currency === "USD" ? "$" : p.currency === "EUR" ? "€" : p.currency === "GBP" ? "£" : ""}{p.price}
                       </span>
                       <span className="text-sm text-gray-400">/{p.interval === "yearly" ? "سنة" : "شهر"}</span>
                     </div>
                     {p.description && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">{p.description}</p>
+                      <p className="text-sm text-espresso/40 dark:text-oat-milk/40 mb-3">{p.description}</p>
                     )}
                     {p.features && (
                       <ul className="space-y-1.5 mb-4">
@@ -551,11 +551,11 @@ export default function AdminSubscriptionsPage() {
                     )}
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider">المعرّف: {p.slug}</p>
                   </div>
-                  <div className="flex border-t border-gray-100 dark:border-gray-700">
+                  <div className="flex border-t border-espresso/5 dark:border-white/5">
                     <button onClick={() => editPlan(p)} className="flex-1 py-3 text-sm font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 flex items-center justify-center gap-1">
                       <span className="material-symbols-outlined text-base">edit</span>تعديل
                     </button>
-                    <button onClick={() => togglePlan(p)} className="flex-1 py-3 text-sm font-medium text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20 flex items-center justify-center gap-1 border-x border-gray-100 dark:border-gray-700">
+                    <button onClick={() => togglePlan(p)} className="flex-1 py-3 text-sm font-medium text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20 flex items-center justify-center gap-1 border-x border-espresso/5 dark:border-white/5">
                       <span className="material-symbols-outlined text-base">{p.isActive ? "visibility_off" : "visibility"}</span>
                       {p.isActive ? "تعطيل" : "تفعيل"}
                     </button>
@@ -574,7 +574,7 @@ export default function AdminSubscriptionsPage() {
       {tab === "promos" && (
         <>
           {/* Form */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
+          <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-6 mb-6">
             <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
               <span className="material-symbols-outlined text-amber-500">{editingPromoId ? "edit" : "add_circle"}</span>
               {editingPromoId ? "تعديل التسعير" : "إنشاء تسعير ترويج"}
@@ -587,7 +587,7 @@ export default function AdminSubscriptionsPage() {
                   value={promoForm.name}
                   onChange={(e) => setPromoForm({ ...promoForm, name: e.target.value })}
                   placeholder="مثال: الرئيسية - أسبوع واحد"
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                 />
               </div>
               <div>
@@ -595,7 +595,7 @@ export default function AdminSubscriptionsPage() {
                 <select
                   value={promoForm.placement}
                   onChange={(e) => setPromoForm({ ...promoForm, placement: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                 >
                   <option value="HOME_TOP">الصفحة الرئيسية</option>
                   <option value="EXPLORE_TOP">صفحة الاستكشاف</option>
@@ -609,7 +609,7 @@ export default function AdminSubscriptionsPage() {
                   value={promoForm.duration}
                   onChange={(e) => setPromoForm({ ...promoForm, duration: e.target.value })}
                   placeholder="7"
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                 />
               </div>
               <div>
@@ -621,12 +621,12 @@ export default function AdminSubscriptionsPage() {
                     value={promoForm.price}
                     onChange={(e) => setPromoForm({ ...promoForm, price: e.target.value })}
                     placeholder="49.99"
-                    className="flex-1 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                    className="flex-1 px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                   />
                   <select
                     value={promoForm.currency}
                     onChange={(e) => setPromoForm({ ...promoForm, currency: e.target.value })}
-                    className="px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                    className="px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                   >
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
@@ -645,7 +645,7 @@ export default function AdminSubscriptionsPage() {
                   value={promoForm.discount}
                   onChange={(e) => setPromoForm({ ...promoForm, discount: e.target.value })}
                   placeholder="0"
-                  className="w-full px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
                 />
               </div>
             </div>
@@ -661,7 +661,7 @@ export default function AdminSubscriptionsPage() {
               {editingPromoId && (
                 <button
                   onClick={() => { setEditingPromoId(null); setPromoForm(emptyPromo); }}
-                  className="px-5 py-2.5 bg-gray-100 dark:bg-gray-700 rounded-lg font-semibold text-sm"
+                  className="px-5 py-2.5 bg-espresso/5 dark:bg-white/5 rounded-lg font-semibold text-sm"
                 >
                   إلغاء
                 </button>
@@ -671,16 +671,16 @@ export default function AdminSubscriptionsPage() {
 
           {/* Pricing List */}
           {promos.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
+            <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 p-12 text-center">
               <span className="material-symbols-outlined text-5xl text-gray-300 dark:text-gray-600 mb-3 block">sell</span>
               <p className="text-gray-500 font-medium">لا توجد أسعار ترويج بعد</p>
               <p className="text-sm text-gray-400 mt-1">أنشئ باقات تسعير للمحامص</p>
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden overflow-x-auto">
+            <div className="bg-white dark:bg-[#1a2420] rounded-2xl border border-espresso/5 dark:border-white/5 overflow-hidden overflow-x-auto">
               <table className="w-full min-w-[600px]">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700 text-left">
+                  <tr className="border-b border-espresso/5 dark:border-white/5 text-left">
                     <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">الباقة</th>
                     <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">الموضع</th>
                     <th className="px-5 py-3 text-xs font-bold text-gray-500 uppercase">المدة</th>
@@ -694,11 +694,11 @@ export default function AdminSubscriptionsPage() {
                   {promos.map((p) => {
                     const final = p.price * (1 - p.discount / 100);
                     return (
-                      <tr key={p.id} className={`hover:bg-gray-50 dark:hover:bg-gray-750 ${!p.isActive ? "opacity-50" : ""}`}>
-                        <td className="px-5 py-4 text-sm font-semibold text-gray-900 dark:text-white">{p.name}</td>
-                        <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">{placementLabels[p.placement]}</td>
-                        <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">{p.duration} يوم</td>
-                        <td className="px-5 py-4 text-sm text-gray-600 dark:text-gray-400">${p.price.toFixed(2)}</td>
+                      <tr key={p.id} className={`hover:bg-espresso/[0.02] dark:hover:bg-white/[0.02] ${!p.isActive ? "opacity-50" : ""}`}>
+                        <td className="px-5 py-4 text-sm font-semibold text-espresso dark:text-oat-milk">{p.name}</td>
+                        <td className="px-5 py-4 text-sm text-espresso/60 dark:text-oat-milk/60">{placementLabels[p.placement]}</td>
+                        <td className="px-5 py-4 text-sm text-espresso/60 dark:text-oat-milk/60">{p.duration} يوم</td>
+                        <td className="px-5 py-4 text-sm text-espresso/60 dark:text-oat-milk/60">${p.price.toFixed(2)}</td>
                         <td className="px-5 py-4">
                           {p.discount > 0 ? (
                             <span className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 text-xs font-bold px-2 py-0.5 rounded-full">
