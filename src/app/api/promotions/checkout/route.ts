@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       name: `ترويج ${company.name} - ${pricing.name}`,
       description: `${pricing.name} (${pricing.duration} يوم)`,
       items: [{
-        product_id: process.env.STREAM_PRODUCT_USER_PRO || "",
+        product_id: process.env.STREAM_PRODUCT_PROMOTION || "",
         quantity: 1,
       }],
       success_redirect_url: `${origin}/pricing?status=success&type=promotion`,
