@@ -269,12 +269,12 @@ export default function AdminSubscriptionsPage() {
               value={subSearch}
               onChange={(e) => setSubSearch(e.target.value)}
               placeholder="بحث بالاسم أو البريد..."
-              className="flex-1 min-w-[200px] px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+              className="flex-1 min-w-[200px] px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
             />
             <select
               value={subFilter}
               onChange={(e) => setSubFilter(e.target.value)}
-              className="px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+              className="px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
             >
               <option value="">جميع المستويات</option>
               <option value="free">مجاني</option>
@@ -328,7 +328,7 @@ export default function AdminSubscriptionsPage() {
                       value={u.subscriptionTier}
                       onChange={(e) => updateUserTier(u.id, e.target.value)}
                       disabled={updatingUser === u.id}
-                      className="px-3 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm disabled:opacity-50"
+                      className="px-3 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm disabled:opacity-50"
                     >
                       <option value="free">مجاني</option>
                       <option value="pro">احترافي</option>
@@ -340,7 +340,7 @@ export default function AdminSubscriptionsPage() {
                           type="number"
                           value={extendDays}
                           onChange={(e) => setExtendDays(e.target.value)}
-                          className="w-14 px-2 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-center"
+                          className="w-14 px-2 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-center"
                           placeholder="30"
                           min="1"
                         />
@@ -419,7 +419,7 @@ export default function AdminSubscriptionsPage() {
                   value={planForm.name}
                   onChange={(e) => setPlanForm({ ...planForm, name: e.target.value, slug: planForm.slug || e.target.value.toLowerCase().replace(/\s+/g, "-") })}
                   placeholder="مثال: مميز"
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                 />
               </div>
               <div>
@@ -429,7 +429,7 @@ export default function AdminSubscriptionsPage() {
                   value={planForm.slug}
                   onChange={(e) => setPlanForm({ ...planForm, slug: e.target.value })}
                   placeholder="premium"
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                 />
               </div>
               <div>
@@ -441,12 +441,12 @@ export default function AdminSubscriptionsPage() {
                     value={planForm.price}
                     onChange={(e) => setPlanForm({ ...planForm, price: e.target.value })}
                     placeholder="9.99"
-                    className="flex-1 px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                    className="flex-1 px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                   />
                   <select
                     value={planForm.currency}
                     onChange={(e) => setPlanForm({ ...planForm, currency: e.target.value })}
-                    className="px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                    className="px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                   >
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
@@ -461,7 +461,7 @@ export default function AdminSubscriptionsPage() {
                 <select
                   value={planForm.interval}
                   onChange={(e) => setPlanForm({ ...planForm, interval: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                 >
                   <option value="monthly">شهري</option>
                   <option value="yearly">سنوي</option>
@@ -474,7 +474,7 @@ export default function AdminSubscriptionsPage() {
                   value={planForm.description}
                   onChange={(e) => setPlanForm({ ...planForm, description: e.target.value })}
                   placeholder="الأفضل لعشاق القهوة المتحمسين"
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                 />
               </div>
               <div className="sm:col-span-2 lg:col-span-3">
@@ -484,7 +484,7 @@ export default function AdminSubscriptionsPage() {
                   onChange={(e) => setPlanForm({ ...planForm, features: e.target.value })}
                   placeholder={"وصفات غير محدودة\nتجربة بدون إعلانات\nدعم أولوية"}
                   rows={3}
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm resize-none"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm resize-none"
                 />
               </div>
             </div>
@@ -587,7 +587,7 @@ export default function AdminSubscriptionsPage() {
                   value={promoForm.name}
                   onChange={(e) => setPromoForm({ ...promoForm, name: e.target.value })}
                   placeholder="مثال: الرئيسية - أسبوع واحد"
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                 />
               </div>
               <div>
@@ -595,7 +595,7 @@ export default function AdminSubscriptionsPage() {
                 <select
                   value={promoForm.placement}
                   onChange={(e) => setPromoForm({ ...promoForm, placement: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                 >
                   <option value="HOME_TOP">الصفحة الرئيسية</option>
                   <option value="EXPLORE_TOP">صفحة الاستكشاف</option>
@@ -609,7 +609,7 @@ export default function AdminSubscriptionsPage() {
                   value={promoForm.duration}
                   onChange={(e) => setPromoForm({ ...promoForm, duration: e.target.value })}
                   placeholder="7"
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                 />
               </div>
               <div>
@@ -621,12 +621,12 @@ export default function AdminSubscriptionsPage() {
                     value={promoForm.price}
                     onChange={(e) => setPromoForm({ ...promoForm, price: e.target.value })}
                     placeholder="49.99"
-                    className="flex-1 px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                    className="flex-1 px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                   />
                   <select
                     value={promoForm.currency}
                     onChange={(e) => setPromoForm({ ...promoForm, currency: e.target.value })}
-                    className="px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                    className="px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                   >
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
@@ -645,7 +645,7 @@ export default function AdminSubscriptionsPage() {
                   value={promoForm.discount}
                   onChange={(e) => setPromoForm({ ...promoForm, discount: e.target.value })}
                   placeholder="0"
-                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                 />
               </div>
             </div>

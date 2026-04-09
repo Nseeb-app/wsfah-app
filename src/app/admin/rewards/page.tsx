@@ -117,23 +117,23 @@ export default function AdminRewardsPage() {
             <div className="p-5 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">العنوان</label>
-                <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
+                <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الفئة</label>
-                  <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk">
+                  <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk">
                     {REWARD_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">تكلفة النقاط</label>
-                  <input type="number" value={form.pointsCost} onChange={(e) => setForm({ ...form, pointsCost: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
+                  <input type="number" value={form.pointsCost} onChange={(e) => setForm({ ...form, pointsCost: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">رابط الصورة (اختياري)</label>
-                <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://..." className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm text-espresso dark:text-oat-milk" />
+                <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://..." className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk" />
               </div>
               <button onClick={handleSubmit} className="w-full py-3 bg-[#25f459] text-black rounded-2xl font-bold text-sm hover:bg-[#20d64e] transition-colors">
                 {editId ? "تحديث المكافأة" : "إنشاء المكافأة"}

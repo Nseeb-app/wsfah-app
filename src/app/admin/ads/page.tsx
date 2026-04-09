@@ -72,7 +72,7 @@ export default function AdminAdsPage() {
               value={adsenseId}
               onChange={(e) => setAdsenseId(e.target.value)}
               placeholder="ca-pub-XXXXXXXXXXXXXXXX"
-              className="w-full px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+              className="w-full px-4 py-2.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
             />
             <p className="text-xs text-[#F2E8DF50] mt-1">
               قم بتعيينه في ملف .env.local باسم NEXT_PUBLIC_ADSENSE_ID

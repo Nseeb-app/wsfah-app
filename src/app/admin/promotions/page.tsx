@@ -224,7 +224,7 @@ export default function AdminPromotionsPage() {
                         type="number"
                         value={editForm.priority}
                         onChange={(e) => setEditForm({ ...editForm, priority: parseInt(e.target.value) || 0 })}
-                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                       />
                     </div>
                     <div>
@@ -234,7 +234,7 @@ export default function AdminPromotionsPage() {
                         value={editForm.adminNotes}
                         onChange={(e) => setEditForm({ ...editForm, adminNotes: e.target.value })}
                         placeholder="ملاحظات داخلية..."
-                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                       />
                     </div>
                     <div>
@@ -243,7 +243,7 @@ export default function AdminPromotionsPage() {
                         type="date"
                         value={editForm.startDate}
                         onChange={(e) => setEditForm({ ...editForm, startDate: e.target.value })}
-                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                       />
                     </div>
                     <div>
@@ -252,7 +252,7 @@ export default function AdminPromotionsPage() {
                         type="date"
                         value={editForm.endDate}
                         onChange={(e) => setEditForm({ ...editForm, endDate: e.target.value })}
-                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-sm"
+                        className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
                       />
                     </div>
                     <div className="sm:col-span-2 flex gap-2">

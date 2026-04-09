@@ -111,7 +111,7 @@ function ImageUpload({ value, onChange }: { value: string; onChange: (url: strin
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk text-sm focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
+          className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none"
           placeholder="https://example.com/image.jpg"
         />
       )}
@@ -340,7 +340,7 @@ export default function AdminRecipesPage() {
   }
 
   const inputClass =
-    "w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk text-sm focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none";
+    "w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm focus:ring-2 focus:ring-[#25f459] focus:border-transparent outline-none";
   const labelClass = "block text-xs font-medium text-espresso/60 dark:text-oat-milk/60 mb-1";
 
   function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
@@ -469,7 +469,7 @@ export default function AdminRecipesPage() {
               <select
                 value={form.accessTier}
                 onChange={(e) => setForm({ ...form, accessTier: e.target.value })}
-                className="px-3 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-white dark:bg-[#1a2420] text-espresso dark:text-oat-milk text-sm"
+                className="px-3 py-1.5 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm"
               >
                 <option value="FREE">مجاني (جميع المستخدمين)</option>
                 <option value="BASIC">الخطة الأساسية</option>
