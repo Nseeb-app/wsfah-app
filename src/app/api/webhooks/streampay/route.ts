@@ -5,15 +5,16 @@ import { prisma } from "@/lib/prisma";
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  // Verify webhook secret
+  // Verify webhook secret (mandatory)
   const webhookSecret = process.env.STREAM_WEBHOOK_SECRET;
-  if (webhookSecret) {
-    const signature =
-      req.headers.get("x-webhook-signature") ||
-      req.headers.get("x-webhook-secret");
-    if (signature !== webhookSecret) {
-      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-    }
+  if (!webhookSecret) {
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 500 });
+  }
+  const signature =
+    req.headers.get("x-webhook-signature") ||
+    req.headers.get("x-webhook-secret");
+  if (signature !== webhookSecret) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
   const event = body.event || body.type;
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
         break;
 
       default:
-        console.log(`Unhandled StreamPay event: ${event}`);
+        // Unhandled event — ignore silently
     }
 
     return NextResponse.json({ received: true });

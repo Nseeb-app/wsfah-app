@@ -52,15 +52,12 @@ export async function POST(req: Request) {
       },
     });
 
-    // In production, send SMS here via Twilio/etc.
-    // For development, log to console and return to client
-    console.log(`\n📱 OTP for ${phone}: ${otp}\n`);
+    // In production, send SMS via Twilio/etc.
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`OTP for ${phone}: ${otp}`);
+    }
 
-    const isDev = process.env.NODE_ENV !== "production";
-    return NextResponse.json({
-      message: "OTP sent successfully",
-      ...(isDev ? { otp_for_testing: otp } : {}),
-    });
+    return NextResponse.json({ message: "OTP sent successfully" });
   } catch (error) {
     console.error("Send OTP error:", error);
     return NextResponse.json(

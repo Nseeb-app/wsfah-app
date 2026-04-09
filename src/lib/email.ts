@@ -8,7 +8,9 @@ const FROM = process.env.EMAIL_FROM || "وصفة <noreply@wsfa.app>";
 
 async function send(to: string, subject: string, html: string) {
   if (!resend) {
-    console.log(`[Email skipped - no RESEND_API_KEY] To: ${to}, Subject: ${subject}`);
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`[Email skipped] To: ${to}, Subject: ${subject}`);
+    }
     return;
   }
 
