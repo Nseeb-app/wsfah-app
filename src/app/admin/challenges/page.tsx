@@ -108,7 +108,7 @@ export default function AdminChallengesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-espresso dark:text-oat-milk">التحديات</h2>
+        <h2 className="text-2xl font-bold text-[#F2E8DF]">التحديات</h2>
         <button
           onClick={() => { resetForm(); setShowForm(true); }}
           className="px-4 py-2 bg-[#25f459] text-black rounded-lg text-sm font-bold hover:bg-[#20d64e] transition-colors flex items-center gap-2"
@@ -121,9 +121,9 @@ export default function AdminChallengesPage() {
       {/* Form Modal */}
       {showForm && (
         <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#1a2420] rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-5 border-b border-espresso/5 dark:border-white/5">
-              <h3 className="text-lg font-bold text-espresso dark:text-oat-milk">
+          <div className="bg-[#1a2420] rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-5 border-b border-[#F2E8DF0d]">
+              <h3 className="text-lg font-bold text-[#F2E8DF]">
                 {editId ? "تعديل التحدي" : "تحدي جديد"}
               </h3>
               <button onClick={resetForm} className="size-10 rounded-full hover:bg-[#ffffff08] flex items-center justify-center">
@@ -133,39 +133,39 @@ export default function AdminChallengesPage() {
             <div className="p-5 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">العنوان</label>
-                <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk" />
+                <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-[#F2E8DF1a] bg-[#1a2420] text-[#F2E8DF] text-sm text-[#F2E8DF]" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الوصف</label>
-                <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk resize-none" />
+                <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full px-3 py-2 rounded-lg border border-[#F2E8DF1a] bg-[#1a2420] text-[#F2E8DF] text-sm text-[#F2E8DF] resize-none" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الأيقونة (Material)</label>
                   <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-2xl text-[#25f459]">{form.icon}</span>
-                    <input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} className="flex-1 px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk" />
+                    <input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} className="flex-1 px-3 py-2 rounded-lg border border-[#F2E8DF1a] bg-[#1a2420] text-[#F2E8DF] text-sm text-[#F2E8DF]" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">نقاط المكافأة</label>
-                  <input type="number" value={form.rewardPoints} onChange={(e) => setForm({ ...form, rewardPoints: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk" />
+                  <input type="number" value={form.rewardPoints} onChange={(e) => setForm({ ...form, rewardPoints: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-[#F2E8DF1a] bg-[#1a2420] text-[#F2E8DF] text-sm text-[#F2E8DF]" />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الحد الأقصى للتقدم</label>
-                  <input type="number" value={form.maxProgress} onChange={(e) => setForm({ ...form, maxProgress: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk" />
+                  <input type="number" value={form.maxProgress} onChange={(e) => setForm({ ...form, maxProgress: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-[#F2E8DF1a] bg-[#1a2420] text-[#F2E8DF] text-sm text-[#F2E8DF]" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الرتبة</label>
-                  <select value={form.rank} onChange={(e) => setForm({ ...form, rank: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk">
+                  <select value={form.rank} onChange={(e) => setForm({ ...form, rank: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-[#F2E8DF1a] bg-[#1a2420] text-[#F2E8DF] text-sm text-[#F2E8DF]">
                     {RANKS.map((r) => <option key={r} value={r}>{r}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#F2E8DFcc] mb-1">الفئة</label>
-                  <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-espresso/10 dark:border-white/10 bg-[#1a2420] text-[#F2E8DF] text-sm text-espresso dark:text-oat-milk">
+                  <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-[#F2E8DF1a] bg-[#1a2420] text-[#F2E8DF] text-sm text-[#F2E8DF]">
                     {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
@@ -180,33 +180,33 @@ export default function AdminChallengesPage() {
 
       {/* Table */}
       {loading ? (
-        <p className="text-espresso/40 dark:text-oat-milk/40">جاري التحميل...</p>
+        <p className="text-[#F2E8DF66]">جاري التحميل...</p>
       ) : challenges.length === 0 ? (
-        <p className="text-espresso/40 dark:text-oat-milk/40">لا توجد تحديات بعد.</p>
+        <p className="text-[#F2E8DF66]">لا توجد تحديات بعد.</p>
       ) : (
-        <div className="overflow-x-auto bg-white dark:bg-[#1a2420] border border-espresso/5 dark:border-white/5 rounded-2xl">
+        <div className="overflow-x-auto bg-[#1a2420] border border-[#F2E8DF0d] rounded-2xl">
           <table className="w-full text-sm min-w-[600px]">
             <thead>
-              <tr className="border-b border-espresso/5 dark:border-white/5">
-                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">التحدي</th>
-                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">الرتبة</th>
-                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">الفئة</th>
-                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">النقاط</th>
-                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">التقدم</th>
-                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">المشاركون</th>
-                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">الحالة</th>
-                <th className="text-left p-4 text-espresso/40 dark:text-oat-milk/40 font-medium">إجراءات</th>
+              <tr className="border-b border-[#F2E8DF0d]">
+                <th className="text-left p-4 text-[#F2E8DF66] font-medium">التحدي</th>
+                <th className="text-left p-4 text-[#F2E8DF66] font-medium">الرتبة</th>
+                <th className="text-left p-4 text-[#F2E8DF66] font-medium">الفئة</th>
+                <th className="text-left p-4 text-[#F2E8DF66] font-medium">النقاط</th>
+                <th className="text-left p-4 text-[#F2E8DF66] font-medium">التقدم</th>
+                <th className="text-left p-4 text-[#F2E8DF66] font-medium">المشاركون</th>
+                <th className="text-left p-4 text-[#F2E8DF66] font-medium">الحالة</th>
+                <th className="text-left p-4 text-[#F2E8DF66] font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
               {challenges.map((c) => (
-                <tr key={c.id} className="border-b border-espresso/5 dark:border-white/5 last:border-0">
+                <tr key={c.id} className="border-b border-[#F2E8DF0d] last:border-0">
                   <td className="p-4">
                     <div className="flex items-center gap-3">
                       <span className="material-symbols-outlined text-xl text-[#25f459]">{c.icon}</span>
                       <div>
-                        <p className="font-medium text-espresso dark:text-oat-milk">{c.title}</p>
-                        <p className="text-xs text-espresso/40 dark:text-oat-milk/40 max-w-[200px] truncate">{c.description}</p>
+                        <p className="font-medium text-[#F2E8DF]">{c.title}</p>
+                        <p className="text-xs text-[#F2E8DF66] max-w-[200px] truncate">{c.description}</p>
                       </div>
                     </div>
                   </td>
@@ -215,10 +215,10 @@ export default function AdminChallengesPage() {
                       {c.rank}
                     </span>
                   </td>
-                  <td className="p-4 text-espresso/60 dark:text-oat-milk/60">{c.category}</td>
-                  <td className="p-4 text-espresso dark:text-oat-milk font-medium">{c.rewardPoints}</td>
-                  <td className="p-4 text-espresso/60 dark:text-oat-milk/60">{c.maxProgress} خطوة</td>
-                  <td className="p-4 text-espresso/60 dark:text-oat-milk/60">{c._count.users}</td>
+                  <td className="p-4 text-[#F2E8DFaa]">{c.category}</td>
+                  <td className="p-4 text-[#F2E8DF] font-medium">{c.rewardPoints}</td>
+                  <td className="p-4 text-[#F2E8DFaa]">{c.maxProgress} خطوة</td>
+                  <td className="p-4 text-[#F2E8DFaa]">{c._count.users}</td>
                   <td className="p-4">
                     <button
                       onClick={() => toggleActive(c.id, c.isActive)}
