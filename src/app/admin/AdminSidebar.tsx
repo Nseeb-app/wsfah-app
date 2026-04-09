@@ -26,43 +26,46 @@ export default function AdminSidebar() {
   return (
     <>
       {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-espresso/95 backdrop-blur-md border-b border-white/5 px-4 py-3 flex items-center justify-between">
-        <button
-          onClick={() => setOpen(!open)}
-          className="p-2 rounded-xl hover:bg-white/10 transition-colors"
-        >
-          <span className="material-symbols-outlined text-oat-milk">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 px-4 py-3 flex items-center justify-between"
+        style={{ backgroundColor: "#1a1410", borderBottom: "1px solid rgba(37, 244, 89, 0.1)" }}>
+        <button onClick={() => setOpen(!open)} className="p-2 rounded-xl hover:bg-white/10 transition-colors">
+          <span className="material-symbols-outlined" style={{ color: "#F2E8DF" }}>
             {open ? "close" : "menu"}
           </span>
         </button>
-        <h1 className="text-lg font-bold text-oat-milk tracking-wide">
-          وصفة <span className="text-primary">الإدارة</span>
+        <h1 className="text-lg font-extrabold" style={{ color: "#F2E8DF" }}>
+          وصفة <span style={{ color: "#25f459" }}>الإدارة</span>
         </h1>
         <Link href="/home" className="p-2 rounded-xl hover:bg-white/10 transition-colors">
-          <span className="material-symbols-outlined text-oat-milk">home</span>
+          <span className="material-symbols-outlined" style={{ color: "#F2E8DF" }}>home</span>
         </Link>
       </div>
 
       {/* Mobile overlay */}
       {open && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
-          onClick={() => setOpen(false)}
-        />
+        <div className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40" onClick={() => setOpen(false)} />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 w-64 h-screen bg-espresso flex flex-col z-50 transition-transform lg:translate-x-0 ${
+        className={`fixed left-0 top-0 w-64 h-screen flex flex-col z-50 transition-transform lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ backgroundColor: "#1a1410" }}
       >
         {/* Logo */}
-        <div className="p-6 border-b border-white/5">
-          <h1 className="text-xl font-extrabold text-oat-milk tracking-wide">
-            وصفة <span className="text-primary">الإدارة</span>
-          </h1>
-          <p className="text-[10px] text-oat-milk/40 mt-1 uppercase tracking-widest">Admin Panel</p>
+        <div className="p-6" style={{ borderBottom: "1px solid rgba(37, 244, 89, 0.08)" }}>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(37, 244, 89, 0.15)" }}>
+              <span className="material-symbols-outlined text-xl" style={{ color: "#25f459" }}>coffee</span>
+            </div>
+            <div>
+              <h1 className="text-lg font-extrabold" style={{ color: "#F2E8DF" }}>
+                وصفة <span style={{ color: "#25f459" }}>الإدارة</span>
+              </h1>
+              <p className="text-[9px] uppercase tracking-[3px]" style={{ color: "rgba(242, 232, 223, 0.3)" }}>Admin Panel</p>
+            </div>
+          </div>
         </div>
 
         {/* Nav */}
@@ -77,13 +80,16 @@ export default function AdminSidebar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-                  isActive
-                    ? "bg-primary/15 text-primary shadow-sm shadow-primary/5"
-                    : "text-oat-milk/60 hover:bg-white/5 hover:text-oat-milk"
-                }`}
+                className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
+                style={isActive ? {
+                  backgroundColor: "rgba(37, 244, 89, 0.12)",
+                  color: "#25f459",
+                  boxShadow: "0 0 20px rgba(37, 244, 89, 0.05)",
+                } : {
+                  color: "rgba(242, 232, 223, 0.5)",
+                }}
               >
-                <span className={`material-symbols-outlined text-xl ${isActive ? "text-primary" : ""}`}>
+                <span className="material-symbols-outlined text-xl" style={isActive ? { color: "#25f459" } : {}}>
                   {item.icon}
                 </span>
                 {item.label}
@@ -93,10 +99,11 @@ export default function AdminSidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="p-3 border-t border-white/5">
+        <div className="p-3" style={{ borderTop: "1px solid rgba(37, 244, 89, 0.08)" }}>
           <Link
             href="/home"
-            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-oat-milk/40 hover:bg-white/5 hover:text-oat-milk transition-all"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
+            style={{ color: "rgba(242, 232, 223, 0.3)" }}
           >
             <span className="material-symbols-outlined text-xl">arrow_back</span>
             العودة للتطبيق
