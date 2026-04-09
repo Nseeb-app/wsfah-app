@@ -169,3 +169,20 @@ html.dark nav.fixed {
 html.dark [class*="bg-espresso/"] {
   background-color: rgba(232, 224, 216, 0.05) !important;
 }
+
+/* ─── Admin Portal ─── */
+[style*="background-color: rgb(15, 23, 20)"] input,
+[style*="background-color: rgb(15, 23, 20)"] textarea,
+[style*="background-color: rgb(15, 23, 20)"] select,
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #1a2420 !important;
+  color: #F2E8DF !important;
+  border-color: rgba(242, 232, 223, 0.1) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgba(242, 232, 223, 0.35) !important;
+}
