@@ -827,19 +827,25 @@ model BrandApplication {
 // ──── Sponsored Promotions ────
 
 model PromotionRequest {
-  id          String   @id @default(cuid())
-  companyId   String
-  requesterId String
-  placement   String   // HOME_TOP, EXPLORE_TOP, BOTH
-  message     String?  // roaster's message/note
-  imageUrl    String?  // optional promo banner image
-  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED, EXPIRED
-  priority    Int      @default(0) // admin sets order (higher = shown first)
-  startDate   DateTime?
-  endDate     DateTime?
-  adminNotes  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String   @id @default(cuid())
+  companyId      String
+  requesterId    String
+  placement      String   // HOME_TOP, EXPLORE_TOP, BOTH
+  message        String?  // roaster's message/note
+  imageUrl       String?  // optional promo banner image
+  status         String   @default("PENDING_PAYMENT") // PENDING_PAYMENT, PENDING, APPROVED, REJECTED, EXPIRED
+  priority       Int      @default(0) // admin sets order (higher = shown first)
+  startDate      DateTime?
+  endDate        DateTime?
+  adminNotes     String?
+  // Payment fields
+  pricingId      String?  // which PromotionPricing plan was selected
+  paymentStatus  String   @default("UNPAID") // UNPAID, PAID, REFUNDED
+  paymentLinkId  String?  // StreamPay payment link ID
+  amountPaid     Float?   // actual amount paid
+  duration       Int?     // days purchased
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   requester User    @relation(fields: [requesterId], references: [id], onDelete: Cascade)

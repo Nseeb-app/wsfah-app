@@ -66,6 +66,30 @@ export async function POST(req: NextRequest) {
 
 async function handlePaymentSuccess(data: any) {
   const metadata = data.custom_metadata || data.metadata || {};
+
+  // Handle promotion payments
+  if (metadata.type === "promotion" && metadata.promotion_id) {
+    const now = new Date();
+    const promo = await prisma.promotionRequest.findUnique({
+      where: { id: metadata.promotion_id },
+    });
+    if (promo) {
+      const endDate = new Date(now);
+      endDate.setDate(endDate.getDate() + (promo.duration || 7));
+      await prisma.promotionRequest.update({
+        where: { id: metadata.promotion_id },
+        data: {
+          paymentStatus: "PAID",
+          status: "PENDING",
+          amountPaid: parseFloat(metadata.amount || "0"),
+          startDate: now,
+          endDate,
+        },
+      });
+    }
+    return;
+  }
+
   const userId = metadata.user_id;
   const planSlug = metadata.plan_slug;
   const companyId = metadata.company_id;

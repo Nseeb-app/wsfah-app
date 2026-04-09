@@ -31,6 +31,29 @@ export async function GET(req: Request) {
     return NextResponse.json(promotions);
   }
 
+  // Company-specific: roaster viewing their own promotions
+  const companyId = searchParams.get("companyId");
+  if (companyId) {
+    const { getAuthUser } = await import("@/lib/auth-mobile");
+    const mobileUser = await getAuthUser(req);
+    if (!mobileUser) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const company = await prisma.company.findUnique({
+      where: { id: companyId },
+      select: { ownerId: true },
+    });
+    if (!company || company.ownerId !== mobileUser.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    const myPromos = await prisma.promotionRequest.findMany({
+      where: { companyId },
+      orderBy: { createdAt: "desc" },
+      take: 20,
+    });
+    return NextResponse.json(myPromos);
+  }
+
   // Public: return only active/approved promotions
   const now = new Date();
   const promotions = await prisma.promotionRequest.findMany({
