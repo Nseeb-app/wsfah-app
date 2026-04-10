@@ -36,7 +36,7 @@ export default async function GalleryPage() {
           <div className="columns-2 gap-3 space-y-3">
             {posts.map((post) => (
               <div key={post.id} className="break-inside-avoid rounded-2xl overflow-hidden bg-white shadow-sm border border-espresso/5">
-                <img src={post.imageUrl} alt={post.caption || "منشور المعرض"} className="w-full object-cover" />
+                {post.imageUrl && <img src={post.imageUrl} alt={post.caption || "منشور المعرض"} className="w-full object-cover" />}
                 <div className="p-3">
                   {post.caption && <p className="text-sm font-medium mb-2" dir="auto">{post.caption}</p>}
                   <div className="flex items-center gap-2">

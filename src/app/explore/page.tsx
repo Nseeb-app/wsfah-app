@@ -69,7 +69,7 @@ export default async function ExplorePage() {
                 key={post.id}
                 className="break-inside-avoid rounded-2xl overflow-hidden bg-white shadow-sm border border-espresso/5 block"
               >
-                {post.mediaType === "video" ? (
+                {post.imageUrl && post.mediaType === "video" ? (
                   <video
                     src={post.imageUrl}
                     playsInline
@@ -77,9 +77,9 @@ export default async function ExplorePage() {
                     preload="metadata"
                     className="w-full object-cover"
                   />
-                ) : (
+                ) : post.imageUrl ? (
                   <img src={post.imageUrl} alt={post.caption || "منشور المعرض"} className="w-full object-cover" />
-                )}
+                ) : null}
                 <div className="p-3">
                   {/* Roaster Info - Prominent */}
                   {post.company && (

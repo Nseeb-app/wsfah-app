@@ -399,17 +399,22 @@ model Follow {
 
 model GalleryPost {
   id        String   @id @default(cuid())
-  imageUrl  String
+  imageUrl  String?
   mediaType String   @default("image") // image, video
   caption   String?
+  body      String?  // text content for community posts
+  status    String   @default("PENDING") // PENDING, APPROVED, REJECTED
   authorId  String
   companyId String?
+  likes     Int      @default(0)
   createdAt DateTime @default(now())
 
   author  User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   company Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
   galleryLikes GalleryPostLike[]
   comments     Comment[]
+
+  @@index([status, createdAt])
 }
 
 // ──── Gallery Likes ────

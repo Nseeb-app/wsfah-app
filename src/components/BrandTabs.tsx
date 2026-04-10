@@ -23,9 +23,11 @@ type Recipe = {
 
 type GalleryPost = {
   id: string;
-  imageUrl: string;
+  imageUrl: string | null;
   mediaType?: string;
   caption: string | null;
+  body?: string | null;
+  status?: string;
   author: { name: string | null; image: string | null };
 };
 
@@ -293,11 +295,11 @@ export default function BrandTabs({ products, recipes, galleryPosts, isOwner, co
             <div className="columns-2 gap-3 space-y-3">
               {localGallery.map((post) => (
                 <div key={post.id} className="break-inside-avoid rounded-xl overflow-hidden bg-slate-50 border border-slate-100">
-                  {post.mediaType === "video" ? (
+                  {post.imageUrl && (post.mediaType === "video" ? (
                     <video src={post.imageUrl} controls playsInline preload="metadata" className="w-full object-cover" />
                   ) : (
                     <img src={post.imageUrl} alt={post.caption || ""} className="w-full object-cover" />
-                  )}
+                  ))}
                   {post.caption && (
                     <p className="text-xs text-slate-600 p-2.5 font-medium" dir="auto">{post.caption}</p>
                   )}
