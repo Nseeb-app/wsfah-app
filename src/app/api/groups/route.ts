@@ -57,6 +57,7 @@ export async function POST(request: Request) {
     },
     include: {
       _count: { select: { members: true } },
+      creator: { select: { id: true, name: true, image: true } },
     },
   });
 
