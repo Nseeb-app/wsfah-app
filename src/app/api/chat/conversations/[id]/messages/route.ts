@@ -1,14 +1,8 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth-mobile";
 import { prisma } from "@/lib/prisma";
-import {
-  messagesCollection,
-  conversationsCollection,
-  ensureIndexes,
-  ObjectId,
-} from "@/lib/mongodb";
 
-// GET /api/chat/conversations/[id]/messages — fetch messages with polling support
+// GET /api/chat/conversations/[id]/messages
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -18,55 +12,66 @@ export async function GET(
 
   const { id } = await params;
   const { searchParams } = new URL(req.url);
-  const after = searchParams.get("after"); // for polling: get messages after this timestamp
-  const cursor = searchParams.get("cursor"); // for pagination: get older messages before this ID
+  const after = searchParams.get("after");
+  const cursor = searchParams.get("cursor");
   const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 100);
 
-  await ensureIndexes();
-  const msgs = await messagesCollection();
-  const convs = await conversationsCollection();
+  try {
+    const { messagesCollection, conversationsCollection, ensureIndexes, ObjectId } = await import("@/lib/mongodb");
+    await ensureIndexes();
+    const msgs = await messagesCollection();
+    const convs = await conversationsCollection();
 
-  // Verify user is participant
-  const conv = await convs.findOne({ _id: new ObjectId(id), participantIds: user.id });
-  if (!conv) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const conv = await convs.findOne({ _id: new ObjectId(id), participantIds: user.id });
+    if (!conv) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // Build query
-  const query: Record<string, unknown> = { conversationId: id };
+    const query: Record<string, unknown> = { conversationId: id };
+    if (after) query.createdAt = { $gt: new Date(after) };
+    else if (cursor) query._id = { $lt: new ObjectId(cursor) };
 
-  if (after) {
-    // Polling: get new messages since timestamp
-    query.createdAt = { $gt: new Date(after) };
-  } else if (cursor) {
-    // Pagination: get older messages
-    query._id = { $lt: new ObjectId(cursor) };
+    const messages = await msgs
+      .find(query)
+      .sort({ createdAt: after ? 1 : -1 })
+      .limit(limit)
+      .toArray();
+
+    await convs.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { [`lastReadAt.${user.id}`]: new Date() } }
+    );
+
+    return NextResponse.json(messages.map((m) => ({
+      id: m._id!.toString(),
+      conversationId: m.conversationId,
+      senderId: m.senderId,
+      senderName: m.senderName,
+      senderImage: m.senderImage,
+      body: m.body,
+      createdAt: m.createdAt.toISOString(),
+    })));
+  } catch (err) {
+    console.error("MongoDB messages GET error:", err);
+    // Fallback to Prisma
+    const messages = await prisma.message.findMany({
+      where: { conversationId: id },
+      include: { sender: { select: { id: true, name: true, image: true } } },
+      orderBy: { createdAt: "desc" },
+      take: limit,
+    });
+
+    return NextResponse.json(messages.map((m) => ({
+      id: m.id,
+      conversationId: m.conversationId,
+      senderId: m.senderId,
+      senderName: m.sender.name,
+      senderImage: m.sender.image,
+      body: m.body,
+      createdAt: m.createdAt.toISOString(),
+    })));
   }
-
-  const messages = await msgs
-    .find(query)
-    .sort({ createdAt: after ? 1 : -1 }) // ascending for new, descending for older
-    .limit(limit)
-    .toArray();
-
-  // Update last read
-  await convs.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { [`lastReadAt.${user.id}`]: new Date() } }
-  );
-
-  const result = messages.map((m) => ({
-    id: m._id!.toString(),
-    conversationId: m.conversationId,
-    senderId: m.senderId,
-    senderName: m.senderName,
-    senderImage: m.senderImage,
-    body: m.body,
-    createdAt: m.createdAt.toISOString(),
-  }));
-
-  return NextResponse.json(result);
 }
 
-// POST /api/chat/conversations/[id]/messages — send a message
+// POST /api/chat/conversations/[id]/messages
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -81,50 +86,73 @@ export async function POST(
     return NextResponse.json({ error: "Message body required" }, { status: 400 });
   }
   if (body.length > 2000) {
-    return NextResponse.json({ error: "Message too long (max 2000)" }, { status: 400 });
+    return NextResponse.json({ error: "Message too long" }, { status: 400 });
   }
 
-  await ensureIndexes();
-  const msgs = await messagesCollection();
-  const convs = await conversationsCollection();
-
-  // Verify user is participant
-  const conv = await convs.findOne({ _id: new ObjectId(id), participantIds: user.id });
-  if (!conv) return NextResponse.json({ error: "Not found" }, { status: 404 });
-
-  // Get sender info
   const sender = await prisma.user.findUnique({
     where: { id: user.id },
     select: { name: true, image: true },
   });
 
   const now = new Date();
-  const message = {
-    conversationId: id,
-    senderId: user.id,
-    senderName: sender?.name || null,
-    senderImage: sender?.image || null,
-    body: body.trim(),
-    createdAt: now,
-  };
+  const trimmedBody = body.trim();
 
-  const result = await msgs.insertOne(message);
+  try {
+    const { messagesCollection, conversationsCollection, ensureIndexes, ObjectId } = await import("@/lib/mongodb");
+    await ensureIndexes();
+    const msgs = await messagesCollection();
+    const convs = await conversationsCollection();
 
-  // Update conversation with last message
-  await convs.updateOne(
-    { _id: new ObjectId(id) },
-    {
-      $set: {
-        lastMessage: { body: body.trim(), senderId: user.id, createdAt: now },
-        updatedAt: now,
-        [`lastReadAt.${user.id}`]: now,
-      },
-    }
-  );
+    const conv = await convs.findOne({ _id: new ObjectId(id), participantIds: user.id });
+    if (!conv) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  return NextResponse.json({
-    id: result.insertedId.toString(),
-    ...message,
-    createdAt: now.toISOString(),
-  }, { status: 201 });
+    const message = {
+      conversationId: id,
+      senderId: user.id,
+      senderName: sender?.name || null,
+      senderImage: sender?.image || null,
+      body: trimmedBody,
+      createdAt: now,
+    };
+
+    const result = await msgs.insertOne(message);
+
+    await convs.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          lastMessage: { body: trimmedBody, senderId: user.id, createdAt: now },
+          updatedAt: now,
+          [`lastReadAt.${user.id}`]: now,
+        },
+      }
+    );
+
+    return NextResponse.json({
+      id: result.insertedId.toString(),
+      ...message,
+      createdAt: now.toISOString(),
+    }, { status: 201 });
+  } catch (err) {
+    console.error("MongoDB messages POST error:", err);
+    // Fallback to Prisma
+    const msg = await prisma.message.create({
+      data: { conversationId: id, senderId: user.id, body: trimmedBody },
+    });
+
+    await prisma.conversation.update({
+      where: { id },
+      data: { updatedAt: now },
+    });
+
+    return NextResponse.json({
+      id: msg.id,
+      conversationId: id,
+      senderId: user.id,
+      senderName: sender?.name || null,
+      senderImage: sender?.image || null,
+      body: trimmedBody,
+      createdAt: msg.createdAt.toISOString(),
+    }, { status: 201 });
+  }
 }
