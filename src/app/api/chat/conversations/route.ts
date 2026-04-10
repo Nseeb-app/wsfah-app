@@ -40,7 +40,34 @@ export async function GET(req: Request) {
     };
   });
 
-  return NextResponse.json(result);
+  // Also check MongoDB for conversations created via old API
+  try {
+    const { conversationsCollection } = await import("@/lib/mongodb");
+    const convs = await conversationsCollection();
+    const mongoConvs = await convs
+      .find({ participantIds: user.id })
+      .sort({ updatedAt: -1 })
+      .limit(20)
+      .toArray();
+
+    const mongoResult = mongoConvs.map((c) => {
+      const lastRead = c.lastReadAt?.[user.id] || new Date(0);
+      const hasUnread = c.lastMessage && c.lastMessage.createdAt > lastRead && c.lastMessage.senderId !== user.id;
+      const otherParticipant = c.participants.find((p) => p.userId !== user.id);
+      return {
+        id: c._id!.toString(),
+        otherUser: otherParticipant || null,
+        lastMessage: c.lastMessage,
+        hasUnread: !!hasUnread,
+        updatedAt: c.updatedAt?.toISOString() || new Date().toISOString(),
+      };
+    });
+
+    return NextResponse.json([...result, ...mongoResult]);
+  } catch {
+    // MongoDB not available — return Prisma results only
+    return NextResponse.json(result);
+  }
 }
 
 // POST /api/chat/conversations — create or get existing (always Prisma)
