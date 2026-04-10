@@ -37,10 +37,35 @@ export async function GET(req: Request) {
       };
     });
 
-    return NextResponse.json(result);
+    // Also check Prisma for conversations created via old API
+    const prismaConvs = await prisma.conversation.findMany({
+      where: { participants: { some: { userId: user.id } } },
+      include: {
+        participants: { include: { user: { select: { id: true, name: true, image: true } } } },
+        messages: { orderBy: { createdAt: "desc" }, take: 1, include: { sender: { select: { id: true, name: true } } } },
+      },
+      orderBy: { updatedAt: "desc" },
+      take: 20,
+    });
+
+    const prismaResult = prismaConvs.map((c) => {
+      const otherP = c.participants.find((p) => p.userId !== user.id);
+      const lastMsg = c.messages[0];
+      return {
+        id: c.id,
+        otherUser: otherP ? { userId: otherP.user.id, name: otherP.user.name, image: otherP.user.image } : null,
+        lastMessage: lastMsg ? { body: lastMsg.body, senderId: lastMsg.senderId, createdAt: lastMsg.createdAt.toISOString() } : null,
+        hasUnread: false,
+        updatedAt: c.updatedAt.toISOString(),
+      };
+    });
+
+    // Merge MongoDB + Prisma conversations (deduplicate by otherUser)
+    const allConvs = [...result, ...prismaResult];
+    return NextResponse.json(allConvs);
   } catch (err) {
     console.error("MongoDB conversations error:", err);
-    // Fallback to Prisma
+    // Full fallback to Prisma
     const conversations = await prisma.conversation.findMany({
       where: { participants: { some: { userId: user.id } } },
       include: {
