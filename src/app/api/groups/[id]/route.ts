@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getAuthUser } from "@/lib/auth-mobile";
 
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  const user = await getAuthUser(request);
 
   const group = await prisma.group.findUnique({
     where: { id },
@@ -15,7 +16,7 @@ export async function GET(
       _count: { select: { members: true } },
       posts: {
         orderBy: { createdAt: "desc" },
-        take: 5,
+        take: 20,
         include: {
           author: { select: { id: true, name: true, image: true } },
         },
@@ -27,15 +28,24 @@ export async function GET(
     return NextResponse.json({ error: "Group not found" }, { status: 404 });
   }
 
-  return NextResponse.json(group);
+  // Check if current user is a member
+  let isMember = false;
+  if (user) {
+    const membership = await prisma.groupMember.findFirst({
+      where: { groupId: id, userId: user.id },
+    });
+    isMember = !!membership;
+  }
+
+  return NextResponse.json({ ...group, isMember });
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getAuthUser(request);
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -46,7 +56,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Group not found" }, { status: 404 });
   }
 
-  if (group.creatorId !== session.user.id) {
+  if (group.creatorId !== user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
