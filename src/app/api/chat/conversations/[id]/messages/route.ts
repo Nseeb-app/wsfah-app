@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth-mobile";
 import { prisma } from "@/lib/prisma";
+import { sendPushNotification } from "@/lib/push";
 
 // GET /api/chat/conversations/[id]/messages
 export async function GET(
@@ -93,6 +94,20 @@ export async function POST(
     where: { id: participant.id },
     data: { lastReadAt: now },
   });
+
+  // Push notification to other participants
+  const otherParticipants = await prisma.conversationParticipant.findMany({
+    where: { conversationId: id, userId: { not: user.id } },
+    select: { userId: true },
+  });
+  for (const p of otherParticipants) {
+    sendPushNotification(
+      p.userId,
+      msg.sender.name || "رسالة جديدة",
+      trimmedBody.length > 100 ? trimmedBody.slice(0, 100) + "..." : trimmedBody,
+      { type: "MESSAGE", conversationId: id }
+    );
+  }
 
   return NextResponse.json({
     id: msg.id,

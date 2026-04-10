@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getAuthUser } from "@/lib/auth-mobile";
 import { recordActivity } from "@/lib/activity";
 import { trackChallengeProgress } from "@/lib/challenges";
+import { sendPushNotification } from "@/lib/push";
 
 export async function GET(
   req: Request,
@@ -77,6 +78,17 @@ export async function POST(
 
     // Track challenge progress (Social category)
     trackChallengeProgress(user.id, "Social");
+
+    // Push notification to recipe author
+    if (recipe.authorId !== user.id) {
+      const sender = await prisma.user.findUnique({ where: { id: user.id }, select: { name: true } });
+      sendPushNotification(
+        recipe.authorId,
+        "إعجاب جديد ❤️",
+        `${sender?.name || "شخص ما"} أعجب بوصفتك "${recipe.title}"`,
+        { type: "LIKE", recipeId: recipe.id }
+      );
+    }
 
     return NextResponse.json({ liked: true });
   }

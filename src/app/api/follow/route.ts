@@ -5,6 +5,7 @@ import { parseBody, followSchema } from "@/lib/validation";
 import { logAudit, AUDIT } from "@/lib/audit";
 import { recordActivity } from "@/lib/activity";
 import { trackChallengeProgress } from "@/lib/challenges";
+import { sendPushNotification } from "@/lib/push";
 
 export async function POST(req: Request) {
   const user = await getAuthUser(req);
@@ -43,6 +44,15 @@ export async function POST(req: Request) {
 
     // Track challenge progress (Social category)
     trackChallengeProgress(user.id, "Social");
+
+    // Push notification
+    const sender = await prisma.user.findUnique({ where: { id: user.id }, select: { name: true } });
+    sendPushNotification(
+      userId,
+      "متابع جديد 👋",
+      `${sender?.name || "شخص ما"} بدأ بمتابعتك`,
+      { type: "FOLLOW", userId: user.id }
+    );
 
     return NextResponse.json({ following: true });
   }
