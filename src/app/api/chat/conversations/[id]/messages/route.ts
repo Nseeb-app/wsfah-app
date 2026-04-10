@@ -3,6 +3,12 @@ import { getAuthUser } from "@/lib/auth-mobile";
 import { prisma } from "@/lib/prisma";
 import { sendPushNotification } from "@/lib/push";
 import { notify } from "@/lib/notify";
+import {
+  conversationsCollection,
+  messagesCollection,
+  ensureIndexes,
+  ObjectId,
+} from "@/lib/mongodb";
 
 // GET /api/chat/conversations/[id]/messages
 export async function GET(
@@ -18,40 +24,58 @@ export async function GET(
   const cursor = searchParams.get("cursor");
   const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 100);
 
-  // Verify user is participant
-  const participant = await prisma.conversationParticipant.findFirst({
-    where: { conversationId: id, userId: user.id },
-  });
-  if (!participant) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  await ensureIndexes();
+  const convs = await conversationsCollection();
 
-  const where: Record<string, unknown> = { conversationId: id };
-  if (after) {
-    where.createdAt = { gt: new Date(after) };
+  // Verify user is participant
+  let convId: ObjectId;
+  try {
+    convId = new ObjectId(id);
+  } catch {
+    return NextResponse.json({ error: "Invalid conversation ID" }, { status: 400 });
   }
 
-  const messages = await prisma.message.findMany({
-    where,
-    include: { sender: { select: { id: true, name: true, image: true } } },
-    orderBy: { createdAt: after ? "asc" : "desc" },
-    take: limit,
-    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
+  const conversation = await convs.findOne({
+    _id: convId,
+    participantIds: user.id,
   });
+  if (!conversation) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  const msgs = await messagesCollection();
+
+  // Build query
+  const query: Record<string, unknown> = { conversationId: id };
+  if (after) {
+    query.createdAt = { $gt: new Date(after) };
+  }
+  if (cursor) {
+    query._id = after ? { ...query._id as object, $lt: new ObjectId(cursor) } : { $lt: new ObjectId(cursor) };
+  }
+
+  const sortDir = after ? 1 : -1;
+  const messages = await msgs
+    .find(query)
+    .sort({ createdAt: sortDir })
+    .limit(limit)
+    .toArray();
 
   // Update last read
-  await prisma.conversationParticipant.update({
-    where: { id: participant.id },
-    data: { lastReadAt: new Date() },
-  });
+  await convs.updateOne(
+    { _id: convId },
+    { $set: { [`lastReadAt.${user.id}`]: new Date() } }
+  );
 
-  return NextResponse.json(messages.map((m) => ({
-    id: m.id,
-    conversationId: m.conversationId,
-    senderId: m.senderId,
-    senderName: m.sender.name,
-    senderImage: m.sender.image,
-    body: m.body,
-    createdAt: m.createdAt.toISOString(),
-  })));
+  return NextResponse.json(
+    messages.map((m) => ({
+      id: m._id!.toString(),
+      conversationId: m.conversationId,
+      senderId: m.senderId,
+      senderName: m.senderName,
+      senderImage: m.senderImage,
+      body: m.body,
+      createdAt: m.createdAt.toISOString(),
+    }))
+  );
 }
 
 // POST /api/chat/conversations/[id]/messages
@@ -72,56 +96,79 @@ export async function POST(
     return NextResponse.json({ error: "Message too long" }, { status: 400 });
   }
 
+  await ensureIndexes();
+  const convs = await conversationsCollection();
+
+  let convId: ObjectId;
+  try {
+    convId = new ObjectId(id);
+  } catch {
+    return NextResponse.json({ error: "Invalid conversation ID" }, { status: 400 });
+  }
+
   // Verify user is participant
-  const participant = await prisma.conversationParticipant.findFirst({
-    where: { conversationId: id, userId: user.id },
+  const conversation = await convs.findOne({
+    _id: convId,
+    participantIds: user.id,
   });
-  if (!participant) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!conversation) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  // Get sender info from PostgreSQL
+  const sender = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { id: true, name: true, image: true },
+  });
 
   const trimmedBody = body.trim();
   const now = new Date();
 
-  const msg = await prisma.message.create({
-    data: { conversationId: id, senderId: user.id, body: trimmedBody },
-    include: { sender: { select: { id: true, name: true, image: true } } },
+  const msgs = await messagesCollection();
+  const result = await msgs.insertOne({
+    conversationId: id,
+    senderId: user.id,
+    senderName: sender?.name || null,
+    senderImage: sender?.image || null,
+    body: trimmedBody,
+    createdAt: now,
   });
 
-  await prisma.conversation.update({
-    where: { id },
-    data: { updatedAt: now },
-  });
+  // Update conversation
+  await convs.updateOne(
+    { _id: convId },
+    {
+      $set: {
+        lastMessage: { body: trimmedBody, senderId: user.id, createdAt: now },
+        updatedAt: now,
+        [`lastReadAt.${user.id}`]: now,
+      },
+    }
+  );
 
-  await prisma.conversationParticipant.update({
-    where: { id: participant.id },
-    data: { lastReadAt: now },
-  });
-
-  // Push notification to other participants
-  const otherParticipants = await prisma.conversationParticipant.findMany({
-    where: { conversationId: id, userId: { not: user.id } },
-    select: { userId: true },
-  });
+  // Push + in-app notifications to other participants
+  const otherParticipantIds = conversation.participantIds.filter(
+    (pid) => pid !== user.id
+  );
   const msgPreview = trimmedBody.length > 100 ? trimmedBody.slice(0, 100) + "..." : trimmedBody;
-  const msgTitle = msg.sender.name || "رسالة جديدة";
+  const msgTitle = sender?.name || "رسالة جديدة";
 
-  for (const p of otherParticipants) {
-    // In-app notification
-    notify(p.userId, "MESSAGE", msgTitle, msgPreview, `/chat/${id}`);
-
-    // Push notification
-    sendPushNotification(p.userId, msgTitle, msgPreview, {
+  for (const pid of otherParticipantIds) {
+    notify(pid, "MESSAGE", msgTitle, msgPreview, `/chat/${id}`);
+    sendPushNotification(pid, msgTitle, msgPreview, {
       type: "MESSAGE",
       conversationId: id,
     });
   }
 
-  return NextResponse.json({
-    id: msg.id,
-    conversationId: id,
-    senderId: user.id,
-    senderName: msg.sender.name,
-    senderImage: msg.sender.image,
-    body: trimmedBody,
-    createdAt: msg.createdAt.toISOString(),
-  }, { status: 201 });
+  return NextResponse.json(
+    {
+      id: result.insertedId.toString(),
+      conversationId: id,
+      senderId: user.id,
+      senderName: sender?.name || null,
+      senderImage: sender?.image || null,
+      body: trimmedBody,
+      createdAt: now.toISOString(),
+    },
+    { status: 201 }
+  );
 }
