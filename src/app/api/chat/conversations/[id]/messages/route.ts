@@ -16,59 +16,40 @@ export async function GET(
   const cursor = searchParams.get("cursor");
   const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 100);
 
-  try {
-    const { messagesCollection, conversationsCollection, ensureIndexes, ObjectId } = await import("@/lib/mongodb");
-    await ensureIndexes();
-    const msgs = await messagesCollection();
-    const convs = await conversationsCollection();
+  // Verify user is participant
+  const participant = await prisma.conversationParticipant.findFirst({
+    where: { conversationId: id, userId: user.id },
+  });
+  if (!participant) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-    const conv = await convs.findOne({ _id: new ObjectId(id), participantIds: user.id });
-    if (!conv) return NextResponse.json({ error: "Not found" }, { status: 404 });
-
-    const query: Record<string, unknown> = { conversationId: id };
-    if (after) query.createdAt = { $gt: new Date(after) };
-    else if (cursor) query._id = { $lt: new ObjectId(cursor) };
-
-    const messages = await msgs
-      .find(query)
-      .sort({ createdAt: after ? 1 : -1 })
-      .limit(limit)
-      .toArray();
-
-    await convs.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: { [`lastReadAt.${user.id}`]: new Date() } }
-    );
-
-    return NextResponse.json(messages.map((m) => ({
-      id: m._id!.toString(),
-      conversationId: m.conversationId,
-      senderId: m.senderId,
-      senderName: m.senderName,
-      senderImage: m.senderImage,
-      body: m.body,
-      createdAt: m.createdAt.toISOString(),
-    })));
-  } catch (err) {
-    console.error("MongoDB messages GET error:", err);
-    // Fallback to Prisma
-    const messages = await prisma.message.findMany({
-      where: { conversationId: id },
-      include: { sender: { select: { id: true, name: true, image: true } } },
-      orderBy: { createdAt: "desc" },
-      take: limit,
-    });
-
-    return NextResponse.json(messages.map((m) => ({
-      id: m.id,
-      conversationId: m.conversationId,
-      senderId: m.senderId,
-      senderName: m.sender.name,
-      senderImage: m.sender.image,
-      body: m.body,
-      createdAt: m.createdAt.toISOString(),
-    })));
+  const where: Record<string, unknown> = { conversationId: id };
+  if (after) {
+    where.createdAt = { gt: new Date(after) };
   }
+
+  const messages = await prisma.message.findMany({
+    where,
+    include: { sender: { select: { id: true, name: true, image: true } } },
+    orderBy: { createdAt: after ? "asc" : "desc" },
+    take: limit,
+    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
+  });
+
+  // Update last read
+  await prisma.conversationParticipant.update({
+    where: { id: participant.id },
+    data: { lastReadAt: new Date() },
+  });
+
+  return NextResponse.json(messages.map((m) => ({
+    id: m.id,
+    conversationId: m.conversationId,
+    senderId: m.senderId,
+    senderName: m.sender.name,
+    senderImage: m.sender.image,
+    body: m.body,
+    createdAt: m.createdAt.toISOString(),
+  })));
 }
 
 // POST /api/chat/conversations/[id]/messages
@@ -89,70 +70,37 @@ export async function POST(
     return NextResponse.json({ error: "Message too long" }, { status: 400 });
   }
 
-  const sender = await prisma.user.findUnique({
-    where: { id: user.id },
-    select: { name: true, image: true },
+  // Verify user is participant
+  const participant = await prisma.conversationParticipant.findFirst({
+    where: { conversationId: id, userId: user.id },
+  });
+  if (!participant) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  const trimmedBody = body.trim();
+  const now = new Date();
+
+  const msg = await prisma.message.create({
+    data: { conversationId: id, senderId: user.id, body: trimmedBody },
+    include: { sender: { select: { id: true, name: true, image: true } } },
   });
 
-  const now = new Date();
-  const trimmedBody = body.trim();
+  await prisma.conversation.update({
+    where: { id },
+    data: { updatedAt: now },
+  });
 
-  try {
-    const { messagesCollection, conversationsCollection, ensureIndexes, ObjectId } = await import("@/lib/mongodb");
-    await ensureIndexes();
-    const msgs = await messagesCollection();
-    const convs = await conversationsCollection();
+  await prisma.conversationParticipant.update({
+    where: { id: participant.id },
+    data: { lastReadAt: now },
+  });
 
-    const conv = await convs.findOne({ _id: new ObjectId(id), participantIds: user.id });
-    if (!conv) return NextResponse.json({ error: "Not found" }, { status: 404 });
-
-    const message = {
-      conversationId: id,
-      senderId: user.id,
-      senderName: sender?.name || null,
-      senderImage: sender?.image || null,
-      body: trimmedBody,
-      createdAt: now,
-    };
-
-    const result = await msgs.insertOne(message);
-
-    await convs.updateOne(
-      { _id: new ObjectId(id) },
-      {
-        $set: {
-          lastMessage: { body: trimmedBody, senderId: user.id, createdAt: now },
-          updatedAt: now,
-          [`lastReadAt.${user.id}`]: now,
-        },
-      }
-    );
-
-    return NextResponse.json({
-      id: result.insertedId.toString(),
-      ...message,
-      createdAt: now.toISOString(),
-    }, { status: 201 });
-  } catch (err) {
-    console.error("MongoDB messages POST error:", err);
-    // Fallback to Prisma
-    const msg = await prisma.message.create({
-      data: { conversationId: id, senderId: user.id, body: trimmedBody },
-    });
-
-    await prisma.conversation.update({
-      where: { id },
-      data: { updatedAt: now },
-    });
-
-    return NextResponse.json({
-      id: msg.id,
-      conversationId: id,
-      senderId: user.id,
-      senderName: sender?.name || null,
-      senderImage: sender?.image || null,
-      body: trimmedBody,
-      createdAt: msg.createdAt.toISOString(),
-    }, { status: 201 });
-  }
+  return NextResponse.json({
+    id: msg.id,
+    conversationId: id,
+    senderId: user.id,
+    senderName: msg.sender.name,
+    senderImage: msg.sender.image,
+    body: trimmedBody,
+    createdAt: msg.createdAt.toISOString(),
+  }, { status: 201 });
 }
