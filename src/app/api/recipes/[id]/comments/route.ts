@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { getAuthUser } from "@/lib/auth-mobile";
 import { parseBody, commentSchema } from "@/lib/validation";
 import { logAudit, AUDIT } from "@/lib/audit";
+import { sendPushNotification } from "@/lib/push";
+import { notify } from "@/lib/notify";
 
 export async function GET(
   req: Request,
@@ -81,7 +83,7 @@ export async function POST(
     // Verify recipe exists
     const recipe = await prisma.recipe.findUnique({
       where: { id: recipeId },
-      select: { authorId: true },
+      select: { authorId: true, title: true },
     });
 
     if (!recipe) {
@@ -118,16 +120,17 @@ export async function POST(
       },
     });
 
-    // Create notification for recipe author (if not commenting on own recipe)
+    // Notify recipe author (if not commenting on own recipe)
     if (recipe.authorId !== user.id) {
-      await prisma.notification.create({
-        data: {
-          userId: recipe.authorId,
-          type: "COMMENT",
-          title: "New comment on your recipe",
-          body: `Someone commented on your recipe`,
-          link: `/recipe/${recipeId}`,
-        },
+      const commentPreview = `${comment.author.name || "شخص ما"} علّق على وصفتك "${recipe.title}"`;
+
+      // In-app notification
+      notify(recipe.authorId, "COMMENT", "تعليق جديد", commentPreview, `/recipe/${recipeId}`);
+
+      // Push notification
+      sendPushNotification(recipe.authorId, "تعليق جديد 💬", commentPreview, {
+        type: "COMMENT",
+        recipeId,
       });
     }
 

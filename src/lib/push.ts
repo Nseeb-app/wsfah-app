@@ -12,6 +12,8 @@ if (!admin.apps.length) {
     } catch {
       console.error("Firebase init failed — push notifications disabled");
     }
+  } else {
+    console.warn("FIREBASE_SERVICE_ACCOUNT not set — push notifications disabled");
   }
 }
 
@@ -27,7 +29,10 @@ export async function sendPushNotification(
   data?: Record<string, string>
 ): Promise<void> {
   try {
-    if (!admin.apps.length) return;
+    if (!admin.apps.length) {
+      console.warn("Push skipped: Firebase Admin not initialized");
+      return;
+    }
 
     // Get user's push tokens (mobile FCM tokens)
     const subscriptions = await prisma.mobilePushToken.findMany({

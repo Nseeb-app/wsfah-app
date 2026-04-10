@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth-mobile";
 import { prisma } from "@/lib/prisma";
 import { sendPushNotification } from "@/lib/push";
+import { notify } from "@/lib/notify";
 
 // GET /api/chat/conversations/[id]/messages
 export async function GET(
@@ -100,13 +101,18 @@ export async function POST(
     where: { conversationId: id, userId: { not: user.id } },
     select: { userId: true },
   });
+  const msgPreview = trimmedBody.length > 100 ? trimmedBody.slice(0, 100) + "..." : trimmedBody;
+  const msgTitle = msg.sender.name || "رسالة جديدة";
+
   for (const p of otherParticipants) {
-    sendPushNotification(
-      p.userId,
-      msg.sender.name || "رسالة جديدة",
-      trimmedBody.length > 100 ? trimmedBody.slice(0, 100) + "..." : trimmedBody,
-      { type: "MESSAGE", conversationId: id }
-    );
+    // In-app notification
+    notify(p.userId, "MESSAGE", msgTitle, msgPreview, `/chat/${id}`);
+
+    // Push notification
+    sendPushNotification(p.userId, msgTitle, msgPreview, {
+      type: "MESSAGE",
+      conversationId: id,
+    });
   }
 
   return NextResponse.json({
