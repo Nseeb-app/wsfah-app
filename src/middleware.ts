@@ -1,5 +1,5 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 const protectedRoutes = ["/profile", "/create", "/rewards", "/admin"];
 const authRoutes = ["/login", "/signup"];
@@ -25,10 +25,17 @@ function isMobile(ua: string): boolean {
   return /android|iphone|ipad|ipod|mobile|phone/i.test(ua);
 }
 
-export default auth((req) => {
+export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const isLoggedIn = !!req.auth;
   const userAgent = req.headers.get("user-agent") || "";
+
+  // Check for session token (NextAuth stores it as a cookie)
+  const sessionToken =
+    req.cookies.get("authjs.session-token")?.value ||
+    req.cookies.get("__Secure-authjs.session-token")?.value ||
+    req.cookies.get("next-auth.session-token")?.value ||
+    req.cookies.get("__Secure-next-auth.session-token")?.value;
+  const isLoggedIn = !!sessionToken;
 
   // Protect routes that require authentication
   if (protectedRoutes.some((r) => pathname.startsWith(r)) && !isLoggedIn) {
@@ -47,7 +54,7 @@ export default auth((req) => {
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
