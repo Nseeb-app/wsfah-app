@@ -9,7 +9,7 @@ export const prisma = globalForPrisma.prisma || new PrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-// One-time schema sync — remove after confirmed working
+// One-time schema sync + connectivity test
 if (!globalForPrisma._dbSynced) {
   globalForPrisma._dbSynced = true;
   const cols = [
@@ -25,7 +25,17 @@ if (!globalForPrisma._dbSynced) {
     `ALTER TABLE "PromotionRequest" ADD COLUMN IF NOT EXISTS "amountPaid" DOUBLE PRECISION`,
     `ALTER TABLE "PromotionRequest" ADD COLUMN IF NOT EXISTS "duration" INTEGER`,
   ];
-  Promise.all(cols.map((s) => prisma.$executeRawUnsafe(s).catch(() => {})))
-    .then(() => console.log("[db] Schema sync done."))
-    .catch(() => {});
+
+  (async () => {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      console.log("[db] Connected to PostgreSQL.");
+      for (const sql of cols) {
+        try { await prisma.$executeRawUnsafe(sql); } catch {}
+      }
+      console.log("[db] Schema sync done.");
+    } catch (err) {
+      console.error("[db] FAILED to connect:", err);
+    }
+  })();
 }
