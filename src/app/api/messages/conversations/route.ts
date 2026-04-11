@@ -12,39 +12,44 @@ export async function GET(req: Request) {
   const user = await getAuthUser(req);
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  await ensureIndexes();
-  const convs = await conversationsCollection();
-  const mongoConvs = await convs
-    .find({ participantIds: user.id })
-    .sort({ updatedAt: -1 })
-    .limit(50)
-    .toArray();
+  try {
+    await ensureIndexes();
+    const convs = await conversationsCollection();
+    const mongoConvs = await convs
+      .find({ participantIds: user.id })
+      .sort({ updatedAt: -1 })
+      .limit(50)
+      .toArray();
 
-  const result = mongoConvs.map((c) => {
-    const lastRead = c.lastReadAt?.[user.id] || new Date(0);
-    const otherParticipant = c.participants.find((p) => p.userId !== user.id);
-    const lastMessage = c.lastMessage || null;
-    const myLastReadAt = c.lastReadAt?.[user.id] || null;
+    const result = mongoConvs.map((c) => {
+      const lastRead = c.lastReadAt?.[user.id] || new Date(0);
+      const otherParticipant = c.participants.find((p) => p.userId !== user.id);
+      const lastMessage = c.lastMessage || null;
+      const myLastReadAt = c.lastReadAt?.[user.id] || null;
 
-    return {
-      id: c._id!.toString(),
-      updatedAt: c.updatedAt,
-      otherUser: otherParticipant
-        ? { id: otherParticipant.userId, name: otherParticipant.name, image: otherParticipant.image }
-        : null,
-      lastMessage: lastMessage
-        ? {
-            body: lastMessage.body,
-            senderId: lastMessage.senderId,
-            createdAt: lastMessage.createdAt,
-            sender: { id: lastMessage.senderId, name: null },
-          }
-        : null,
-      lastReadAt: myLastReadAt,
-    };
-  });
+      return {
+        id: c._id!.toString(),
+        updatedAt: c.updatedAt,
+        otherUser: otherParticipant
+          ? { id: otherParticipant.userId, name: otherParticipant.name, image: otherParticipant.image }
+          : null,
+        lastMessage: lastMessage
+          ? {
+              body: lastMessage.body,
+              senderId: lastMessage.senderId,
+              createdAt: lastMessage.createdAt,
+              sender: { id: lastMessage.senderId, name: null },
+            }
+          : null,
+        lastReadAt: myLastReadAt,
+      };
+    });
 
-  return NextResponse.json(result);
+    return NextResponse.json(result);
+  } catch (err) {
+    console.error("Messages conversations GET error:", err);
+    return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -66,54 +71,59 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Cannot create conversation with yourself" }, { status: 400 });
   }
 
-  // Get both users' info from PostgreSQL
-  const [currentUser, otherUser] = await Promise.all([
-    prisma.user.findUnique({ where: { id: user.id }, select: { id: true, name: true, image: true } }),
-    prisma.user.findUnique({ where: { id: userId }, select: { id: true, name: true, image: true } }),
-  ]);
-  if (!otherUser) return NextResponse.json({ error: "User not found" }, { status: 404 });
+  try {
+    // Get both users' info from PostgreSQL
+    const [currentUser, otherUser] = await Promise.all([
+      prisma.user.findUnique({ where: { id: user.id }, select: { id: true, name: true, image: true } }),
+      prisma.user.findUnique({ where: { id: userId }, select: { id: true, name: true, image: true } }),
+    ]);
+    if (!otherUser) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-  await ensureIndexes();
-  const convs = await conversationsCollection();
+    await ensureIndexes();
+    const convs = await conversationsCollection();
 
-  // Check if conversation already exists
-  const existing = await convs.findOne({
-    participantIds: { $all: [user.id, userId], $size: 2 },
-  });
+    // Check if conversation already exists
+    const existing = await convs.findOne({
+      participantIds: { $all: [user.id, userId], $size: 2 },
+    });
 
-  if (existing) {
+    if (existing) {
+      return NextResponse.json(
+        {
+          id: existing._id!.toString(),
+          participants: existing.participants.map((p) => ({
+            user: { id: p.userId, name: p.name, image: p.image },
+          })),
+        },
+        { status: 201 }
+      );
+    }
+
+    const now = new Date();
+    const result = await convs.insertOne({
+      participantIds: [user.id, userId],
+      participants: [
+        { userId: user.id, name: currentUser?.name || null, image: currentUser?.image || null },
+        { userId: otherUser.id, name: otherUser.name, image: otherUser.image },
+      ],
+      lastMessage: null,
+      lastReadAt: { [user.id]: now, [userId]: now },
+      updatedAt: now,
+      createdAt: now,
+    });
+
     return NextResponse.json(
       {
-        id: existing._id!.toString(),
-        participants: existing.participants.map((p) => ({
-          user: { id: p.userId, name: p.name, image: p.image },
-        })),
+        id: result.insertedId.toString(),
+        participants: [
+          { user: { id: user.id, name: currentUser?.name, image: currentUser?.image } },
+          { user: { id: otherUser.id, name: otherUser.name, image: otherUser.image } },
+        ],
       },
       { status: 201 }
     );
+  } catch (err) {
+    console.error("Messages conversations POST error:", err);
+    return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
   }
-
-  const now = new Date();
-  const result = await convs.insertOne({
-    participantIds: [user.id, userId],
-    participants: [
-      { userId: user.id, name: currentUser?.name || null, image: currentUser?.image || null },
-      { userId: otherUser.id, name: otherUser.name, image: otherUser.image },
-    ],
-    lastMessage: null,
-    lastReadAt: { [user.id]: now, [userId]: now },
-    updatedAt: now,
-    createdAt: now,
-  });
-
-  return NextResponse.json(
-    {
-      id: result.insertedId.toString(),
-      participants: [
-        { user: { id: user.id, name: currentUser?.name, image: currentUser?.image } },
-        { user: { id: otherUser.id, name: otherUser.name, image: otherUser.image } },
-      ],
-    },
-    { status: 201 }
-  );
 }
