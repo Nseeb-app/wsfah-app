@@ -9,6 +9,9 @@ async function getDb(): Promise<Db> {
   if (db) return db;
   if (!MONGODB_URI) throw new Error("MONGODB_URI is not set");
   try {
+    // Log masked URI for debugging
+    const masked = MONGODB_URI.replace(/:([^@]+)@/, ':***@');
+    console.log("[mongo] Connecting to:", masked);
     client = new MongoClient(MONGODB_URI);
     await client.connect();
     db = client.db();
