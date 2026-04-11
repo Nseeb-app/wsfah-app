@@ -67,6 +67,8 @@ export async function sendPushNotification(
         notification: {
           sound: "default",
           channelId: "default",
+          icon: "ic_launcher",
+          color: "#25f459",
         },
       },
       apns: {
