@@ -8,14 +8,9 @@ let db: Db;
 async function getDb(): Promise<Db> {
   if (db) return db;
   if (!MONGODB_URI) throw new Error("MONGODB_URI is not set");
-
-  // Log full URI for debugging (remove after fix)
-  console.log("[mongo] URI:", MONGODB_URI);
-
   client = new MongoClient(MONGODB_URI);
   await client.connect();
   db = client.db();
-  console.log("[mongo] Connected to MongoDB");
   return db;
 }
 
