@@ -36,7 +36,7 @@ export async function sendPushNotification(
 ): Promise<void> {
   try {
     if (!admin.apps.length) {
-      console.warn("Push skipped: Firebase Admin not initialized");
+      console.warn("[push] Skipped: Firebase Admin not initialized");
       return;
     }
 
@@ -46,7 +46,11 @@ export async function sendPushNotification(
       select: { token: true },
     });
 
-    if (subscriptions.length === 0) return;
+    if (subscriptions.length === 0) {
+      console.log(`[push] No tokens for user ${userId}`);
+      return;
+    }
+    console.log(`[push] Sending to ${subscriptions.length} token(s) for user ${userId}`);
 
     const tokens = subscriptions.map((s) => s.token).filter(Boolean);
     if (tokens.length === 0) return;
@@ -76,12 +80,16 @@ export async function sendPushNotification(
     };
 
     const response = await admin.messaging().sendEachForMulticast(message);
+    console.log(`[push] Result: ${response.successCount} success, ${response.failureCount} failure`);
 
     // Remove invalid tokens
     const failedTokens: string[] = [];
     response.responses.forEach((resp, idx) => {
-      if (!resp.success && resp.error?.code === "messaging/registration-token-not-registered") {
-        failedTokens.push(tokens[idx]);
+      if (!resp.success) {
+        console.error(`[push] Token failed:`, resp.error?.code, resp.error?.message);
+        if (resp.error?.code === "messaging/registration-token-not-registered") {
+          failedTokens.push(tokens[idx]);
+        }
       }
     });
 
