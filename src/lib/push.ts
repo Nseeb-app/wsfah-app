@@ -9,8 +9,8 @@ if (!admin.apps.length) {
       admin.initializeApp({
         credential: admin.credential.cert(JSON.parse(serviceAccount)),
       });
-    } catch {
-      console.error("Firebase init failed — push notifications disabled");
+    } catch (err) {
+      console.error("Firebase init failed — push notifications disabled:", err);
     }
   } else {
     console.warn("FIREBASE_SERVICE_ACCOUNT not set — push notifications disabled");
