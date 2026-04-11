@@ -6,9 +6,15 @@ if (!admin.apps.length) {
   const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT;
   if (serviceAccount) {
     try {
+      const parsed = JSON.parse(serviceAccount);
+      // Fix private key newlines (some platforms store \n as literal newlines)
+      if (parsed.private_key) {
+        parsed.private_key = parsed.private_key.replace(/\\n/g, "\n");
+      }
       admin.initializeApp({
-        credential: admin.credential.cert(JSON.parse(serviceAccount)),
+        credential: admin.credential.cert(parsed),
       });
+      console.log("Firebase Admin initialized successfully.");
     } catch (err) {
       console.error("Firebase init failed — push notifications disabled:", err);
     }
