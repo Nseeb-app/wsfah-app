@@ -30,6 +30,7 @@ export async function GET(req: Request) {
       .limit(50)
       .toArray();
 
+    console.log(`[chat] GET conversations: found ${mongoConvs.length} for user ${user.id}`);
     const result = mongoConvs.map((c) => {
       const lastRead = c.lastReadAt?.[user.id] || new Date(0);
       const hasUnread =
