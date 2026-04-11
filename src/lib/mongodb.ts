@@ -8,10 +8,18 @@ let db: Db;
 async function getDb(): Promise<Db> {
   if (db) return db;
   if (!MONGODB_URI) throw new Error("MONGODB_URI is not set");
-  client = new MongoClient(MONGODB_URI);
-  await client.connect();
-  db = client.db();
-  return db;
+  try {
+    client = new MongoClient(MONGODB_URI);
+    await client.connect();
+    db = client.db();
+    console.log("[mongo] Connected to MongoDB");
+    return db;
+  } catch (err) {
+    // Reset so next call retries instead of using stale connection
+    client = undefined as unknown as MongoClient;
+    db = undefined as unknown as Db;
+    throw err;
+  }
 }
 
 // ─── Types ───
